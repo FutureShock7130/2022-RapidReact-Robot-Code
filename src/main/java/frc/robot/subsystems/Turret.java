@@ -4,16 +4,19 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.TurrentConstants;
+import frc.robot.Constants.TurretConstants;
 
 public class Turret extends SubsystemBase {
 
-    private final CANSparkMax masterFlyWheel = new CANSparkMax(TurrentConstants.kMasterFlyWheelID, MotorType.kBrushless);
-    private final CANSparkMax slaveFlyWheel = new CANSparkMax(TurrentConstants.kSlaveFlyWheelID, MotorType.kBrushless); 
-    private final WPI_TalonSRX spinner = new WPI_TalonSRX(TurrentConstants.kSpinnerID);
+    private final CANSparkMax masterFlyWheel = new CANSparkMax(TurretConstants.kMasterFlyWheelID, MotorType.kBrushless);
+    private final CANSparkMax slaveFlyWheel = new CANSparkMax(TurretConstants.kSlaveFlyWheelID, MotorType.kBrushless); 
+    private final WPI_TalonSRX spinner = new WPI_TalonSRX(TurretConstants.kSpinnerID);
+    private final DigitalInput forwardLimitSwitch = new DigitalInput(TurretConstants.forwardLimitSwitch);
+    private final DigitalInput reverseLimitSwitch = new DigitalInput(TurretConstants.reverseLimitSwitch);
 
-    /** Creates a new TurrentSubystem. */
+    /** Creates a new TurretSubystem. */
     public Turret() {
         slaveFlyWheel.follow(masterFlyWheel);
     }
@@ -37,6 +40,22 @@ public class Turret extends SubsystemBase {
 
     public void spinnerStop() {
         spinner.set(0);
+    }
+
+    public double getFlyWheelsVelocity() {
+        return masterFlyWheel.getEncoder().getVelocity();
+    }
+
+    public boolean checkLimit() {    
+        if (forwardLimitSwitch.get()) {
+            return true;
+        }           
+        else if(reverseLimitSwitch.get()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 
