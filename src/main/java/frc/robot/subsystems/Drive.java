@@ -1,28 +1,17 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Encoder;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drive extends SubsystemBase {
-    public Drive() 
-    {
+    
+    private TalonSRX frontLeft = new TalonSRX();
+    private TalonSRX rearLeft = new TalonSRX();
+    private TalonSRX frontRight = new TalonSRX();
+    private TalonSRX rearRight = new TalonSRX();
 
-    }
+    public Drive() {
 
-    public double arcadeDrive() {
-        return 1.0;
-    }
-
-    public double tankDrive() {
-        return 2.0;
-    }
-
-    public double mecanumDrive() {
-        return 3.0;
-    }
-
-    public Encoder getEncoders() {
-        Encoder encoder = null;
-        return encoder;
     }
 }
