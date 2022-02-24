@@ -10,16 +10,20 @@ import frc.robot.Constants.TurretConstants;
 
 public class Turret extends SubsystemBase {
 
-    private final CANSparkMax masterFlyWheel = new CANSparkMax(TurretConstants.kMasterFlyWheelID, MotorType.kBrushless);
-    private final CANSparkMax slaveFlyWheel = new CANSparkMax(TurretConstants.kSlaveFlyWheelID, MotorType.kBrushless); 
-    private final WPI_TalonSRX spinner = new WPI_TalonSRX(TurretConstants.kSpinnerID);
-    private final DigitalInput forwardLimitSwitch = new DigitalInput(TurretConstants.forwardLimitSwitch);
-    private final DigitalInput reverseLimitSwitch = new DigitalInput(TurretConstants.reverseLimitSwitch);
+    private final CANSparkMax masterFlyWheel = new CANSparkMax(TurrentConstants.kMasterFlyWheelID, MotorType.kBrushless);
+    private final CANSparkMax slaveFlyWheel = new CANSparkMax(TurrentConstants.kSlaveFlyWheelID, MotorType.kBrushless); 
+    private final WPI_TalonSRX spinner = new WPI_TalonSRX(TurrentConstants.kSpinnerID);
+    private final DigitalInput forwardLimitSwitch = new DigitalInput(TurrentConstants.forwardLimitSwitch);
+    private final DigitalInput reverseLimitSwitch = new DigitalInput(TurrentConstants.reverseLimitSwitch);
+
+    int output;
 
     /** Creates a new TurretSubystem. */
     public Turret() {
         slaveFlyWheel.follow(masterFlyWheel);
     }
+
+    
 
     @Override
     public void periodic() {
@@ -42,21 +46,22 @@ public class Turret extends SubsystemBase {
         spinner.set(0);
     }
 
-    public double getFlyWheelsVelocity() {
-        return masterFlyWheel.getEncoder().getVelocity();
-    }
-
-    public boolean checkLimit() {    
-        if (forwardLimitSwitch.get()) {
-            return true;
+    public int checkLimit()
+    {
+        
+        if (forwardLimitSwitch.get()){
+            output = 1;
+            return output;
         }           
-        else if(reverseLimitSwitch.get()) {
-            return true;
+        else if(reverseLimitSwitch.get()){
+            output = 1;
+            return output;
         }
-        else {
-            return false;
+        else{
+            output = 0;
+            return output;
         }
+            
     }
-
 
 }

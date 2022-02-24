@@ -15,7 +15,7 @@ public class Superstructure extends SubsystemBase {
   private final CANSparkMax hangerRight = new CANSparkMax(SuperstructureConstants.kHangerRightID, MotorType.kBrushless);
   
   // Creates a new Superstructure.
-  public void Superstructure() {
+  public Superstructure() {
     SwingRight.follow(SwingLeft);
     hangerRight.follow(hangerLeft);
   }
