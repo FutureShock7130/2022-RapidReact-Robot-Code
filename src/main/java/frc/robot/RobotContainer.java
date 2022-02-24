@@ -51,8 +51,8 @@ public class RobotContainer {
         m_robotDrive.setDefaultCommand(
                 new RunCommand(
                         () -> m_robotDrive.drive(
-                                m_driverController.getRawAxis(OIConstants.leftStick_X),
-                                -m_driverController.getRawAxis(OIConstants.leftStick_Y),
+                                -m_driverController.getRawAxis(OIConstants.leftStick_X),
+                                m_driverController.getRawAxis(OIConstants.leftStick_Y),
                                 m_driverController.getRawAxis(OIConstants.rightStick_X),
                                 false),
                         m_robotDrive));
@@ -83,7 +83,9 @@ public class RobotContainer {
         String trajectoryJSON = "paths/straightTest.wpilib.json";
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-            Trajectory testTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+            Trajectory Trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+
+            
 
 
             // Run path following command, then stop at the end.
