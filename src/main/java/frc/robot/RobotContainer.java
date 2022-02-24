@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AbsoluteAim;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Transporter;
@@ -72,12 +73,12 @@ public class RobotContainer {
                 .whenReleased(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler));
 
         // rotate and aim at target upon pressing of the A button
-        new JoystickButton(m_driverController, OIConstants.Btn_A).whenPressed(new TeleopAimCommand(m_robotDrive));
+        new JoystickButton(m_driverController, OIConstants.Btn_A).whenPressed(new AbsoluteAim(m_robotDrive));
 
         // run the transporter subsystem upon pressing of the B button
-        new JoystickButton(m_driverController, OIConstants.Btn_B).whenHeld(new TransportCommand(m_robotTransport));
+        //new JoystickButton(m_driverController, OIConstants.Btn_B).whenHeld(new TransportCommand(m_robotTransport));
 
-        new JoystickButton(m_driverController, OIConstants.Btn_X).whenHeld(new ShootCommand(m_robotShoot));
+        //new JoystickButton(m_driverController, OIConstants.Btn_X).whenHeld(new ShootCommand(m_robotShoot));
     }
 
     // Use this to pass the autonomous command to the main {@link Robot} class.
