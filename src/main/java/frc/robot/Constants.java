@@ -24,7 +24,7 @@ public final class Constants {
 
     public static final double kTrackwidthMeters = 0.4482;
     public static final MecanumDriveKinematics kDriveKinematics =
-        new MecanumDriveKinematics(kTrackwidthMeters);
+        new MecanumDriveKinematics();
 
     public static final int kEncoderCPR = 4096;
     public static final double kWheelDiameterMeters = 0.1016;
@@ -114,5 +114,14 @@ public final class Constants {
     public static final double KpAim = 0;
     public static final double min_command = 0;
     public static final double current_distance = 0; // distanceFromLimeligtToGoalInches
+  }
+
+  public static final class SuperstructureConstants {
+    public static final int kSwingLeftID = 7;
+    public static final int kSwingRightID = 8;
+    public static final int kHangerLeftID = 14;
+    public static final int kHangerRightID = 15;
+    public static final double swingSpeed = 0.3;
+    public static final double hangerSpeed = 0.3;
   }
 }
