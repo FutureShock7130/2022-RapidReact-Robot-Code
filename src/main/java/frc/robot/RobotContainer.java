@@ -96,9 +96,9 @@ public class RobotContainer {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
             Trajectory testTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
 
-            
+
             // Run path following command, then stop at the end.
-            return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+            // return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
         } catch (IOException e) {
             DriverStation.reportError("Unable to open JSON file", e.getStackTrace());
         }
