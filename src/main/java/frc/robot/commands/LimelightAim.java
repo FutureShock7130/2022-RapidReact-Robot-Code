@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Limelight;
+import frc.robot.vision.Limelight;
 
 
 public class LimelightAim extends CommandBase {
@@ -57,7 +57,7 @@ public class LimelightAim extends CommandBase {
         double output = kPangle * xError + kIangle * integralSumX + kDangle * derivative;
         double distOutput = kPdist * distError + kIdist * integralSumDist + kDdist * distDerivative;
 
-        m_drive.drive(distOutput,0, output,false);
+        m_drive.drive(0, distOutput, output, false);
 
         lastError = xError;
         lastDistError = distError;
