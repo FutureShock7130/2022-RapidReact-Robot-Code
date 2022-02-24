@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Limelight;
+import frc.robot.vision.Limelight;
 import frc.robot.subsystems.Turret;
 
 
@@ -49,7 +49,18 @@ public class LimelightAim extends CommandBase {
 
     
     public void periodic(){
-        
+        if (0.05 < xError && xError< 0.05){
+            m_Turret.spinnerStop();
+        }
+        else if (m_Turret.checkLimit() == 1){
+            m_Turret.spinnerRun(0.1);
+        }
+        else if (m_Turret.checkLimit() == -1){
+            m_Turret.spinnerRun(-0.1);
+        }
+        else{
+            m_Turret.spinnerRun(0.1);
+        }
     }
 
     public void execute() {
@@ -74,6 +85,8 @@ public class LimelightAim extends CommandBase {
         lastDistError = distError;
         SmartDashboard.putNumber("output",output);
         SmartDashboard.putNumber("distError", distError);
+
+
     }
 
     public void end(boolean interrupted) {

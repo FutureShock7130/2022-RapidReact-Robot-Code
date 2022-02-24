@@ -20,10 +20,10 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class Drive extends SubsystemBase {
 
-  private final WPI_TalonFX motorFL = new WPI_TalonFX(DriveConstants.kFrontLeftMotorPort);
-  private final WPI_TalonFX motorRL = new WPI_TalonFX(DriveConstants.kRearLeftMotorPort);
-  private final WPI_TalonFX motorFR = new WPI_TalonFX(DriveConstants.kFrontRightMotorPort);
-  private final WPI_TalonFX motorRR = new WPI_TalonFX(DriveConstants.kRearRightMotorPort);
+  private final WPI_TalonFX motorFL = new WPI_TalonFX(DriveConstants.kLeftMotor1Port);
+  private final WPI_TalonFX motorRL = new WPI_TalonFX(DriveConstants.kLeftMotor2Port);
+  private final WPI_TalonFX motorFR = new WPI_TalonFX(DriveConstants.kRightMotor1Port);
+  private final WPI_TalonFX motorRR = new WPI_TalonFX(DriveConstants.kRightMotor2Port);
 
   private final MecanumDrive m_drive = new MecanumDrive(motorFL, motorRL, motorFR, motorRR);
 
