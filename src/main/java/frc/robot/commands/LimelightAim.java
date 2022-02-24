@@ -32,10 +32,27 @@ public class LimelightAim extends CommandBase {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(turret);
         addRequirements(limelight);
+        addRequirements(turret);
     }
 
     public void initialize() {
 
+    }
+
+    
+    public void periodic(){
+        if (0.05 < xError && xError< 0.05){
+            m_Turret.spinnerStop();
+        }
+        else if (m_Turret.checkLimit() == 1){
+            m_Turret.spinnerRun(0.1);
+        }
+        else if (m_Turret.checkLimit() == -1){
+            m_Turret.spinnerRun(-0.1);
+        }
+        else{
+            m_Turret.spinnerRun(0.1);
+        }
     }
 
     public void execute() {
