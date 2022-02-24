@@ -82,6 +82,8 @@ public final class Constants {
     public static final int kMasterFlyWheelID = 12;
     public static final int kSlaveFlyWheelID = 13;
     public static final int kSpinnerID = 11;
+    public static final int forwardLimitSwitch = 1;
+    public static final int reverseLimitSwitch = 0;
   }
 
   public static final class IntakeConstants {
