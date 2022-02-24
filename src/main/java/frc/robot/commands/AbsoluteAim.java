@@ -90,7 +90,7 @@ public class AbsoluteAim extends CommandBase {
 
                 double output = kP * rError + kI * integralSumR + kD * derivative;
 
-                m_robotDrive.drive(0, 0, output, false);
+                m_robotDrive.drive(0, 0, output);
 
                 lastError = rError;
 
@@ -98,14 +98,14 @@ public class AbsoluteAim extends CommandBase {
 
         }
 
-        public void end(boolean isInterrupted) {
+        public void end(boolean isInterrupted){
                 m_robotDrive.drive(0, 0, 0, false);
         }
 
         public boolean isFinished() {
-                if (Math.abs(rError) < 0.05) {
+                if (Math.abs(rError) < 0.05){
                         return true;
-                }
+                    }
                 return false;
                 // stops the function by returning true
         }

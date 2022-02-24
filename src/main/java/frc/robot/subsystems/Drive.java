@@ -20,10 +20,10 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class Drive extends SubsystemBase {
 
-  private final WPI_TalonFX motorFL = new WPI_TalonFX(DriveConstants.kFrontLeftMotorID);
-  private final WPI_TalonFX motorRL = new WPI_TalonFX(DriveConstants.kRearLeftMotorID);
-  private final WPI_TalonFX motorFR = new WPI_TalonFX(DriveConstants.kFrontRightMotorID);
-  private final WPI_TalonFX motorRR = new WPI_TalonFX(DriveConstants.kRearRightMotorID);
+  private final WPI_TalonFX motorFL = new WPI_TalonFX(DriveConstants.kFrontLeftMotorPort);
+  private final WPI_TalonFX motorRL = new WPI_TalonFX(DriveConstants.kRearLeftMotorPort);
+  private final WPI_TalonFX motorFR = new WPI_TalonFX(DriveConstants.kFrontRightMotorPort);
+  private final WPI_TalonFX motorRR = new WPI_TalonFX(DriveConstants.kRearRightMotorPort);
 
   private final MecanumDrive m_drive = new MecanumDrive(motorFL, motorRL, motorFR, motorRR);
 
@@ -84,7 +84,19 @@ public class Drive extends SubsystemBase {
   // @param fieldRelative Whether the provided x and y speeds are relative to the field.
 
   @SuppressWarnings("ParameterName")
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+  public void drive(double ySpeed, double xSpeed, double rot) {
+      m_drive.driveCartesian(ySpeed, xSpeed, rot);
+  }
+
+  // Drives the robot at given x, y and theta speeds. 
+  // Speeds range from [-1, 1] and the linear speeds have no effect on the angular speed.
+  // @param xSpeed - Speed of the robot in the x direction (forward/backwards).
+  // @param ySpeed - Speed of the robot in the y direction (sideways).
+  // @param rot    - Angular rate of the robot.
+  // @param fieldRelative Whether the provided x and y speeds are relative to the field.
+
+  @SuppressWarnings("ParameterName")
+  public void drive(double ySpeed, double xSpeed, double rot, boolean fieldRelative) {
     if (fieldRelative) {
       m_drive.driveCartesian(ySpeed, xSpeed, rot, -m_gyro.getAngle());
     } else {

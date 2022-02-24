@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SuperstructureConstants;
-import frc.robot.Constants.TransporterConstants;
 
 public class Superstructure extends SubsystemBase {
   
@@ -17,7 +16,7 @@ public class Superstructure extends SubsystemBase {
   
 
   // Creates a new Superstructure.
-  public void Superstructure() {
+  public Superstructure() {
     SwingRight.follow(SwingLeft);
     hangerRight.follow(hangerLeft);
   }
