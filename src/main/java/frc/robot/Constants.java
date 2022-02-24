@@ -9,18 +9,11 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean
- * constants. This class should not be used for any other purpose. All constants
- * should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
- *
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the
- * constants are needed, to reduce verbosity.
- */
+
+// The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean constants. 
+// This class should not be used for any other purpose. 
+// All constants should be declared globally (i.e. public static). Do not put anything functional in this class.
+
 public final class Constants {
   public static final class DriveConstants {
 
@@ -46,14 +39,11 @@ public final class Constants {
     public static final double kWheelDiameterMeters = 0.1524;
     public static final double kWheelCircumference = kWheelDiameterMeters * Math.PI;
     public static final double kGearRatio = (50 / 14) * (48 / 16);
-    public static final double kEncoderDistancePerPulse = kWheelCircumference / (double) kEncoderCPR / kGearRatio
-        / Math.sqrt(2) * 10;
+    public static final double kEncoderDistancePerPulse = kWheelCircumference / (double) kEncoderCPR / kGearRatio / Math.sqrt(2) * 10;
 
     // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
-    // These characterization values MUST be determined either experimentally or
-    // theoretically for "your" robot's drive.
-    // The SysId tool provides a convenient method for obtaining these values for
-    // your robot.
+    // These characterization values MUST be determined either experimentally or theoretically for "your" robot's drive.
+    // The SysId tool provides a convenient method for obtaining these values for your robot.
 
     public static final double kS = 0.61428;
     public static final double kV = 0.020661;
@@ -88,42 +78,32 @@ public final class Constants {
     public static final int Btn_RS = 10;
   }
 
-  public static final class ShooterConstants {
-    public static final int MasterShooterID = 7;
-    public static final int SlaveShooterID = 8;
+  public static final class TurrentConstants {
+    public static final int kMasterFlyWheelID = 12;
+    public static final int kSlaveFlyWheelID = 13;
+    public static final int kSpinnerID = 11;
+  }
 
-    // 待須測試，之後應該要改成機器人距離籃框某段距離要用多少速度
-    public static final double ShootSpeed = 0.15;
+  public static final class IntakeConstants {
+    public static final int kintakeID = 10;
+    public static final double intakeSpeed = 0.7;
   }
 
   public static final class TransporterConstants {
-    public static final int TopTransporterID = 8;
-    public static final int DownTransporterID = 9;
-    public static final double downTransportSpeed = 0.5;
-    public static final double topTransportSpeed = 0.95;
+    public static final int kTopTransporterID = 9;
+    public static final int kDownTransporterID = 5;
+    public static final double transportSpeed = 0.0;
   }
 
-  public static final class ClimberConstants {
-    public static final int kFrontLeftMotorID = 0;
-    public static final int kRearLeftMotorID = 0;
-    public static final int kFrontRightMotorID = 0;
-    public static final int kRearRightMotorID = 0;
+  public static final class SuperstructureConstants {
+    public static final int kSwingLeftID = 7;
+    public static final int kSwingRightID = 8;
+    public static final int kHangerLeftID = 14;
+    public static final int kHangerRightID = 15;
+    public static final double swingSpeed = 0.3;
+    public static final double hangerSpeed = 0.3;
   }
 
-  public static final class VisionConstants {
-    public static final double targetHeight = 0;
-    public static final double limelightHeight = 0;
-    public static final double limelightAngle = 0;
-  }
-
-  public static final class TurrentConstants {
-    public static final int kTurrentSpinnerID = 0;
-    public static final double turrentSpeed = 0.3;
-
-    // 尚須測試
-    public static final double KpSheering = 0.05;
-    public static final double min_command = 0.3;
-  }
 
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 5;
@@ -142,8 +122,8 @@ public final class Constants {
   }
 
   public static final class LimelightConstants {
-    // how many degrees back is your limelight rotateed from perfectly vertical
-    // check our own limelight degree
+    // How many degrees back is your limelight rotateed from perfectly vertical
+    // Check our own limelight degree
     public static final double limelightMounAngleDegrees = 15.0;
 
     // distance from the center of the limelight lens to the floor

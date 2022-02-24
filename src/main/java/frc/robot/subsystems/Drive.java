@@ -76,9 +76,8 @@ public class Drive extends SubsystemBase {
     m_odometry.resetPosition(pose, m_gyro.getRotation2d());
   }
 
-  // Drives the robot at given x, y and theta speeds. Speeds range from [-1, 1]
-  // and the linear
-  // speeds have no effect on the angular speed.
+  // Drives the robot at given x, y and theta speeds. 
+  // Speeds range from [-1, 1] and the linear speeds have no effect on the angular speed.
   // @param xSpeed - Speed of the robot in the x direction (forward/backwards).
   // @param ySpeed - Speed of the robot in the y direction (sideways).
   // @param rot    - Angular rate of the robot.
@@ -116,10 +115,6 @@ public class Drive extends SubsystemBase {
         motorFR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
         motorRL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
         motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
-
-    // DriveConstants.kWheelCircumference/2048/DriveConstants.kGearRatio
-    // *0.8* 10 / 2048 * DriveConstants.kWheelCircumference/
-    // DriveConstants.kGearRatio
   }
 
   // Sets the max output of the drive. Useful for scaling the drive to drive more slowly.
