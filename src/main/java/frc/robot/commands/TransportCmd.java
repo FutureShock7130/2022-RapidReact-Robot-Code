@@ -4,13 +4,15 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.TransporterConstants;
 import frc.robot.subsystems.Transporter;
 
 public class TransportCmd extends CommandBase {
   Transporter transporter;
-  Joystick joystick;
+
+  double initTime = 0;
 
   /** Creates a new intakeCmd. */
   public TransportCmd(Transporter m_robotTransporter) {
@@ -22,12 +24,17 @@ public class TransportCmd extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    initTime = Timer.getFPGATimestamp();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    transporter.transportRun();
+    while (Timer.getFPGATimestamp() < TransporterConstants.transportTime){
+      transporter.transportRun();
+    }
+    transporter.transportStop();
   }
 
   // Called once the command ends or is interrupted.
@@ -39,6 +46,6 @@ public class TransportCmd extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
