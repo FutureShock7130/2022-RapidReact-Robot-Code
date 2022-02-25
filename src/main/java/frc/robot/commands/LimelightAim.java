@@ -22,15 +22,15 @@ public class LimelightAim extends CommandBase {
     private double lastError;
     private double integralSumX;
     
-    private Turret m_Turret;
+    private Turret turret;
     private Limelight limelight;
 
     public LimelightAim(Turret m_robotTurret, Limelight m_robotLimelight) {
-        m_Turret = m_robotTurret;
+        turret = m_robotTurret;
         limelight = m_robotLimelight;
 
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(m_Turret);
+        addRequirements(turret);
         addRequirements(limelight);
     }
 
@@ -38,23 +38,10 @@ public class LimelightAim extends CommandBase {
 
     }
 
-    
-    public void periodic(){
-        if (0.05 < xError && xError< 0.05){
-            m_Turret.spinnerStop();
-        }
-        else if (m_Turret.checkLimit() == 1){
-            m_Turret.spinnerRun(0.1);
-        }
-        else if (m_Turret.checkLimit() == -1){
-            m_Turret.spinnerRun(-0.1);
-        }
-        else{
-            m_Turret.spinnerRun(0.1);
-        }
-    }
-
     public void execute() {
+        if (checkLimit() == true) {
+            return;
+        }
         xError = Units.degreesToRadians(limelight.getX());
 
         if (Math.abs(integralSumX) < 100) {
@@ -64,7 +51,7 @@ public class LimelightAim extends CommandBase {
         derivative = (xError - lastError) / timeDiff;
         output = kPangle * xError + kIangle * integralSumX + kDangle * derivative;
 
-        m_Turret.spinnerRun(output);
+        turret.spinnerRun(output);
         lastError = xError;
 
         SmartDashboard.putNumber("output",output);
@@ -72,7 +59,7 @@ public class LimelightAim extends CommandBase {
 
     public void end(boolean interrupted) {
         if (interrupted) {
-            m_Turret.spinnerStop();
+            turret.spinnerStop();
         }
     }
 
@@ -83,5 +70,18 @@ public class LimelightAim extends CommandBase {
 
         integralSumX = 0;
         return false;
+    }
+
+    public boolean checkLimit() {    
+        if (turret.getforwardLimitSwitchCheck() == false) {
+            // if touched limit switch -> return true
+            return true;
+        }           
+        else if(turret.getreverseLimitSwitchCheck() ==  false) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

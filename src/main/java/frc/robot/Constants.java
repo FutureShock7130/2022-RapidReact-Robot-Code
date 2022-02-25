@@ -13,7 +13,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 // The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean constants. 
 // This class should not be used for any other purpose. 
 // All constants should be declared globally (i.e. public static). Do not put anything functional in this class.
-import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 
 public final class Constants {
   public static final class DriveConstants {
@@ -89,17 +88,19 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int kintakeID = 10;
-    public static final double intakeSpeed = 0.7;
+    public static final int kDownTransporterID = 5;
+    public static final double intakeSpeed = 0.9;
+    public static final double transportSpeed = 0.5;
   }
 
   public static final class TransporterConstants {
     public static final int kTopTransporterID = 9;
     public static final int kDownTransporterID = 5;
-    public static final double transportSpeed = 0.0;
+    public static final double transportSpeed = 0.5;
   }
 
   public static final class SuperstructureConstants {
-    public static final int kSwingLeftID = 7;
+    public static final int kSwingLeftID = 6;
     public static final int kSwingRightID = 8;
     public static final int kHangerLeftID = 14;
     public static final int kHangerRightID = 15;
@@ -141,5 +142,4 @@ public final class Constants {
     public static final double min_command = 0;
     public static final double current_distance = 0; // distanceFromLimeligtToGoalInches
   }
-
 }

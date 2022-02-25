@@ -62,9 +62,9 @@ public class Drive extends SubsystemBase {
           motorRL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
           motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse));
 
-    SmartDashboard.putNumber("velocity", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
-    SmartDashboard.putNumber("Pose X", m_odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("Pose Y", m_odometry.getPoseMeters().getY());
+    // SmartDashboard.putNumber("velocity", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
+    // SmartDashboard.putNumber("Pose X", m_odometry.getPoseMeters().getX());
+    // SmartDashboard.putNumber("Pose Y", m_odometry.getPoseMeters().getY());
 
   }
 

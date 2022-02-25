@@ -16,14 +16,11 @@ public class Turret extends SubsystemBase {
     private final DigitalInput forwardLimitSwitch = new DigitalInput(TurretConstants.forwardLimitSwitch);
     private final DigitalInput reverseLimitSwitch = new DigitalInput(TurretConstants.reverseLimitSwitch);
 
-
     private int output;
     /** Creates a new TurretSubystem. */
     public Turret() {
-        slaveFlyWheel.follow(masterFlyWheel);
+        slaveFlyWheel.follow(masterFlyWheel, true);
     }
-
-    
 
     @Override
     public void periodic() {
@@ -48,6 +45,14 @@ public class Turret extends SubsystemBase {
 
     public double getFlyWheelsVelocity() {
         return masterFlyWheel.getEncoder().getVelocity();
+    }
+
+    public boolean getforwardLimitSwitchCheck() {
+        return forwardLimitSwitch.get();
+    }
+
+    public boolean getreverseLimitSwitchCheck() {
+        return reverseLimitSwitch.get();
     }
     public int checkLimit()
     {
