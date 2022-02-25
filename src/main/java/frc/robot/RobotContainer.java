@@ -56,8 +56,8 @@ public class RobotContainer {
         m_robotDrive.setDefaultCommand(
                 new RunCommand(
                         () -> m_robotDrive.drive(
-                                m_driverController.getRawAxis(OIConstants.leftStick_X),
                                 -m_driverController.getRawAxis(OIConstants.leftStick_Y),
+                                m_driverController.getRawAxis(OIConstants.leftStick_X),
                                 m_driverController.getRawAxis(OIConstants.rightStick_X),
                                 false
                                 ),
