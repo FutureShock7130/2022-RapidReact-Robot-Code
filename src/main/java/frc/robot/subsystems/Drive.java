@@ -6,9 +6,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
+
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -74,6 +76,18 @@ public class Drive extends SubsystemBase {
   // Resets the odometry to the specified pose.
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+  }
+
+  // Drives the robot at given x, y and theta speeds. 
+  // Speeds range from [-1, 1] and the linear speeds have no effect on the angular speed.
+  // @param xSpeed - Speed of the robot in the x direction (forward/backwards).
+  // @param ySpeed - Speed of the robot in the y direction (sideways).
+  // @param rot    - Angular rate of the robot.
+  // @param fieldRelative Whether the provided x and y speeds are relative to the field.
+
+  @SuppressWarnings("ParameterName")
+  public void drivePolar(double ySpeed, double xSpeed, double rot) {
+      m_drive.drivePolar(ySpeed, xSpeed, rot);
   }
 
   // Drives the robot at given x, y and theta speeds. 
