@@ -63,10 +63,12 @@ public class LimelightAim extends CommandBase {
     }
 
     public void end(boolean interrupted) {
+        turret.spinnerRun(0);
     }
 
     public boolean isFinished() {
         if (Math.abs(xError) < 0.1){
+            turret.spinnerRun(0);
             return true;
         }
         integralSumX = 0;

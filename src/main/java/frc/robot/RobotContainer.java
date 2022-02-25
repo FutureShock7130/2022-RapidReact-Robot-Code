@@ -86,7 +86,8 @@ public class RobotContainer {
         ;
 
         new JoystickButton(m_operatorController, OIConstants.Btn_X)
-        .whenPressed(new LimelightAim(m_robotTurret, m_vision));
+        .whenHeld(new LimelightAim(m_robotTurret, m_vision))
+        ;
 
         new JoystickButton(m_operatorController, OIConstants.Btn_B)
         .whileHeld(new RunCommand(() -> {
