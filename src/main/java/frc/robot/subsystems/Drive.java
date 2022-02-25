@@ -86,8 +86,8 @@ public class Drive extends SubsystemBase {
   // @param fieldRelative Whether the provided x and y speeds are relative to the field.
 
   @SuppressWarnings("ParameterName")
-  public void drive(double ySpeed, double xSpeed, double rot) {
-      m_drive.driveCartesian(ySpeed, xSpeed, rot);
+  public void drivePolar(double ySpeed, double xSpeed, double rot) {
+      m_drive.drivePolar(ySpeed, xSpeed, rot);
   }
 
   // Drives the robot at given x, y and theta speeds. 

@@ -22,17 +22,16 @@ public class LimelightAim extends CommandBase {
     private double lastError;
     private double integralSumX;
     
-    private Turret turret;
+    private Turret m_Turret;
     private Limelight limelight;
 
     public LimelightAim(Turret m_robotTurret, Limelight m_robotLimelight) {
-        turret = m_robotTurret;
+        m_Turret = m_robotTurret;
         limelight = m_robotLimelight;
 
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(turret);
+        addRequirements(m_Turret);
         addRequirements(limelight);
-        addRequirements(turret);
     }
 
     public void initialize() {
@@ -65,7 +64,7 @@ public class LimelightAim extends CommandBase {
         derivative = (xError - lastError) / timeDiff;
         output = kPangle * xError + kIangle * integralSumX + kDangle * derivative;
 
-        turret.spinnerRun(output);
+        m_Turret.spinnerRun(output);
         lastError = xError;
 
         SmartDashboard.putNumber("output",output);
@@ -73,7 +72,7 @@ public class LimelightAim extends CommandBase {
 
     public void end(boolean interrupted) {
         if (interrupted) {
-            turret.spinnerStop();
+            m_Turret.spinnerStop();
         }
     }
 
