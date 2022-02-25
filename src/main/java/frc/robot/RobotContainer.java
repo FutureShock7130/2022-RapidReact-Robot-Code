@@ -72,7 +72,7 @@ public class RobotContainer {
                 .whenPressed(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler / 2))
                 .whenReleased(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler));
 
-        new JoystickButton(m_driverController, OIConstants.Btn_A).whenHeld(new IntakeCmd(m_robotIntake));
+        new JoystickButton(m_driverController, OIConstants.Btn_A).whenPressed(new IntakeCmd(m_robotIntake));
 
         new JoystickButton(m_driverController, OIConstants.Btn_B).whenHeld(new TurretShoot(m_robotTurret));
 
