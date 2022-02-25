@@ -28,7 +28,11 @@ public class Intake extends SubsystemBase {
 
   public void intakeStop(){
     intaker.set(0);
+    downTransporter.set(0);
   }
 
-  
+  public void intakeReverse() {
+    intaker.set(-IntakeConstants.intakeSpeed);
+    downTransporter.set(-IntakeConstants.transportSpeed);
+  }
 }
