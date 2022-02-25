@@ -38,16 +38,6 @@ public class Limelight extends SubsystemBase {
 
         distanceFromLimeligtToGoalInches = 
         ((LimelightConstants.goalHeightMeters - LimelightConstants.limelightLensHeightMeters) / Math.tan((angleToGoalDegrees+y) * Math.PI / 180));
-        
-        // Should be an command but not in subsystem
-        // if (true) {
-        //     double desired_distance = 60.0;
-        //     double distance_error = desired_distance - current_distance;
-        //     double driving_adjust = KpDistance * distance_error;
-
-        //     left_command += distance_adjust;
-        //     right_command += distance_adjust;
-        // }
     }
 
     public double getDis() {

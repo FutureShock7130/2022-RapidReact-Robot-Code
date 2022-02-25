@@ -20,10 +20,10 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class Drive extends SubsystemBase {
 
-  private final WPI_TalonFX motorFL = new WPI_TalonFX(DriveConstants.kLeftMotor1Port);
-  private final WPI_TalonFX motorRL = new WPI_TalonFX(DriveConstants.kLeftMotor2Port);
-  private final WPI_TalonFX motorFR = new WPI_TalonFX(DriveConstants.kRightMotor1Port);
-  private final WPI_TalonFX motorRR = new WPI_TalonFX(DriveConstants.kRightMotor2Port);
+  private final WPI_TalonFX motorFL = new WPI_TalonFX(DriveConstants.kFrontLeftMotorID);
+  private final WPI_TalonFX motorRL = new WPI_TalonFX(DriveConstants.kRearLeftMotorID);
+  private final WPI_TalonFX motorFR = new WPI_TalonFX(DriveConstants.kFrontRightMotorID);
+  private final WPI_TalonFX motorRR = new WPI_TalonFX(DriveConstants.kRearRightMotorID);
 
   private final MecanumDrive m_drive = new MecanumDrive(motorFL, motorRL, motorFR, motorRR);
 
@@ -40,10 +40,10 @@ public class Drive extends SubsystemBase {
 
     // We need to invert one side of the drivetrain so that positive voltages result in both sides moving forward. 
     // Depending on how your robot's gearbox is constructed, you might have to invert the left side instead.
-    motorFR.setInverted(true);
-    motorRR.setInverted(true);
-    motorFL.setInverted(false);
-    motorRL.setInverted(false);
+    motorFR.setInverted(false);
+    motorRR.setInverted(false);
+    motorFL.setInverted(true);
+    motorRL.setInverted(true);
 
     resetEncoders();
     resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
@@ -60,9 +60,9 @@ public class Drive extends SubsystemBase {
           motorRL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
           motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse));
 
-    SmartDashboard.putNumber("velocity", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
-    SmartDashboard.putNumber("Pose X", m_odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("Pose Y", m_odometry.getPoseMeters().getY());
+    // SmartDashboard.putNumber("velocity", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
+    // SmartDashboard.putNumber("Pose X", m_odometry.getPoseMeters().getX());
+    // SmartDashboard.putNumber("Pose Y", m_odometry.getPoseMeters().getY());
 
   }
 
@@ -74,18 +74,6 @@ public class Drive extends SubsystemBase {
   // Resets the odometry to the specified pose.
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(pose, m_gyro.getRotation2d());
-  }
-
-  // Drives the robot at given x, y and theta speeds. 
-  // Speeds range from [-1, 1] and the linear speeds have no effect on the angular speed.
-  // @param xSpeed - Speed of the robot in the x direction (forward/backwards).
-  // @param ySpeed - Speed of the robot in the y direction (sideways).
-  // @param rot    - Angular rate of the robot.
-  // @param fieldRelative Whether the provided x and y speeds are relative to the field.
-
-  @SuppressWarnings("ParameterName")
-  public void drive(double ySpeed, double xSpeed, double rot) {
-      m_drive.driveCartesian(ySpeed, xSpeed, rot);
   }
 
   // Drives the robot at given x, y and theta speeds. 

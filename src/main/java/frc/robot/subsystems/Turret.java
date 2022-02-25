@@ -10,20 +10,16 @@ import frc.robot.Constants.TurretConstants;
 
 public class Turret extends SubsystemBase {
 
-    private final CANSparkMax masterFlyWheel = new CANSparkMax(TurrentConstants.kMasterFlyWheelID, MotorType.kBrushless);
-    private final CANSparkMax slaveFlyWheel = new CANSparkMax(TurrentConstants.kSlaveFlyWheelID, MotorType.kBrushless); 
-    private final WPI_TalonSRX spinner = new WPI_TalonSRX(TurrentConstants.kSpinnerID);
-    private final DigitalInput forwardLimitSwitch = new DigitalInput(TurrentConstants.forwardLimitSwitch);
-    private final DigitalInput reverseLimitSwitch = new DigitalInput(TurrentConstants.reverseLimitSwitch);
-
-    int output;
+    private final CANSparkMax masterFlyWheel = new CANSparkMax(TurretConstants.kMasterFlyWheelID, MotorType.kBrushless);
+    private final CANSparkMax slaveFlyWheel = new CANSparkMax(TurretConstants.kSlaveFlyWheelID, MotorType.kBrushless); 
+    private final WPI_TalonSRX spinner = new WPI_TalonSRX(TurretConstants.kSpinnerID);
+    private final DigitalInput forwardLimitSwitch = new DigitalInput(TurretConstants.forwardLimitSwitch);
+    private final DigitalInput reverseLimitSwitch = new DigitalInput(TurretConstants.reverseLimitSwitch);
 
     /** Creates a new TurretSubystem. */
     public Turret() {
-        slaveFlyWheel.follow(masterFlyWheel);
+        slaveFlyWheel.follow(masterFlyWheel, true);
     }
-
-    
 
     @Override
     public void periodic() {
@@ -46,22 +42,15 @@ public class Turret extends SubsystemBase {
         spinner.set(0);
     }
 
-    public int checkLimit()
-    {
-        
-        if (forwardLimitSwitch.get()){
-            output = 1;
-            return output;
-        }           
-        else if(reverseLimitSwitch.get()){
-            output = 1;
-            return output;
-        }
-        else{
-            output = 0;
-            return output;
-        }
-            
+    public double getFlyWheelsVelocity() {
+        return masterFlyWheel.getEncoder().getVelocity();
     }
 
+    public boolean getforwardLimitSwitchCheck() {
+        return forwardLimitSwitch.get();
+    }
+
+    public boolean getreverseLimitSwitchCheck() {
+        return reverseLimitSwitch.get();
+    }
 }

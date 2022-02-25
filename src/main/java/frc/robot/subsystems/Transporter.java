@@ -10,9 +10,8 @@ public class Transporter extends SubsystemBase {
   private final WPI_TalonSRX topTransporter = new WPI_TalonSRX(TransporterConstants.kTopTransporterID);
   private final WPI_TalonSRX downTransporter = new WPI_TalonSRX(TransporterConstants.kDownTransporterID);
   
-
   // Creates a new TransporterSubsystem.
-  public void TransporterSubsystem() {
+  public Transporter() {
     downTransporter.follow(topTransporter);
   }
 
@@ -28,6 +27,4 @@ public class Transporter extends SubsystemBase {
   public void transportStop(){
     topTransporter.set(0);
   }
-
-  
 }
