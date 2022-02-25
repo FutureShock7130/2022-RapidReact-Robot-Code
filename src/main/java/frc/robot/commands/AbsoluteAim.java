@@ -90,7 +90,7 @@ public class AbsoluteAim extends CommandBase {
 
                 double output = kP * rError + kI * integralSumR + kD * derivative;
 
-                m_robotDrive.drive(0, 0, output);
+                m_robotDrive.drive(0, 0, output, false);
 
                 lastError = rError;
 
