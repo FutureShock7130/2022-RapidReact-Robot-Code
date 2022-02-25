@@ -42,10 +42,10 @@ public class Drive extends SubsystemBase {
 
     // We need to invert one side of the drivetrain so that positive voltages result in both sides moving forward. 
     // Depending on how your robot's gearbox is constructed, you might have to invert the left side instead.
-    motorFR.setInverted(false);
-    motorRR.setInverted(false);
-    motorFL.setInverted(true);
-    motorRL.setInverted(true);
+    motorFR.setInverted(true);
+    motorRR.setInverted(true);
+    motorFL.setInverted(false);
+    motorRL.setInverted(false);
 
     resetEncoders();
     resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
