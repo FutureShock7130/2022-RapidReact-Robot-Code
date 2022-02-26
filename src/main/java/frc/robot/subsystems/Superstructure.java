@@ -55,6 +55,7 @@ public class Superstructure extends SubsystemBase {
     // This method will be called once per scheduler run
     leftAtLimit = !getLlimitSwitchCheck();
     rightAtLimit = !getRlimitSwitchCheck();
+    System.out.println("Hanger Encoder"+(getRHangerPosition()+getLHangerPosition())/2);
   }
 
   public void liftSwingRun(double speed) {
@@ -99,6 +100,10 @@ public class Superstructure extends SubsystemBase {
 
   public double getRHangerPosition(){
     return rightHanger.getEncoder().getPosition();
+  }
+
+  public double getSwingPosition(){
+    return leftSwing.getSelectedSensorPosition();
   }
 
 }
