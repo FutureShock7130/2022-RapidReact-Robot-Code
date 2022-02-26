@@ -2,6 +2,7 @@ package frc.robot.statemachines;
 
 public class SuperstructureStateMachine {
     private double stageTransitionTime = 0.5;
+    // Set superstructure constants and variables
 
     private enum SuperstructureState {
         NOT_EXTENDED,
