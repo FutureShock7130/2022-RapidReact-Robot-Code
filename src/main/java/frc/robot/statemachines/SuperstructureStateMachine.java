@@ -95,16 +95,18 @@ public class SuperstructureStateMachine {
         return hangarState;
     }
 
-    public HangarState getRecommendedHangarState(double time) {
+    public String getRecommendedHangarState(double time) {
+        HangarState recommendedState = HangarState.GROUND;
+
         if (time > 23) {
-            return HangarState.FOURTH_BAR;
+            recommendedState = HangarState.FOURTH_BAR;
         } else if (time > 15) {
-            return HangarState.THIRD_BAR;
+            recommendedState = HangarState.THIRD_BAR;
         } else if (time > 7) {
-            return HangarState.SECOND_BAR;
+            recommendedState = HangarState.SECOND_BAR;
         } else if (time > 3) {
-            return HangarState.FIRST_BAR;
+            recommendedState = HangarState.FIRST_BAR;
         }
-        return HangarState.GROUND;
+        return recommendedState.toString();
     }
 }
