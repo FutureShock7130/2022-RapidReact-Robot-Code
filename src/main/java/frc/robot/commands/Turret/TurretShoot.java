@@ -10,12 +10,12 @@ import frc.robot.subsystems.Turret;
 
 public class TurretShoot extends CommandBase {
   
-  private static final double kP = 0.005;
-  private static final double kI = 0;
-  private static final double kD = 0;
+  private static final double kP = 0.0005;
+  private static final double kI = 0.00005;
+  private static final double kD = 0.0001;
   private static final double timeDiff = 0.02;
 
-  private double target = 5000;
+  private double target = 2000;
   private double integralSum;
   private double derivative;
   private double error;
@@ -53,6 +53,7 @@ public class TurretShoot extends CommandBase {
     lastError = error;
 
     SmartDashboard.putNumber("velocity", turret.getFlyWheelsVelocity());
+    SmartDashboard.putNumber("Turret Output", output);
   }
 
   // Called once the command ends or is interrupted.

@@ -22,7 +22,7 @@ public class IntakeStop extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("IntakeStop started");
+    //System.out.println("IntakeStop started");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,7 +34,7 @@ public class IntakeStop extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      System.out.println("IntakeStop ended");
+      //System.out.println("IntakeStop ended");
   }
 
   // Returns true when the command should end.
