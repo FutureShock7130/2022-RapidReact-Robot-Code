@@ -84,6 +84,7 @@ public final class Constants {
     public static final int kSpinnerID = 11;
     public static final int forwardLimitSwitch = 1;
     public static final int reverseLimitSwitch = 0;
+    public static final double turretSpeedMultiplier = 0.3;
   }
 
   public static final class IntakeConstants {
