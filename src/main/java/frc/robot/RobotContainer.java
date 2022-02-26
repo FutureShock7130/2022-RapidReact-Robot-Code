@@ -79,7 +79,7 @@ public class RobotContainer {
                             if (m_driverController.getRawAxis(OIConstants.trigger_L) < 0.5) intake.cancel();
                             if (m_driverController.getRawAxis(OIConstants.trigger_R) > 0.5) reject.schedule();
                             if (m_driverController.getRawAxis(OIConstants.trigger_R) < 0.5) reject.cancel();
-                            if (m_driverController.getRawAxis(OIConstants.trigger_R) < 0.5 && m_driverController.getRawAxis(OIConstants.trigger_L)<0.5) stop.schedule();;
+                            if (m_driverController.getRawAxis(OIConstants.trigger_R) < 0.5 && m_driverController.getRawAxis(OIConstants.trigger_L) < 0.5) stop.schedule();;
                             
 
                         }, m_robotDrive
