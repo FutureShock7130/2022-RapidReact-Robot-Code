@@ -4,21 +4,15 @@
 
 package frc.robot.subsystems;
 
-<<<<<<< HEAD
 import java.sql.Time;
-=======
 import com.ctre.phoenix.motorcontrol.NeutralMode;
->>>>>>> 3d5fa1b167a1c480ba8eb5ba715b9e842c2ebf91
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-<<<<<<< HEAD
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-=======
 import edu.wpi.first.wpilibj.DigitalInput;
->>>>>>> 3d5fa1b167a1c480ba8eb5ba715b9e842c2ebf91
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SuperstructureConstants;
 import frc.robot.statemachines.SuperstructureStateMachine;
