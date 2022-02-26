@@ -38,7 +38,7 @@ public class Superstructure extends SubsystemBase {
     leftHanger.setIdleMode(IdleMode.kBrake);
     rightSwing.setNeutralMode(NeutralMode.Brake);
     leftSwing.setNeutralMode(NeutralMode.Brake);
-    
+
     leftAtLimit = !getLlimitSwitchCheck();
     rightAtLimit = !getRlimitSwitchCheck();
   }
