@@ -1,7 +1,6 @@
 package frc.robot.commands.Superstructure;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.SuperstructureConstants;
 import frc.robot.subsystems.Superstructure;
 
