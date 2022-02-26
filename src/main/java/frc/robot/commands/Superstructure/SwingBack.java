@@ -16,11 +16,7 @@ public class SwingBack extends CommandBase {
     }
 
     public void execute() {
-        if (!m_SuperStructure.atLimit()) {
             m_SuperStructure.liftSwingRun(SuperstructureConstants.swingSpeed);
-        } else {
-            m_SuperStructure.liftSwingStop();
-        }
     }
 
     public boolean isFinished() {

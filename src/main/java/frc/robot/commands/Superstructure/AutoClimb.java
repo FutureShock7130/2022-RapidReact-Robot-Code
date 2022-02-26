@@ -1,5 +1,6 @@
 package frc.robot.commands.Superstructure;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SuperstructureConstants;
 import frc.robot.subsystems.Superstructure;
@@ -22,8 +23,8 @@ public class AutoClimb extends CommandBase {
         LHangerPosition = m_SuperStructure.getLHangerPosition();
         RHangerPosition = m_SuperStructure.getRHangerPosition();
 
-        if (LHangerPosition < SuperstructureConstants.HangerMaxPosition - 50
-                || RHangerPosition < SuperstructureConstants.HangerMaxPosition - 50) {
+        if (LHangerPosition < SuperstructureConstants.HangerMaxPosition - 2
+                || RHangerPosition < SuperstructureConstants.HangerMaxPosition - 2) {
             end(true);
         }
     }
@@ -34,28 +35,32 @@ public class AutoClimb extends CommandBase {
         SwingBack swingBack = new SwingBack(m_SuperStructure);
         SwingForward swingForward = new SwingForward(m_SuperStructure);
 
+        double lastTime;
+
         for (int i=0; i <= 3; i++) {
             hangerDown.schedule();
-            while ((m_SuperStructure.getLHangerPosition() + m_SuperStructure.getRHangerPosition()) / 2 > 20) {
+            while ((m_SuperStructure.getLHangerPosition() + m_SuperStructure.getRHangerPosition()) / 2 > SuperstructureConstants.HangerMinPosition+3) {
             }
             hangerDown.cancel();
+            lastTime = Timer.getFPGATimestamp();
             swingBack.schedule();
-            while (m_SuperStructure.getSwingPosition() < SuperstructureConstants.SwingMaxPosition - 50) {
+            while (Timer.getFPGATimestamp()< lastTime+0.5) {
             }
             swingBack.cancel();
             hangerUp.schedule();
             while ((m_SuperStructure.getLHangerPosition() + m_SuperStructure.getRHangerPosition())
-                    / 2 < SuperstructureConstants.HangerMaxPosition - 50) {
+                    / 2 < SuperstructureConstants.HangerMaxPosition - 3) {
             }
             hangerUp.cancel();
+            lastTime = Timer.getFPGATimestamp();
             swingForward.schedule();
-            while (m_SuperStructure.getSwingPosition() > 50) {
+            while (Timer.getFPGATimestamp() < lastTime+0.5) {
             }
             swingForward.cancel();
             hangerUp.schedule();
 
             while ((m_SuperStructure.getLHangerPosition() + m_SuperStructure.getRHangerPosition())
-                    / 2 < SuperstructureConstants.HangerMaxPosition - 50) {
+                    / 2 < SuperstructureConstants.HangerMaxPosition - 3) {
             }
             hangerUp.cancel();
             // Start of next level
