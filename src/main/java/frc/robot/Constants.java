@@ -102,7 +102,7 @@ public final class Constants {
   public static final class TransporterConstants {
     public static final int kTopTransporterID = 9;
     public static final int kDownTransporterID = 5;
-    public static final double transportSpeed = 0.5;
+    public static final double transportSpeed = 0.75;
     public static final double transportTime = 1;
   }
 

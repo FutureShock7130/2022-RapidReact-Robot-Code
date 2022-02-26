@@ -1,15 +1,18 @@
 package frc.robot.commands.Turret;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Drive;
+import frc.robot.vision.Limelight;
 import frc.robot.subsystems.Turret;
 
 
-public class TurretTurnLeft extends CommandBase {
+public class TurretTurnRight extends CommandBase {
     private Turret turret;
     private double turnSpeed = 0;
 
-    public TurretTurnLeft(Turret m_robotTurret, double speed) {
+    public TurretTurnRight(Turret m_robotTurret, double speed) {
         turret = m_robotTurret;
         turnSpeed = speed;
 
@@ -25,8 +28,8 @@ public class TurretTurnLeft extends CommandBase {
         // if (checkLimit() == true) {
         //     return;
         // }
-        if (!turret.atLeftLimit()) {
-            turret.spinnerRun(turnSpeed);
+        if (!turret.atRightLimit()) {
+            turret.spinnerRun(-turnSpeed);
         }
 
         SmartDashboard.putNumber("TurretLeft Speed:", turnSpeed);

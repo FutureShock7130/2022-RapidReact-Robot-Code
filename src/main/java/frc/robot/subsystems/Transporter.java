@@ -24,6 +24,10 @@ public class Transporter extends SubsystemBase {
     topTransporter.set(TransporterConstants.transportSpeed);
   }
 
+  public void transportEject(){
+    topTransporter.set(-TransporterConstants.transportSpeed);
+  }
+
   public void transportStop(){
     topTransporter.set(0);
   }

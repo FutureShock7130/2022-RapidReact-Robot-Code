@@ -7,11 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Transporter;
 
-public class TransportCmd extends CommandBase {
+public class TransportEject extends CommandBase {
   Transporter transporter;
 
   /** Creates a new intakeCmd. */
-  public TransportCmd(Transporter m_robotTransporter) {
+  public TransportEject(Transporter m_robotTransporter) {
     transporter = m_robotTransporter;
     
     // Use addRequirements() here to declare subsystem dependencies.
@@ -26,7 +26,7 @@ public class TransportCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    transporter.transportRun();
+    transporter.transportEject();
   }
 
   // Called once the command ends or is interrupted.

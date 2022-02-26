@@ -22,6 +22,7 @@ public class Turret extends SubsystemBase {
 
     /** Creates a new TurretSubystem. */
     public Turret() {
+        masterFlyWheel.setInverted(true);
         slaveFlyWheel.follow(masterFlyWheel, true);
         leftAtLimit = !getforwardLimitSwitchCheck();
         rightAtLimit = !getreverseLimitSwitchCheck();
@@ -54,7 +55,7 @@ public class Turret extends SubsystemBase {
     }
 
     public double getFlyWheelsVelocity() {
-        return masterFlyWheel.getEncoder().getVelocity();
+        return (masterFlyWheel.getEncoder().getVelocity()+slaveFlyWheel.getEncoder().getVelocity())/2;
     }
 
     public boolean getforwardLimitSwitchCheck() {
@@ -71,5 +72,13 @@ public class Turret extends SubsystemBase {
         }           
         return false;
             
+    }
+
+    public boolean atLeftLimit() {
+        return leftAtLimit;
+    }
+
+    public boolean atRightLimit() {
+        return rightAtLimit;
     }
 }
