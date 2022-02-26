@@ -4,14 +4,12 @@
 
 package frc.robot.subsystems;
 
-import java.sql.Time;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SuperstructureConstants;
@@ -55,7 +53,6 @@ public class Superstructure extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putString("Current Superstructure Recommends:", m_StateMachine.getRecommendedHangarState(time.get()));
     leftAtLimit = !getLlimitSwitchCheck();
     rightAtLimit = !getRlimitSwitchCheck();
   }
@@ -94,6 +91,14 @@ public class Superstructure extends SubsystemBase {
       return true;
     }
     return false;
+  }
+
+  public double getLHangerPosition(){
+    return leftHanger.getEncoder().getPosition();
+  }
+
+  public double getRHangerPosition(){
+    return rightHanger.getEncoder().getPosition();
   }
 
 }
