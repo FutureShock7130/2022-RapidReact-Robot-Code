@@ -68,6 +68,7 @@ public class Turret extends SubsystemBase {
     public boolean getreverseLimitSwitchCheck() {
         return reverseLimitSwitch.get();
     }
+
     public boolean atTurningLimit()
     {
         if (leftAtLimit || rightAtLimit){
@@ -75,5 +76,13 @@ public class Turret extends SubsystemBase {
         }           
         return false;
             
+    }
+
+    public boolean atLeftLimit() {
+        return leftAtLimit;
+    }
+
+    public boolean atRightLimit() {
+        return rightAtLimit;
     }
 }
