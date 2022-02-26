@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
@@ -15,23 +12,20 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.AbsoluteAim;
-import frc.robot.commands.IntakeCmd;
-import frc.robot.commands.LimelightAim;
 import frc.robot.commands.TransportCmd;
-import frc.robot.commands.TurretShoot;
+import frc.robot.commands.Intake.IntakeCmd;
+import frc.robot.commands.Intake.IntakeReverse;
+import frc.robot.commands.Intake.IntakeStop;
+import frc.robot.commands.Turret.LimelightAim;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Turret;
 import frc.robot.vision.Limelight;
-import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Transporter;
-import frc.robot.subsystems.Turret;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import java.io.IOException;
@@ -43,10 +37,11 @@ public class RobotContainer {
     private final Transporter m_robotTransport = new Transporter();
     private final Turret m_robotTurret = new Turret();
     private final Intake m_robotIntake = new Intake();
-    private final Limelight m_robotLimelight = new Limelight();
+    private final Limelight m_vision = new Limelight();
 
     // The driver's controller
     Joystick m_driverController = new Joystick(OIConstants.kDriveTrainJoystickPort);
+    Joystick m_operatorController = new Joystick(OIConstants.kOthersJoystickPort);
 
     // The container for the robot. Contains subsystems, OI devices, and commands.
     public RobotContainer() {
@@ -58,37 +53,52 @@ public class RobotContainer {
                         () -> m_robotDrive.drive(
                                 -m_driverController.getRawAxis(OIConstants.leftStick_Y),
                                 m_driverController.getRawAxis(OIConstants.leftStick_X),
-                                m_driverController.getRawAxis(OIConstants.rightStick_X),
-                                false
-                                ),
+                                -m_driverController.getRawAxis(OIConstants.rightStick_X),
+                                false),
                         m_robotDrive));
 
-        
     }
 
     private void configureButtonBindings() {
         // Drive at half speed when the RB button is held
         new JoystickButton(m_driverController, OIConstants.Btn_RB)
-                .whenPressed(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler / 2))
+                .whileHeld(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler * 0.7))
                 .whenReleased(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler));
 
-        new JoystickButton(m_driverController, OIConstants.Btn_A).whenPressed(new IntakeCmd(m_robotIntake));
+        new JoystickButton(m_driverController, OIConstants.Btn_LB)
+                .whileHeld(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler * 0.4))
+                .whenReleased(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler));
 
-        new JoystickButton(m_driverController, OIConstants.Btn_B).whenHeld(new TurretShoot(m_robotTurret));
+        new JoystickButton(m_driverController, OIConstants.trigger_L)
+                .whileHeld(new IntakeCmd(m_robotIntake))
+                .whenReleased(new IntakeStop(m_robotIntake));
 
-        new JoystickButton(m_driverController, OIConstants.Btn_X).whenHeld(new LimelightAim(m_robotTurret, m_robotLimelight));
+        new JoystickButton(m_driverController, OIConstants.trigger_R)
+                .whileHeld(new IntakeReverse(m_robotIntake))
+                .whenReleased(new IntakeStop(m_robotIntake));
+        ;
 
-        new JoystickButton(m_driverController, OIConstants.Btn_Y).whenHeld(new TransportCmd(m_robotTransport));
-        // new JoystickButton(m_driverController, OIConstants.Btn_X).whenHeld(new LimelightAim(m_robotTurret, m_robotLimelight));
+        new JoystickButton(m_operatorController, OIConstants.Btn_X)
+                .whenHeld(new LimelightAim(m_robotTurret, m_vision));
 
-        // new JoystickButton(m_driverController, OIConstants.rightStick_X).whileHeld(
-        //     new SwingCmd(m_robotSuperstructure), 
-        //     m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.2);
+        new JoystickButton(m_operatorController, OIConstants.Btn_B)
+                .whileHeld(new RunCommand(() -> {
+                    m_robotTurret.spinnerRun(0.3);
+                }, m_robotTurret))
+                .whenReleased(new RunCommand(() -> {
+                    m_robotTurret.spinnerRun(0.0);
+                }, m_robotTurret));
 
-        // new JoystickButton(m_driverController, OIConstants.trigger_R).whenActive(new SwingCmd(m_robotSuperstructure));
-        // new HangerCmd(m_robotSuperstructure, m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.2);
+        new JoystickButton(m_operatorController, OIConstants.Btn_A)
+                .whileHeld(new RunCommand(() -> {
+                    m_robotTurret.spinnerRun(-0.3);
+                }, m_robotTurret))
+                .whenReleased(new RunCommand(() -> {
+                    m_robotTurret.spinnerRun(0.0);
+                }, m_robotTurret));
 
-        //new SwingCmd(m_robotSuperstructure, m_driverController.getRawAxis(OIConstants.leftStick_Y) * 0.2); 
+        new JoystickButton(m_operatorController, OIConstants.Btn_Y)
+                .whenPressed(new TransportCmd(m_robotTransport));
 
     }
 
@@ -99,7 +109,7 @@ public class RobotContainer {
 
     public Pose2d getPose() {
         return m_robotDrive.getPose();
-    }   
+    }
 
     public Command getAutonomousCommand() {
 
@@ -108,11 +118,9 @@ public class RobotContainer {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
             Trajectory Trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
 
-            
-
-
             // Run path following command, then stop at the end.
-            // return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+            // return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0,
+            // false));
         } catch (IOException e) {
             DriverStation.reportError("Unable to open JSON file", e.getStackTrace());
         }

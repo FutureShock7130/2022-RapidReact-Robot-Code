@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TurretConstants;
 
@@ -16,15 +17,24 @@ public class Turret extends SubsystemBase {
     private final DigitalInput forwardLimitSwitch = new DigitalInput(TurretConstants.forwardLimitSwitch);
     private final DigitalInput reverseLimitSwitch = new DigitalInput(TurretConstants.reverseLimitSwitch);
 
-    private int output;
+    private boolean leftAtLimit;
+    private boolean rightAtLimit;
+
     /** Creates a new TurretSubystem. */
     public Turret() {
         slaveFlyWheel.follow(masterFlyWheel, true);
+        leftAtLimit = !getforwardLimitSwitchCheck();
+        rightAtLimit = !getreverseLimitSwitchCheck();
     }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        SmartDashboard.putNumber("Flywheel Speed", getFlyWheelsVelocity());
+        SmartDashboard.putBoolean("Left Turning Limit", leftAtLimit);
+        SmartDashboard.putBoolean("Right Turning Limit", rightAtLimit);
+        leftAtLimit = !getforwardLimitSwitchCheck();
+        rightAtLimit = !getreverseLimitSwitchCheck();
     }
 
     public void flywheelsRun(double speed) {
@@ -54,21 +64,12 @@ public class Turret extends SubsystemBase {
     public boolean getreverseLimitSwitchCheck() {
         return reverseLimitSwitch.get();
     }
-    public int checkLimit()
-    {
-        
-        if (forwardLimitSwitch.get()){
-            output = 1;
-            return output;
+
+    public boolean atTurningLimit() {
+        if (leftAtLimit || rightAtLimit){
+            return true;
         }           
-        else if(reverseLimitSwitch.get()){
-            output = 1;
-            return output;
-        }
-        else{
-            output = 0;
-            return output;
-        }
+        return false;
             
     }
 }
