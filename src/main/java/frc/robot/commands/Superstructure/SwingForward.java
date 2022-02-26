@@ -15,7 +15,12 @@ public class SwingForward extends CommandBase{
     public void initialize(){}
 
     public void execute(){
-        m_SuperStructure.liftSwingRun(SuperstructureConstants.swingSpeed);
+        if(!m_SuperStructure.atLimit()){
+            m_SuperStructure.liftSwingRun(-SuperstructureConstants.swingSpeed);
+        } else {
+            m_SuperStructure.liftSwingStop();
+        }
+        
     }
 
     public boolean isFinished(){

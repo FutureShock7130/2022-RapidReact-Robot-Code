@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SuperstructureConstants;
 import frc.robot.subsystems.Superstructure;
 
-public class HangerGrab extends CommandBase {
+public class HangerUp extends CommandBase {
 
     Superstructure m_Superstructure;
 
     double initTime = 0;
 
-    public HangerGrab(Superstructure superStructure) {
+    public HangerUp(Superstructure superStructure) {
         m_Superstructure = superStructure;
         addRequirements(superStructure);
     }
@@ -22,11 +22,7 @@ public class HangerGrab extends CommandBase {
 
     public void execute() {
         while (Timer.getFPGATimestamp() < initTime + 1) {
-            m_Superstructure.liftHangerRun(SuperstructureConstants.hangerSpeed);
-        }
-        initTime = Timer.getFPGATimestamp();
-        while (Timer.getFPGATimestamp() < initTime + 1) {
-            m_Superstructure.liftHangerRun(-SuperstructureConstants.hangerSpeed);
+            m_Superstructure.liftHangerRun(SuperstructureConstants.hangerSpeed,SuperstructureConstants.hangerSpeed);
         }
         m_Superstructure.liftHangerStop();
     }

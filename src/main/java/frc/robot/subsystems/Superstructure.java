@@ -4,49 +4,83 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SuperstructureConstants;
 
 public class Superstructure extends SubsystemBase {
-  // Creates a new Superstructure. 
+  // Creates a new Superstructure.
   private final WPI_TalonSRX leftSwing = new WPI_TalonSRX(SuperstructureConstants.kSwingLeftID);
   private final WPI_TalonSRX rightSwing = new WPI_TalonSRX(SuperstructureConstants.kSwingRightID);
   private final CANSparkMax leftHanger = new CANSparkMax(SuperstructureConstants.kHangerLeftID, MotorType.kBrushless);
   private final CANSparkMax rightHanger = new CANSparkMax(SuperstructureConstants.kHangerRightID, MotorType.kBrushless);
-  
+
+  private final DigitalInput LlimitSwitch = new DigitalInput(SuperstructureConstants.LlimitSwitch);
+  private final DigitalInput RlimitSwitch = new DigitalInput(SuperstructureConstants.RlimitSwitch);
+
+  private boolean leftAtLimit;
+  private boolean rightAtLimit;
+
   // Creates a new Superstructure.
   public Superstructure() {
     rightSwing.follow(leftSwing);
-    rightHanger.follow(leftHanger, true);
+
     leftSwing.setInverted(true);
+    rightHanger.setInverted(true);
+
+    rightHanger.setIdleMode(IdleMode.kBrake);
+    leftHanger.setIdleMode(IdleMode.kBrake);
+    rightSwing.setNeutralMode(NeutralMode.Brake);
+    leftSwing.setNeutralMode(NeutralMode.Brake);
+    
+    leftAtLimit = !getLlimitSwitchCheck();
+    rightAtLimit = !getRlimitSwitchCheck();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    leftAtLimit = !getLlimitSwitchCheck();
+    rightAtLimit = !getRlimitSwitchCheck();
   }
 
-  public void liftSwingRun(double speed){
+  public void liftSwingRun(double speed) {
     leftSwing.set(speed);
   }
-  
-  public void liftHangerRun(double speed) {
-    leftHanger.set(speed);
-  }   
 
-  public void liftSwingStop(){
+  public void liftHangerRun(double Lspeed, double Rspeed) {
+    leftHanger.set(Lspeed);
+    rightHanger.set(Rspeed);
+  }
+
+  public void liftSwingStop() {
     leftSwing.set(0);
   }
 
-  public void liftHangerStop(){
+  public void liftHangerStop() {
     leftHanger.set(0);
+    rightHanger.set(0);
   }
 
+  public boolean getLlimitSwitchCheck() {
+    return LlimitSwitch.get();
+  }
 
+  public boolean getRlimitSwitchCheck() {
+    return RlimitSwitch.get();
+  }
 
+  public boolean atLimit(){
+    if (leftAtLimit || rightAtLimit){
+      return true;
+    }
+    return false;
+  }
 
 }
