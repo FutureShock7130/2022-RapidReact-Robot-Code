@@ -116,6 +116,8 @@ public final class Constants {
     public static final double hangerPullUpSpeed = 0.1;
     public static final int LlimitSwitch = 2;
     public static final int RlimitSwitch = 3;
+    public static final double HangerMaxPosition = 5000; // Need to be tested, in rotation unit
+    public static final double SwingMaxPosition = 5000; // Need to be tested, in rotation unit
   }
 
 
