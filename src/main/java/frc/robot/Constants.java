@@ -76,6 +76,12 @@ public final class Constants {
     public static final int Btn_RB = 6;
     public static final int Btn_LS = 9;
     public static final int Btn_RS = 10;
+    
+    // POV buttons
+    public static final int POV_UP = 0;
+    public static final int POV_DOWN = 180;
+    public static final int POV_RIGHT = 90;
+    public static final int POV_LEFT = 270;
   }
 
   public static final class TurretConstants {
@@ -84,6 +90,7 @@ public final class Constants {
     public static final int kSpinnerID = 11;
     public static final int forwardLimitSwitch = 1;
     public static final int reverseLimitSwitch = 0;
+    public static final double turretSpeedMultiplier = 0.3;
   }
 
   public static final class IntakeConstants {
@@ -97,6 +104,7 @@ public final class Constants {
     public static final int kTopTransporterID = 9;
     public static final int kDownTransporterID = 5;
     public static final double transportSpeed = 0.5;
+    public static final double transportTime = 1;
   }
 
   public static final class SuperstructureConstants {
@@ -104,8 +112,11 @@ public final class Constants {
     public static final int kSwingRightID = 8;
     public static final int kHangerLeftID = 14;
     public static final int kHangerRightID = 15;
-    public static final double swingSpeed = 0.3;
+    public static final double swingSpeed = 0.2;
     public static final double hangerSpeed = 0.3;
+    public static final double hangerPullUpSpeed = 0.1;
+    public static final int LlimitSwitch = 2;
+    public static final int RlimitSwitch = 3;
   }
 
 

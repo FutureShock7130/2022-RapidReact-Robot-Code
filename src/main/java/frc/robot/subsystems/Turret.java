@@ -17,12 +17,8 @@ public class Turret extends SubsystemBase {
     private final DigitalInput forwardLimitSwitch = new DigitalInput(TurretConstants.forwardLimitSwitch);
     private final DigitalInput reverseLimitSwitch = new DigitalInput(TurretConstants.reverseLimitSwitch);
 
-    private int output;
-
     private boolean leftAtLimit;
     private boolean rightAtLimit;
-
-    private double turretSpeedMultiplier = 0.3;
 
     /** Creates a new TurretSubystem. */
     public Turret() {
