@@ -111,13 +111,17 @@ public final class Constants {
     public static final int kSwingRightID = 8;
     public static final int kHangerLeftID = 14;
     public static final int kHangerRightID = 15;
-    public static final double swingSpeed = 0.2;
-    public static final double hangerSpeed = 0.3;
-    public static final double hangerPullUpSpeed = 0.1;
+    public static final double swingSpeed = 0.3;
+    public static final double hangerSpeed = 0.5;
     public static final int LlimitSwitch = 2;
     public static final int RlimitSwitch = 3;
-    public static final double HangerMaxPosition = 5000; // Need to be tested, in rotation unit
+    public static final double HangerMaxPosition = -54; // Need to be tested, in rotation unit
+    public static final double HangerMinPosition = -176;
     public static final double SwingMaxPosition = 5000; // Need to be tested, in rotation unit
+    public static final double behindGrabEncoderUnit = Math.atan(0.405/0.6)/360*SuperstructureConstants.TalonSRXCPR*SuperstructureConstants.SwingGearRatio;
+    public static final double SwingGearRatio = 205.71;
+    public static final double TalonSRXCPR = 4096;
+    public static final double NeoEncoderCPR = 42;
   }
 
 

@@ -10,6 +10,7 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.Constants.DriveConstants;
@@ -18,6 +19,7 @@ import frc.robot.Constants.SuperstructureConstants;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeReverse;
 import frc.robot.commands.Intake.IntakeStop;
+import frc.robot.commands.Superstructure.AutoClimb;
 import frc.robot.commands.Superstructure.SwingBack;
 import frc.robot.commands.Superstructure.SwingForward;
 import frc.robot.commands.Transporter.TransportCmd;
@@ -32,6 +34,7 @@ import frc.robot.vision.Limelight;
 import frc.robot.subsystems.Transporter;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
@@ -47,6 +50,8 @@ public class RobotContainer {
     private final Limelight m_vision = new Limelight();
     private final Superstructure m_SuperStructure = new Superstructure();
 
+    AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
+
     // The driver's controller
     Joystick m_driverController = new Joystick(OIConstants.kDriveTrainJoystickPort);
     Joystick m_operatorController = new Joystick(OIConstants.kOthersJoystickPort);
@@ -61,7 +66,7 @@ public class RobotContainer {
                         () -> {
                             m_robotDrive.drive(
                                     -m_driverController.getRawAxis(OIConstants.leftStick_Y),
-                                    m_driverController.getRawAxis(OIConstants.leftStick_X),
+                                    -m_driverController.getRawAxis(OIConstants.leftStick_X),
                                     -m_driverController.getRawAxis(OIConstants.rightStick_X),
                                     false);
                             SwingForward swingForward = new SwingForward(m_SuperStructure);
@@ -69,7 +74,7 @@ public class RobotContainer {
                             // HangerUp hangerUp = new HangerUp(m_SuperStructure);
                             // HangerDown hangerDown = new HangerDown(m_SuperStructure);
                             if (m_operatorController.getPOV() == OIConstants.POV_UP)
-                                swingForward.schedule();
+                            swingForward.schedule();
                             if (m_operatorController.getPOV() == OIConstants.POV_DOWN)
                                 swingBack.schedule();
                             // if (m_driverController.getPOV() == OIConstants.POV_LEFT) hangerUp.schedule();
@@ -152,6 +157,10 @@ public class RobotContainer {
                 .whenReleased(new IntakeStop(m_robotIntake));
 
         new JoystickButton(m_operatorController, OIConstants.Btn_A).whenPressed(new TurretShoot(m_robotTurret));
+
+        new JoystickButton(m_operatorController, OIConstants.Btn_B).whenPressed(autoClimb);
+
+        new JoystickButton(m_operatorController, OIConstants.Btn_LB).whenPressed(()->CommandScheduler.getInstance().cancel(autoClimb));
 
     }
 
