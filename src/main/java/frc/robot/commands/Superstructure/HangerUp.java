@@ -21,7 +21,7 @@ public class HangerUp extends CommandBase {
     }
 
     public void execute() {
-        while (Timer.getFPGATimestamp() < initTime + 1) {
+        while (Timer.getFPGATimestamp() < initTime + 0.75) {
             m_Superstructure.liftHangerRun(SuperstructureConstants.hangerSpeed,SuperstructureConstants.hangerSpeed);
         }
         m_Superstructure.liftHangerStop();

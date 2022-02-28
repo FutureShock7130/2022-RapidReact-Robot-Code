@@ -8,11 +8,9 @@ import frc.robot.Constants.TransporterConstants;
 public class Transporter extends SubsystemBase {
   
   private final WPI_TalonSRX topTransporter = new WPI_TalonSRX(TransporterConstants.kTopTransporterID);
-  private final WPI_TalonSRX downTransporter = new WPI_TalonSRX(TransporterConstants.kDownTransporterID);
   
   // Creates a new TransporterSubsystem.
   public Transporter() {
-    downTransporter.follow(topTransporter);
   }
 
   @Override

@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -60,6 +61,9 @@ public class Drive extends SubsystemBase {
           motorFR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
           motorRL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
           motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse));
+
+        
+        SmartDashboard.putNumber("Linearized Wheel Speed", getLinearWheelSpeeds());
 
     // SmartDashboard.putNumber("velocity", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
     // SmartDashboard.putNumber("Pose X", m_odometry.getPoseMeters().getX());
@@ -130,6 +134,16 @@ public class Drive extends SubsystemBase {
         motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
   }
 
+  public double getLinearWheelSpeeds() {
+    double avgWheelSpeed = (
+      motorFL.getSelectedSensorVelocity() +
+      motorFR.getSelectedSensorVelocity() +
+      motorRL.getSelectedSensorVelocity() +
+      motorRR.getSelectedSensorVelocity()
+    ) / 4;
+    return avgWheelSpeed;
+  }
+
   // Sets the max output of the drive. Useful for scaling the drive to drive more slowly.
   public void setMaxOutput(double maxOutput) {
     m_drive.setMaxOutput(maxOutput);
@@ -155,5 +169,9 @@ public class Drive extends SubsystemBase {
       m_drive.driveCartesian(0, -0.1, 0);
     }
     m_drive.driveCartesian(0, 0, 0);
+  }
+
+  public void feedForwardTestDrive() {
+    m_drive.driveCartesian(0, 1.0, 0);
   }
 }
