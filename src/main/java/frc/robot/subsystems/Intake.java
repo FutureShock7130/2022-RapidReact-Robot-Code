@@ -9,7 +9,7 @@ import frc.robot.Constants.TransporterConstants;
 
 public class Intake extends SubsystemBase {
 
-  private final WPI_TalonSRX intaker = new WPI_TalonSRX(IntakeConstants.kintakeID);;
+  private final WPI_TalonSRX intaker = new WPI_TalonSRX(IntakeConstants.kIntakeID);;
   private final WPI_TalonSRX downTransporter = new WPI_TalonSRX(TransporterConstants.kDownTransporterID);
 
   /** Creates a new IntakeSubsystem. */

@@ -38,11 +38,14 @@ public final class Constants {
     public static final double kWheelDiameterMeters = 0.1524;
     public static final double kWheelCircumference = kWheelDiameterMeters * Math.PI;
     public static final double kGearRatio = 10.7142857;
-    public static final double kEncoderDistancePerPulse = kWheelCircumference / (double) kEncoderCPR / kGearRatio / Math.sqrt(2) * 10;
+    public static final double kEncoderDistancePerPulse = kWheelCircumference / (double) kEncoderCPR / kGearRatio
+        / Math.sqrt(2) * 10;
 
     // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
-    // These characterization values MUST be determined either experimentally or theoretically for "your" robot's drive.
-    // The SysId tool provides a convenient method for obtaining these values for your robot.
+    // These characterization values MUST be determined either experimentally or
+    // theoretically for "your" robot's drive.
+    // The SysId tool provides a convenient method for obtaining these values for
+    // your robot.
 
     public static final double kS = 0.61428;
     public static final double kV = 0.020661;
@@ -75,8 +78,6 @@ public final class Constants {
     public static final int Btn_RB = 6;
     public static final int Btn_LS = 9;
     public static final int Btn_RS = 10;
-    
-    // POV buttons
     public static final int POV_UP = 0;
     public static final int POV_DOWN = 180;
     public static final int POV_RIGHT = 90;
@@ -93,7 +94,7 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-    public static final int kintakeID = 10;
+    public static final int kIntakeID = 10;
     public static final int kDownTransporterID = 5;
     public static final double intakeSpeed = 0.9;
     public static final double transportSpeed = 0.75;
@@ -111,19 +112,20 @@ public final class Constants {
     public static final int kSwingRightID = 8;
     public static final int kHangerLeftID = 14;
     public static final int kHangerRightID = 15;
-    public static final double swingSpeed = 0.3;
-    public static final double hangerSpeed = 0.8;
     public static final int LlimitSwitch = 2;
     public static final int RlimitSwitch = 3;
+
+    public static final double swingSpeed = 0.3;
+    public static final double hangerSpeed = 0.8;
     public static final double HangerMaxPosition = -54; // Need to be tested, in rotation unit
     public static final double HangerMinPosition = -176;
     public static final double SwingMaxPosition = 5000; // Need to be tested, in rotation unit
-    public static final double behindGrabEncoderUnit = Math.atan(0.405/0.6)/360*SuperstructureConstants.TalonSRXCPR*SuperstructureConstants.SwingGearRatio;
+    public static final double behindGrabEncoderUnit = Math.atan(0.405 / 0.6) / 360
+        * SuperstructureConstants.TalonSRXCPR * SuperstructureConstants.SwingGearRatio;
     public static final double SwingGearRatio = 205.71;
     public static final double TalonSRXCPR = 4096;
     public static final double NeoEncoderCPR = 42;
   }
-
 
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 5;
