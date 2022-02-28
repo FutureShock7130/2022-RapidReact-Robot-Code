@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SuperstructureConstants;
 import frc.robot.statemachines.SuperstructureStateMachine;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Superstructure extends SubsystemBase {
   // Creates a new Superstructure.
@@ -22,7 +23,7 @@ public class Superstructure extends SubsystemBase {
   private final WPI_TalonSRX rightSwing = new WPI_TalonSRX(SuperstructureConstants.kSwingRightID);
   private final CANSparkMax leftHanger = new CANSparkMax(SuperstructureConstants.kHangerLeftID, MotorType.kBrushless);
   private final CANSparkMax rightHanger = new CANSparkMax(SuperstructureConstants.kHangerRightID, MotorType.kBrushless);
-  
+
   private SuperstructureStateMachine m_StateMachine;
 
   Timer time = new Timer();
@@ -32,6 +33,8 @@ public class Superstructure extends SubsystemBase {
 
   private boolean leftAtLimit;
   private boolean rightAtLimit;
+
+  private double minPosition;
 
   // Creates a new Superstructure.
   public Superstructure() {
@@ -48,6 +51,10 @@ public class Superstructure extends SubsystemBase {
 
     leftAtLimit = !getLlimitSwitchCheck();
     rightAtLimit = !getRlimitSwitchCheck();
+
+    minPosition = (this.getLHangerPosition() + this.getRHangerPosition()) / 2;
+
+    resetEncoder(0,0);
   }
 
   @Override
@@ -55,6 +62,8 @@ public class Superstructure extends SubsystemBase {
     // This method will be called once per scheduler run
     leftAtLimit = !getLlimitSwitchCheck();
     rightAtLimit = !getRlimitSwitchCheck();
+    SmartDashboard.putNumber("left hanger", this.getLHangerPosition());
+    SmartDashboard.putNumber("right hanger", this.getRHangerPosition());
   }
 
   public void liftSwingRun(double speed) {
@@ -76,8 +85,9 @@ public class Superstructure extends SubsystemBase {
   }
 
   public void initStateMachine() {
-      time.start();
+    time.start();
   }
+
   public boolean getLlimitSwitchCheck() {
     return LlimitSwitch.get();
   }
@@ -86,19 +96,27 @@ public class Superstructure extends SubsystemBase {
     return RlimitSwitch.get();
   }
 
-  public boolean atLimit(){
-    if (leftAtLimit || rightAtLimit){
+  public boolean atLimit() {
+    if (leftAtLimit || rightAtLimit) {
       return true;
     }
     return false;
   }
 
-  public double getLHangerPosition(){
+  public double getLHangerPosition() {
     return leftHanger.getEncoder().getPosition();
   }
 
-  public double getRHangerPosition(){
+  public double getRHangerPosition() {
     return rightHanger.getEncoder().getPosition();
   }
 
+  public void resetEncoder(double left, double right) {
+    leftHanger.getEncoder().setPosition(left);
+    rightHanger.getEncoder().setPosition(right);
+  }
+
+  public double[] getMinPosition() {
+    return new double[] { this.getLHangerPosition(), this.getRHangerPosition()};
+  }
 }

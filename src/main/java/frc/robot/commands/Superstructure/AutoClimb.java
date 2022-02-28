@@ -26,45 +26,69 @@ public class AutoClimb extends CommandBase {
         if (LHangerPosition < SuperstructureConstants.HangerMaxPosition - 2
                 || RHangerPosition < SuperstructureConstants.HangerMaxPosition - 2) {
             end(true);
+            System.out.println("not accepted");
         }
     }
 
     public void execute() {
-        HangerDown hangerDown = new HangerDown(m_SuperStructure);
-        HangerUp hangerUp = new HangerUp(m_SuperStructure);
-        SwingBack swingBack = new SwingBack(m_SuperStructure);
-        SwingForward swingForward = new SwingForward(m_SuperStructure);
 
         double lastTime;
+        double[] maxPosition; // [left, right]
+        double[] minPosition = {0.0,0.0};
 
-        for (int i=0; i <= 3; i++) {
-            hangerDown.schedule();
-            while ((m_SuperStructure.getLHangerPosition() + m_SuperStructure.getRHangerPosition()) / 2 > SuperstructureConstants.HangerMinPosition+3) {
-            }
-            hangerDown.cancel();
-            lastTime = Timer.getFPGATimestamp();
-            swingBack.schedule();
-            while (Timer.getFPGATimestamp()< lastTime+0.5) {
-            }
-            swingBack.cancel();
-            hangerUp.schedule();
-            while ((m_SuperStructure.getLHangerPosition() + m_SuperStructure.getRHangerPosition())
-                    / 2 < SuperstructureConstants.HangerMaxPosition - 3) {
-            }
-            hangerUp.cancel();
-            lastTime = Timer.getFPGATimestamp();
-            swingForward.schedule();
-            while (Timer.getFPGATimestamp() < lastTime+0.5) {
-            }
-            swingForward.cancel();
-            hangerUp.schedule();
+        for (int i = 0; i < 3; i++) {
 
-            while ((m_SuperStructure.getLHangerPosition() + m_SuperStructure.getRHangerPosition())
-                    / 2 < SuperstructureConstants.HangerMaxPosition - 3) {
+            lastTime = Timer.getFPGATimestamp();
+            maxPosition = new double[] { m_SuperStructure.getLHangerPosition(), m_SuperStructure.getRHangerPosition() };
+            if (i > 0) {
+                maxPosition[0] += 5;
+                maxPosition[1] += 5;
             }
-            hangerUp.cancel();
-            // Start of next level
+            System.out.println("Max 1"+maxPosition[0]+" "+maxPosition[1]);
+            System.out.println("Min 1"+minPosition[0]+" "+minPosition[1]);
+            while (m_SuperStructure.getLHangerPosition() > minPosition[0] + 1.5
+                    || m_SuperStructure.getLHangerPosition() > minPosition[0] + 1.5) {
+                double leftSpeed = m_SuperStructure.getLHangerPosition() > minPosition[0] + 1.5
+                        ? -SuperstructureConstants.hangerSpeed
+                        : 0;
+                double rightSpeed = m_SuperStructure.getRHangerPosition() > minPosition[1] + 1.5
+                        ? -SuperstructureConstants.hangerSpeed
+                        : 0;
+                m_SuperStructure.liftHangerRun(leftSpeed, rightSpeed);
+            }
+            m_SuperStructure.liftHangerStop();
+            m_SuperStructure.resetEncoder(m_SuperStructure.getLHangerPosition() - 1.5,
+                    m_SuperStructure.getRHangerPosition() - 1.5);
+            minPosition = new double[] { m_SuperStructure.getLHangerPosition() - 1.5,
+                    m_SuperStructure.getRHangerPosition() - 1.5 };
+
+            lastTime = Timer.getFPGATimestamp();
+            while (Timer.getFPGATimestamp() < lastTime + 0.5) {
+                m_SuperStructure.liftSwingRun(SuperstructureConstants.swingSpeed);
+            }
+            m_SuperStructure.liftSwingStop();
+
+            while (m_SuperStructure.getLHangerPosition() < maxPosition[0] - 5
+                    || m_SuperStructure.getLHangerPosition() < maxPosition[0] - 5) {
+                double leftSpeed = m_SuperStructure.getLHangerPosition() < maxPosition[0] - 5
+                        ? SuperstructureConstants.hangerSpeed
+                        : 0;
+                double rightSpeed = m_SuperStructure.getRHangerPosition() < maxPosition[1] - 5
+                        ? SuperstructureConstants.hangerSpeed
+                        : 0;
+                m_SuperStructure.liftHangerRun(leftSpeed, rightSpeed);
+            }
+            maxPosition = new double[]{m_SuperStructure.getLHangerPosition(),m_SuperStructure.getRHangerPosition()};
+
+            lastTime = Timer.getFPGATimestamp();
+            while (Timer.getFPGATimestamp() < lastTime + 1) {
+                m_SuperStructure.liftSwingRun(-SuperstructureConstants.swingSpeed);
+            }
+            m_SuperStructure.liftSwingStop();
+            System.out.println("Max 2"+maxPosition[0]+" "+maxPosition[1]);
+            System.out.println("Min 2"+minPosition[0]+" "+minPosition[1]);
         }
+
     }
 
     public boolean isFinished() {
@@ -72,6 +96,11 @@ public class AutoClimb extends CommandBase {
     }
 
     public void end(boolean interrupted) {
+        m_SuperStructure.liftSwingStop();
+        m_SuperStructure.liftHangerStop();
+    }
+
+    public void interrupted() {
         m_SuperStructure.liftSwingStop();
         m_SuperStructure.liftHangerStop();
     }

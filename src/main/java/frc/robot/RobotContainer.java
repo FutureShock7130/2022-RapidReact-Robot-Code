@@ -10,6 +10,7 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -22,6 +23,7 @@ import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Superstructure.AutoClimb;
 import frc.robot.commands.Superstructure.SwingBack;
 import frc.robot.commands.Superstructure.SwingForward;
+import frc.robot.commands.Superstructure.SwingStop;
 import frc.robot.commands.Transporter.TransportCmd;
 import frc.robot.commands.Transporter.TransportEject;
 import frc.robot.commands.Turret.LimelightAim;
@@ -51,6 +53,7 @@ public class RobotContainer {
     private final Superstructure m_SuperStructure = new Superstructure();
 
     AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
+    TurretShoot shoot =  new TurretShoot(m_robotTurret);
 
     // The driver's controller
     Joystick m_driverController = new Joystick(OIConstants.kDriveTrainJoystickPort);
@@ -66,21 +69,20 @@ public class RobotContainer {
                         () -> {
                             m_robotDrive.drive(
                                     -m_driverController.getRawAxis(OIConstants.leftStick_Y),
-                                    -m_driverController.getRawAxis(OIConstants.leftStick_X),
-                                    -m_driverController.getRawAxis(OIConstants.rightStick_X),
+                                    m_driverController.getRawAxis(OIConstants.leftStick_X),
+                                    m_driverController.getRawAxis(OIConstants.rightStick_X),
                                     false);
                             SwingForward swingForward = new SwingForward(m_SuperStructure);
                             SwingBack swingBack = new SwingBack(m_SuperStructure);
                             // HangerUp hangerUp = new HangerUp(m_SuperStructure);
                             // HangerDown hangerDown = new HangerDown(m_SuperStructure);
                             if (m_operatorController.getPOV() == OIConstants.POV_UP)
-                            swingForward.schedule();
+                                swingForward.schedule();
                             if (m_operatorController.getPOV() == OIConstants.POV_DOWN)
                                 swingBack.schedule();
-                            // if (m_driverController.getPOV() == OIConstants.POV_LEFT) hangerUp.schedule();
-                            // if (m_driverController.getPOV() == OIConstants.POV_RIGHT)
-                            // hangerDown.schedule();
                             if (m_operatorController.getPOV() == -1) {
+                                swingBack.end(true);
+                                swingForward.end(true);
                                 swingBack.cancel();
                                 swingForward.cancel();
                             }
@@ -148,19 +150,20 @@ public class RobotContainer {
                     m_robotTurret.spinnerRun(0.0);
                 }, m_robotTurret));
 
-        new JoystickButton(m_operatorController, OIConstants.Btn_Y)
+        new JoystickButton(m_operatorController, OIConstants.Btn_X)
                 .whenHeld(new ParallelCommandGroup(new IntakeCmd(m_robotIntake), new TransportCmd(m_robotTransport)))
                 .whenReleased(new IntakeStop(m_robotIntake));
 
-        new JoystickButton(m_operatorController, OIConstants.Btn_X).whenHeld(
+        new JoystickButton(m_operatorController, OIConstants.Btn_Y).whenHeld(
                 new ParallelCommandGroup(new IntakeReverse(m_robotIntake), new TransportEject(m_robotTransport)))
                 .whenReleased(new IntakeStop(m_robotIntake));
 
-        new JoystickButton(m_operatorController, OIConstants.Btn_A).whenPressed(new TurretShoot(m_robotTurret));
+        new JoystickButton(m_operatorController, OIConstants.Btn_A).whenPressed(shoot);
 
-        new JoystickButton(m_operatorController, OIConstants.Btn_B).whenPressed(autoClimb);
+        new JoystickButton(m_operatorController, OIConstants.Btn_B).whenPressed(()->shoot.cancel());
 
-        new JoystickButton(m_operatorController, OIConstants.Btn_LB).whenPressed(()->CommandScheduler.getInstance().cancel(autoClimb));
+        new JoystickButton(m_operatorController, OIConstants.Btn_RB).whenPressed(autoClimb);
+        new JoystickButton(m_operatorController, OIConstants.Btn_LB).whenPressed(()->autoClimb.cancel());
 
     }
 

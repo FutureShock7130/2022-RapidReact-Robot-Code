@@ -112,7 +112,7 @@ public final class Constants {
     public static final int kHangerLeftID = 14;
     public static final int kHangerRightID = 15;
     public static final double swingSpeed = 0.3;
-    public static final double hangerSpeed = 0.5;
+    public static final double hangerSpeed = 0.6;
     public static final int LlimitSwitch = 2;
     public static final int RlimitSwitch = 3;
     public static final double HangerMaxPosition = -54; // Need to be tested, in rotation unit

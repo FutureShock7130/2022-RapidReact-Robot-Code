@@ -12,18 +12,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class WebCamera extends SubsystemBase {
 
-  // Creates UsbCamera and MjpegServer [1] and connects them
-  UsbCamera camera = CameraServer.startAutomaticCapture();
-  // Creates the CvSink and connects it to the UsbCamera
-  CvSink cvSink = CameraServer.getVideo();
-  // Creates the CvSource and MjpegServer [2] and connects them
-  CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
-  
   /** Creates a new WebCamera. */
-  public WebCamera() {}
+  public WebCamera() {
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    // Creates UsbCamera and MjpegServer [1] and connects them
+    UsbCamera camera = CameraServer.startAutomaticCapture();
+    // Creates the CvSink and connects it to the UsbCamera
+    CvSink cvSink = CameraServer.getVideo();
+    // Creates the CvSource and MjpegServer [2] and connects them
+    CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
   }
 }
