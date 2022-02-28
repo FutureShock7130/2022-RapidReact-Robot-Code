@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SuperstructureConstants;
 import frc.robot.statemachines.SuperstructureStateMachine;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Superstructure extends SubsystemBase {
   // Creates a new Superstructure.
@@ -62,8 +61,6 @@ public class Superstructure extends SubsystemBase {
     // This method will be called once per scheduler run
     leftAtLimit = !getLlimitSwitchCheck();
     rightAtLimit = !getRlimitSwitchCheck();
-    SmartDashboard.putNumber("left hanger", this.getLHangerPosition());
-    SmartDashboard.putNumber("right hanger", this.getRHangerPosition());
   }
 
   public void liftSwingRun(double speed) {

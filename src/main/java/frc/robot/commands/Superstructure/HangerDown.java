@@ -21,8 +21,8 @@ public class HangerDown extends CommandBase {
     }
 
     public void execute() {
-        while(Timer.getFPGATimestamp()<initTime+0.75){
-            m_Superstructure.liftHangerRun(-SuperstructureConstants.hangerSpeed,-SuperstructureConstants.hangerSpeed);
+        while (Timer.getFPGATimestamp() < initTime + 0.75) {
+            m_Superstructure.liftHangerRun(-SuperstructureConstants.hangerSpeed, -SuperstructureConstants.hangerSpeed);
         }
         m_Superstructure.liftHangerStop();
     }
@@ -35,7 +35,7 @@ public class HangerDown extends CommandBase {
         m_Superstructure.liftHangerStop();
     }
 
-    public void interrupted(){
+    public void interrupted() {
         m_Superstructure.liftHangerStop();
     }
 }

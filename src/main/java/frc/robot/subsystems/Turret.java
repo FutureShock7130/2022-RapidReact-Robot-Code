@@ -12,7 +12,7 @@ import frc.robot.Constants.TurretConstants;
 public class Turret extends SubsystemBase {
 
     private final CANSparkMax masterFlyWheel = new CANSparkMax(TurretConstants.kMasterFlyWheelID, MotorType.kBrushless);
-    private final CANSparkMax slaveFlyWheel = new CANSparkMax(TurretConstants.kSlaveFlyWheelID, MotorType.kBrushless); 
+    private final CANSparkMax slaveFlyWheel = new CANSparkMax(TurretConstants.kSlaveFlyWheelID, MotorType.kBrushless);
     private final WPI_TalonSRX spinner = new WPI_TalonSRX(TurretConstants.kSpinnerID);
     private final DigitalInput forwardLimitSwitch = new DigitalInput(TurretConstants.forwardLimitSwitch);
     private final DigitalInput reverseLimitSwitch = new DigitalInput(TurretConstants.reverseLimitSwitch);
@@ -55,7 +55,7 @@ public class Turret extends SubsystemBase {
     }
 
     public double getFlyWheelsVelocity() {
-        return (masterFlyWheel.getEncoder().getVelocity()+slaveFlyWheel.getEncoder().getVelocity())/2;
+        return (masterFlyWheel.getEncoder().getVelocity() + slaveFlyWheel.getEncoder().getVelocity()) / 2;
     }
 
     public boolean getforwardLimitSwitchCheck() {
@@ -67,11 +67,11 @@ public class Turret extends SubsystemBase {
     }
 
     public boolean atTurningLimit() {
-        if (leftAtLimit || rightAtLimit){
+        if (leftAtLimit || rightAtLimit) {
             return true;
-        }           
+        }
         return false;
-            
+
     }
 
     public boolean atLeftLimit() {
