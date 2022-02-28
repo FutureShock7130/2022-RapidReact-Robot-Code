@@ -11,6 +11,7 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.statemachines.DriveFSM;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,6 +24,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private DriveFSM driveFSM;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -31,6 +34,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    driveFSM = new DriveFSM(); 
     m_robotContainer = new RobotContainer();
     UsbCamera camera = CameraServer.startAutomaticCapture();
     CvSink cvSink = CameraServer.getVideo();
@@ -63,6 +67,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    driveFSM.setOdometryDifferential();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -77,6 +82,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    driveFSM.setOdometryMecanum();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

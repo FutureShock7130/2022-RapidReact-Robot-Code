@@ -23,6 +23,7 @@ import frc.robot.commands.Superstructure.SwingForward;
 import frc.robot.commands.Turret.LimelightAim;
 import frc.robot.commands.Turret.TurretSeek;
 import frc.robot.commands.Turret.TurretShoot;
+import frc.robot.statemachines.DriveFSM;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Superstructure;
@@ -37,6 +38,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.BooleanSupplier;
+
+import com.pathplanner.lib.PathPlanner;
 
 public class RobotContainer {
     // The robot's subsystems
@@ -63,9 +66,10 @@ public class RobotContainer {
     Joystick m_operatorController = new Joystick(OIConstants.kOthersJoystickPort);
 
     // The container for the robot. Contains subsystems, OI devices, and commands.
-    public RobotContainer() {
+    public RobotContainer(DriveFSM driveFSM) {
         // Configure the button bindings
         configureButtonBindings();
+        m_robotDrive.setDriveFSM(driveFSM);
 
         m_robotDrive.setDefaultCommand(
                 new RunCommand(
@@ -160,8 +164,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-
         String trajectoryJSON = "paths/straightTest.wpilib.json";
+        
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
             Trajectory Trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
