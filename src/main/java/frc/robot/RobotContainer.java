@@ -23,6 +23,7 @@ import frc.robot.commands.Superstructure.SwingForward;
 import frc.robot.commands.Turret.LimelightAim;
 import frc.robot.commands.Turret.TurretSeek;
 import frc.robot.commands.Turret.TurretShoot;
+import frc.robot.statemachines.DriveFSM;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Superstructure;
@@ -63,9 +64,10 @@ public class RobotContainer {
     Joystick m_operatorController = new Joystick(OIConstants.kOthersJoystickPort);
 
     // The container for the robot. Contains subsystems, OI devices, and commands.
-    public RobotContainer() {
+    public RobotContainer(DriveFSM driveFSM) {
         // Configure the button bindings
         configureButtonBindings();
+        m_robotDrive.setDriveFSM(driveFSM);
 
         m_robotDrive.setDefaultCommand(
                 new RunCommand(

@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.statemachines.DriveFSM;
+import frc.robot.statemachines.DriveFSM.DriveOdometryState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -32,8 +34,9 @@ public class Drive extends SubsystemBase {
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
-  // Odometry class for tracking robot pose
-  MecanumDriveOdometry m_odometry = new MecanumDriveOdometry(DriveConstants.kDriveKinematics, m_gyro.getRotation2d());
+  DriveFSM driveStateMachine; 
+  MecanumDriveOdometry m_mecanumOdometry;
+  DifferentialDriveOdometry m_differentialOdometry;
 
   /** Creates a new DriveSubsystem. */
   public Drive() {
@@ -48,22 +51,39 @@ public class Drive extends SubsystemBase {
     motorRL.setInverted(false);
 
     resetEncoders();
-    resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
+
+    // Odometry class for tracking robot pose
+    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.MECANUM_ODOMETRY) {
+      m_mecanumOdometry = new MecanumDriveOdometry(DriveConstants.kMecanumDriveKinematics, m_gyro.getRotation2d());
+      resetMecanumOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
+    }
+    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
+      m_differentialOdometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), new Pose2d(0, 0, new Rotation2d()));
+      resetDifferentialOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
+    }
   }
 
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    m_odometry.update(
+    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
+      m_differentialOdometry.update(
         m_gyro.getRotation2d(),
-        new MecanumDriveWheelSpeeds(
-          motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
-          motorFR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
-          motorRL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
-          motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse));
-
-        
-        SmartDashboard.putNumber("Linearized Wheel Speed", getLinearWheelSpeeds());
+        motorFL.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse,
+        motorFR.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse
+        );
+      SmartDashboard.putNumber("Linearized Wheel Speed", getLinearWheelSpeeds());
+    }
+    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.MECANUM_ODOMETRY) {
+      m_mecanumOdometry.update(
+          m_gyro.getRotation2d(),
+          new MecanumDriveWheelSpeeds(
+            motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
+            motorFR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
+            motorRL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
+            motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse));
+      SmartDashboard.putNumber("Linearized Wheel Speed", getLinearWheelSpeeds());
+    }
 
     // SmartDashboard.putNumber("velocity", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
     // SmartDashboard.putNumber("Pose X", m_odometry.getPoseMeters().getX());
@@ -72,13 +92,28 @@ public class Drive extends SubsystemBase {
   }
 
   // Returns the currently-estimated pose of the robot.
+  public Pose2d getMecanumPose() {
+    return m_mecanumOdometry.getPoseMeters();
+  }
+
+  public Pose2d getDifferentialPose() {
+    return m_differentialOdometry.getPoseMeters();
+  }
+
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
+      return m_differentialOdometry.getPoseMeters();
+    } 
+    return m_mecanumOdometry.getPoseMeters();
   }
 
   // Resets the odometry to the specified pose.
-  public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+  public void resetMecanumOdometry(Pose2d pose) {
+    m_mecanumOdometry.resetPosition(pose, m_gyro.getRotation2d());
+  }
+
+  public void resetDifferentialOdometry(Pose2d pose) {
+    m_differentialOdometry.resetPosition(pose, m_gyro.getRotation2d());
   }
 
   // Drives the robot at given x, y and theta speeds. 
@@ -123,6 +158,10 @@ public class Drive extends SubsystemBase {
     motorRL.setSelectedSensorPosition(0);
     motorFR.setSelectedSensorPosition(0);
     motorRR.setSelectedSensorPosition(0);
+  }
+
+  public void setDriveFSM(DriveFSM driveFSM) {
+    driveStateMachine = driveFSM;
   }
 
   // Gets the current wheel speeds.

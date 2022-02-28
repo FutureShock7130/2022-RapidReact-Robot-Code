@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
@@ -28,7 +29,9 @@ public final class Constants {
 
     public static final double DriveSpeedScaler = 0.3;
 
-    public static final MecanumDriveKinematics kDriveKinematics = new MecanumDriveKinematics(
+    public static final DifferentialDriveKinematics kDifferentialDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);
+
+    public static final MecanumDriveKinematics kMecanumDriveKinematics = new MecanumDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
