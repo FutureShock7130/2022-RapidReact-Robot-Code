@@ -16,7 +16,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public final class Constants {
   public static final class DriveConstants {
-
     public static final int kFrontLeftMotorID = 1;
     public static final int kRearLeftMotorID = 2;
     public static final int kFrontRightMotorID = 3;
@@ -27,7 +26,7 @@ public final class Constants {
     public static final double kWheelBase = 0.4904;
     // Distance between centers of front and back wheels on robot
 
-    public static final double DriveSpeedScaler = 0.3;
+    public static final double DriveSpeedScaler = 0.7;
 
     public static final DifferentialDriveKinematics kDifferentialDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);
 
@@ -52,6 +51,8 @@ public final class Constants {
     public static final double kA = 0.0019347;
 
     public static final SimpleMotorFeedforward kFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
+
+    public static final double kSlewRate = 0.7;
 
     // Example value only - as above, this must be tuned for your drive!
     public static final double kPFrontLeftVel = 0.9506726;
