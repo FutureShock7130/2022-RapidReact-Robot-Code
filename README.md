@@ -5,7 +5,8 @@ Welcome to Team 7130 Future Shock's source code for the 2022 Season, Rapid React
 The current Robot in commission is **Joker**. Features are highlighted beneath.
 
 ## Setup
-- Use Visual Studio Code 
+- Use Visual Studio Code (Official IDE)
+
 
 ## Code Highlights
 - Robot Localization
