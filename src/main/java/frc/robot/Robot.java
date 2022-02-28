@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     driveFSM = new DriveFSM(); 
-    m_robotContainer = new RobotContainer();
+    m_robotContainer = new RobotContainer(driveFSM);
     UsbCamera camera = CameraServer.startAutomaticCapture();
     CvSink cvSink = CameraServer.getVideo();
     CvSource outputStream = CameraServer.putVideo("Blur", 1920, 1080);
