@@ -42,6 +42,7 @@ public class TurretSeek extends CommandBase{
             m_turret.spinnerRun(0);
             targetFound = true;
         }
+        System.out.println(tv);
     }
 
     public boolean isFinished(){

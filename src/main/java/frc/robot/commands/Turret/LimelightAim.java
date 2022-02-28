@@ -34,7 +34,6 @@ public class LimelightAim extends CommandBase {
     }
 
     public void initialize() {
-
     }
 
     public void execute() {
@@ -72,5 +71,9 @@ public class LimelightAim extends CommandBase {
         }
         integralSumX = 0;
         return false;
+    }
+
+    public void interrupted() {
+        turret.spinnerRun(0);
     }
 }

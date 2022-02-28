@@ -21,6 +21,7 @@ import frc.robot.commands.Superstructure.AutoClimb;
 import frc.robot.commands.Superstructure.SwingBack;
 import frc.robot.commands.Superstructure.SwingForward;
 import frc.robot.commands.Turret.LimelightAim;
+import frc.robot.commands.Turret.TurretSeek;
 import frc.robot.commands.Turret.TurretShoot;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
@@ -30,10 +31,12 @@ import frc.robot.vision.Limelight;
 import frc.robot.subsystems.Transporter;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.function.BooleanSupplier;
 
 public class RobotContainer {
     // The robot's subsystems
@@ -46,6 +49,14 @@ public class RobotContainer {
 
     AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
     TurretShoot shoot = new TurretShoot(m_robotTurret);
+
+    BooleanSupplier targetNotIn = new BooleanSupplier() {
+        @Override
+        public boolean getAsBoolean(){
+            if (m_vision.getV() == 0.0d) return true;
+            return false; 
+        }
+    };
 
     // The driver's controller
     Joystick m_driverController = new Joystick(OIConstants.kDriveTrainJoystickPort);
@@ -105,13 +116,13 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        
+
         new JoystickButton(m_driverController, OIConstants.Btn_RB)
                 .whileHeld(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler * 0.7))
                 .whenReleased(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler));
 
         new JoystickButton(m_driverController, OIConstants.Btn_Y)
-                .whenHeld(new LimelightAim(m_robotTurret, m_vision));
+                .whenHeld(new ConditionalCommand(new TurretSeek(m_robotTurret), new LimelightAim(m_robotTurret, m_vision), targetNotIn));
 
         new JoystickButton(m_driverController, OIConstants.Btn_B)
                 .whileHeld(new RunCommand(() -> {
