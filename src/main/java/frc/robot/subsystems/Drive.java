@@ -152,6 +152,10 @@ public class Drive extends SubsystemBase {
     motorRR.setVoltage(volts.rearRightVoltage);
   }
 
+  public void setTargetMotorVolts(WPI_TalonFX motor, double volts) {
+    motor.setVoltage(volts);
+  }
+
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
     motorFL.setSelectedSensorPosition(0);
@@ -183,6 +187,29 @@ public class Drive extends SubsystemBase {
     return avgWheelSpeed;
   }
 
+  public WPI_TalonFX getMotor(int slot) {
+    switch (slot) {
+      case 1:
+        return motorFL;
+      case 2:
+        return motorFR;
+      case 3: 
+        return motorRL;
+      case 4:
+        return motorRR;
+      default:
+        return motorFL;
+    }
+  }
+
+  public double getTargetWheelSpeed(WPI_TalonFX motor) {
+    return motor.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse;
+  }
+
+  public double getTargetEncoderPositions(WPI_TalonFX encoder) {
+    return encoder.getSelectedSensorPosition();
+  }
+
   // Sets the max output of the drive. Useful for scaling the drive to drive more slowly.
   public void setMaxOutput(double maxOutput) {
     m_drive.setMaxOutput(maxOutput);
@@ -210,7 +237,10 @@ public class Drive extends SubsystemBase {
     m_drive.driveCartesian(0, 0, 0);
   }
 
-  public void feedForwardTestDrive() {
-    m_drive.driveCartesian(0, 1.0, 0);
+  public void feedForwardTestDrive(double speed) {
+    motorFL.setVoltage(speed);
+    motorFR.setVoltage(speed);
+    motorRL.setVoltage(speed);
+    motorRR.setVoltage(speed);
   }
 }

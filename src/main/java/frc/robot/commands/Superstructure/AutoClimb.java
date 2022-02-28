@@ -14,6 +14,8 @@ public class AutoClimb extends CommandBase {
 
     public AutoClimb(Superstructure m_Superstructure) {
         m_SuperStructure = m_Superstructure;
+
+        addRequirements(m_Superstructure);
     }
 
     public void initialize() {
