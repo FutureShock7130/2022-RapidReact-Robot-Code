@@ -105,7 +105,7 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        // Drive at half speed when the RB button is held
+        
         new JoystickButton(m_driverController, OIConstants.Btn_RB)
                 .whileHeld(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler * 0.7))
                 .whenReleased(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler));
