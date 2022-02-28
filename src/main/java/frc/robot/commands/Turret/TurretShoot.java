@@ -9,10 +9,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
 
 public class TurretShoot extends CommandBase {
-  
+
   private static final double kP = 0.0005;
   private static final double kI = 0.0002;
-  // a D Controller is not needed for the basic flywheel control because we only need to rev the spin speed up instead of it being 
+  // a D Controller is not needed for the basic flywheel control because we only
+  // need to rev the spin speed up instead of it being
   // reving up and down gradually.
   private static final double kD = 0;
   private static final double timeDiff = 0.02;
@@ -24,8 +25,8 @@ public class TurretShoot extends CommandBase {
   private double lastError;
   private double output;
 
-  Turret turret; 
-  
+  Turret turret;
+
   /** Creates a new TurretShoot. */
   public TurretShoot(Turret m_robotTurret) {
     turret = m_robotTurret;
@@ -36,22 +37,24 @@ public class TurretShoot extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+
     error = target - turret.getFlyWheelsVelocity();
 
-    if(Math.abs(integralSum) < 100) {
+    if (Math.abs(integralSum) < 100) {
       integralSum += error;
     }
 
     derivative = (error - lastError) / timeDiff;
     output = kP * error + kI * integralSum + kD * derivative;
 
-    // The Conditional Loop below tries to implement PID with Bang-Bang control, this ensures that when large errors occur, the
+    // The Conditional Loop below tries to implement PID with Bang-Bang control,
+    // this ensures that when large errors occur, the
     // Flywheel should rev up quickly
     if (error > 500) {
       turret.flywheelsRun(1.0);
@@ -73,7 +76,7 @@ public class TurretShoot extends CommandBase {
     turret.flywheelsStop();
   }
 
-  public void interrupted(){
+  public void interrupted() {
     turret.flywheelsRun(0);
   }
 

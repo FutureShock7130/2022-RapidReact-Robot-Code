@@ -42,4 +42,8 @@ public class IntakeCmd extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+
+  public void interrupted(){
+    intake.intakeStop();
+  }
 }

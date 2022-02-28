@@ -96,7 +96,7 @@ public final class Constants {
     public static final int kintakeID = 10;
     public static final int kDownTransporterID = 5;
     public static final double intakeSpeed = 0.9;
-    public static final double transportSpeed = 0.5;
+    public static final double transportSpeed = 0.75;
   }
 
   public static final class TransporterConstants {
@@ -112,7 +112,7 @@ public final class Constants {
     public static final int kHangerLeftID = 14;
     public static final int kHangerRightID = 15;
     public static final double swingSpeed = 0.3;
-    public static final double hangerSpeed = 0.6;
+    public static final double hangerSpeed = 0.8;
     public static final int LlimitSwitch = 2;
     public static final int RlimitSwitch = 3;
     public static final double HangerMaxPosition = -54; // Need to be tested, in rotation unit

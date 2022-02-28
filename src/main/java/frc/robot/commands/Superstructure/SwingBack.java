@@ -19,7 +19,7 @@ public class SwingBack extends CommandBase {
     }
 
     public void execute() {
-        while (Timer.getFPGATimestamp() < time+0.5){
+        while (Timer.getFPGATimestamp() < time + 0.5) {
             m_SuperStructure.liftSwingRun(SuperstructureConstants.swingSpeed);
         }
         m_SuperStructure.liftSwingStop();
@@ -33,7 +33,7 @@ public class SwingBack extends CommandBase {
         m_SuperStructure.liftSwingStop();
     }
 
-    public void interrupted(){
+    public void interrupted() {
         m_SuperStructure.liftSwingStop();
     }
 
