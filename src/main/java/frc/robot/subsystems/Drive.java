@@ -171,6 +171,13 @@ public class Drive extends SubsystemBase {
     motorRR.setVoltage(volts.rearRightVoltage);
   }
 
+  public void differentialDriveVolts(double leftVolts, double rightVolts) {
+    motorFL.setVoltage(leftVolts);
+    motorRL.setVoltage(leftVolts);
+    motorFR.setVoltage(rightVolts);
+    motorRR.setVoltage(rightVolts);
+  }
+
   public void setTargetMotorVolts(WPI_TalonFX motor, double volts) {
     motor.setVoltage(volts);
   }
