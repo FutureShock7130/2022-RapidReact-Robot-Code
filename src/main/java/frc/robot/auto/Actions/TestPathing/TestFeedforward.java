@@ -1,4 +1,4 @@
-package frc.robot.auto.actions.TestPathing;
+package frc.robot.auto.Actions.TestPathing;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -45,13 +45,14 @@ public class TestFeedforward extends CommandBase {
         linearDisplacement = m_drive.getLinearEncoderPosition() - initialEncoderPos;
         linearVelocity = m_drive.getLinearWheelSpeeds();
         linearAcceleration = (linearVelocity - lastVelocity) / kDt;
-        m_drive.feedForwardTestDrive(12 * kPercentageVoltage);
+        m_drive.feedForwardTestDrive(DriveConstants.kS);
+        //m_drive.feedForwardTestDrive(12 * kPercentageVoltage);
         SmartDashboard.putNumber("Linear Acceleration", linearAcceleration);
         SmartDashboard.putNumber("Linear Velocity", linearAcceleration);
         SmartDashboard.putNumber("Linear Displacement" , linearDisplacement);
         lastVelocity = linearVelocity;
 
-        String data = String.format("%f, %f, %f", linearDisplacement, linearVelocity, linearAcceleration);
+        String data = String.format("%f, %f, %f", linearDisplacement*DriveConstants.kEncoderDistancePerPulse/10, linearVelocity, linearAcceleration);
         System.out.println(data);
     }
 
@@ -63,7 +64,7 @@ public class TestFeedforward extends CommandBase {
     @Override
     public boolean isFinished() {
         double targetPulses = 1 / DriveConstants.kEncoderDistancePerPulse ;
-        if (timer.get() > 3.0) {
+        if (timer.get() > 2) {
             m_drive.feedForwardTestDrive(0);
             timer.reset();
             return true;
