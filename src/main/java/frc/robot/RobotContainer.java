@@ -65,7 +65,7 @@ public class RobotContainer {
                 new RunCommand(
                         () -> {
                             m_robotDrive.drive(
-                                    -m_driverController.getRawAxis(OIConstants.leftStick_Y),
+                                    1.0,
                                     -m_driverController.getRawAxis(OIConstants.leftStick_X),
                                     -m_driverController.getRawAxis(OIConstants.rightStick_X),
                                     false);
@@ -156,7 +156,7 @@ public class RobotContainer {
                 new ParallelCommandGroup(new IntakeReverse(m_robotIntake), new TransportEject(m_robotTransport)))
                 .whenReleased(new IntakeStop(m_robotIntake));
 
-        new JoystickButton(m_operatorController, OIConstants.Btn_A).whenPressed(new TurretShoot(m_robotTurret));
+        new JoystickButton(m_operatorController, OIConstants.Btn_A).whenHeld(new TurretShoot(m_robotTurret));
 
         new JoystickButton(m_operatorController, OIConstants.Btn_B).whenPressed(autoClimb);
 
