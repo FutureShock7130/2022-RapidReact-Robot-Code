@@ -62,14 +62,7 @@ public class RobotContainer {
     AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
     TurretShoot nearShoot = new TurretShoot(m_robotTurret, 1850);
     TurretShoot farShoot = new TurretShoot(m_robotTurret, 3000);
-    SwingForward swingForward = new SwingForward(m_SuperStructure);
-    SwingBack swingBack = new SwingBack(m_SuperStructure);
-    IntakeCmd intake = new IntakeCmd(m_robotIntake);
-    IntakeStop intakeStop = new IntakeStop(m_robotIntake);
-    IntakeReverse eject = new IntakeReverse(m_robotIntake);
-    TransportCmd transportCmd = new TransportCmd(m_robotTransport);
-    TransportStop transportStop = new TransportStop(m_robotTransport);
-    TransportEject transportEject = new TransportEject(m_robotTransport);
+    
 
     BooleanSupplier targetNotIn = new BooleanSupplier() {
         @Override
@@ -98,10 +91,23 @@ public class RobotContainer {
                                     m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.5,
                                     false);
 
-                            if (m_operatorController.getPOV() == OIConstants.POV_UP) 
+                                    SwingForward swingForward = new SwingForward(m_SuperStructure);
+                                    SwingBack swingBack = new SwingBack(m_SuperStructure);
+                                    IntakeCmd intake = new IntakeCmd(m_robotIntake);
+                                    IntakeStop intakeStop = new IntakeStop(m_robotIntake);
+                                    IntakeReverse eject = new IntakeReverse(m_robotIntake);
+                                    TransportCmd transportCmd = new TransportCmd(m_robotTransport);
+                                    TransportStop transportStop = new TransportStop(m_robotTransport);
+                                    TransportEject transportEject = new TransportEject(m_robotTransport);
+
+                            if (m_operatorController.getPOV() == OIConstants.POV_UP) {
                                 swingForward.schedule();
-                            if (m_operatorController.getPOV() == OIConstants.POV_DOWN)
+                            }
+
+                            if (m_operatorController.getPOV() == OIConstants.POV_DOWN) {
                                 swingBack.schedule();
+                            }
+
                             if (m_operatorController.getPOV() == -1) {
                                 swingBack.end(true);
                                 swingForward.end(true);
