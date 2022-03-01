@@ -4,22 +4,30 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
-
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.statemachines.DriveFSM;
 import frc.robot.statemachines.DriveFSM.DriveOdometryState;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import java.util.ResourceBundle.Control;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -41,6 +49,8 @@ public class Drive extends SubsystemBase {
 
   // Slew Rate Limiters for Motors during Teleoperation Mode
   SlewRateLimiter limiter = new SlewRateLimiter(DriveConstants.kSlewRate);
+
+  private final SimpleMotorFeedforward feedforward = DriveConstants.kFeedforward;
 
   /** Creates a new DriveSubsystem. */
   public Drive(DriveFSM driveFSM) {
@@ -70,6 +80,7 @@ public class Drive extends SubsystemBase {
 
   @Override
   public void periodic() {
+    System.out.println(getLinearWheelSpeeds());
     // Update the odometry in the periodic block
     if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
       m_differentialOdometry.update(
@@ -160,6 +171,13 @@ public class Drive extends SubsystemBase {
     motorRR.setVoltage(volts.rearRightVoltage);
   }
 
+  public void differentialDriveVolts(double leftVolts, double rightVolts) {
+    motorFL.setVoltage(leftVolts);
+    motorRL.setVoltage(leftVolts);
+    motorFR.setVoltage(rightVolts);
+    motorRR.setVoltage(rightVolts);
+  }
+
   public void setTargetMotorVolts(WPI_TalonFX motor, double volts) {
     motor.setVoltage(volts);
   }
@@ -177,12 +195,19 @@ public class Drive extends SubsystemBase {
   }
 
   // Gets the current wheel speeds.
-  public MecanumDriveWheelSpeeds getCurrentWheelSpeeds() {
+  public MecanumDriveWheelSpeeds getCurrentMecanumWheelSpeeds() {
     return new MecanumDriveWheelSpeeds(
         motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
         motorFR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
         motorRL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
         motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
+  }
+
+  public DifferentialDriveWheelSpeeds getCurrentDifferentialDriveWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(
+      motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
+      motorFR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse
+    );
   }
 
   public double getLinearWheelSpeeds() {
@@ -193,6 +218,16 @@ public class Drive extends SubsystemBase {
       motorRR.getSelectedSensorVelocity()
     ) / 4;
     return avgWheelSpeed * DriveConstants.kEncoderDistancePerPulse;
+  }
+
+  public double getLinearEncoderPosition() {
+    double avgDisplacement = (
+      motorFR.getSelectedSensorPosition() +
+      motorRR.getSelectedSensorPosition() +
+      motorRL.getSelectedSensorPosition() +
+      motorFL.getSelectedSensorPosition()
+    ) / 4;
+    return avgDisplacement;
   }
 
   public WPI_TalonFX getMotor(int slot) {
@@ -236,6 +271,28 @@ public class Drive extends SubsystemBase {
   // the turn rate of the robot.(in degrees per second)
   public double getTurnRate() {
     return -m_gyro.getRate();
+  }
+
+  private double kP = 0.;
+  private double kI = 0;
+  private double kD = 0;
+  private PIDController controllerFL = new PIDController(kP, kI, kD);
+  private PIDController controllerRL = new PIDController(kP, kI, kD);
+  private PIDController controllerFR = new PIDController(kP, kI, kD);
+  private PIDController controllerRR = new PIDController(kP, kI, kD);
+
+  // Feedforward control defined above as a constant
+
+  // Feedforward Drive using the WPI Controllers
+  public double feedforwardPIDDrive(double targetPos, double velocity, double acceleration) {
+    // Note that Velocity is in m/s
+    targetPos /= DriveConstants.kEncoderDistancePerPulse;
+    double kF = feedforward.calculate(velocity);
+    motorFL.setVoltage(controllerFL.calculate(targetPos, motorFL.getSelectedSensorPosition()) + kF);
+    motorRL.setVoltage(controllerRL.calculate(targetPos, motorRL.getSelectedSensorPosition()) + kF);
+    motorFR.setVoltage(controllerFR.calculate(targetPos, motorFR.getSelectedSensorPosition()) + kF);
+    motorRR.setVoltage(controllerRR.calculate(targetPos, motorRR.getSelectedSensorPosition()) + kF);
+    return controllerFL.calculate(targetPos, motorFL.getSelectedSensorPosition()) + kF;
   }
 
   public void testMotor() {

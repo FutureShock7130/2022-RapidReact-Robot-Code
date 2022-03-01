@@ -1,29 +1,38 @@
 package frc.robot.auto;
 
-public class AutoModePlanner {
-    private enum DriveMode {
-        MECANUM,
-        DIFFERENTIAL,
-        ARCADE,
-        TANK
-    }
+public class AutoModePlanner implements AutoModes {
+    private AutoModes.DriveStrategy driveStrategy = DriveStrategy.ONE_CARGO;
+    private AutoModes.Alliance alliance = Alliance.BLUE_ALLIANCE;
+    private AutoModes.DriveMode driveMode = DriveMode.DIFFERENTIAL;
+    private AutoModes.StartingPosition startingPos = StartingPosition.ONE;
+    private AutoModes.AimMode aimMode = AimMode.LIMELIGHT;
 
-    private enum AimMode {
-        LIMELIGHT, 
-        ABSOLUTE,
-        RELATIVE
-    }
+    public void handleAutoMode() {
+        // Write Conditional Logic to decide which Autononous Path etc... to go on.
+        if (aimMode == AimMode.LIMELIGHT) {
 
-    private enum Alliance {
-        RED_ALLIANCE,
-        BLUE_ALLIANCE
-    }
+        } else if (aimMode == AimMode.ABSOLUTE) {
 
-    private enum DrivePath {
-        ONE_CARGO,
-        TWO_CARGO,
-        THREE_CARGO,
-        FOUR_CARGO,
-        FIVE_CARGO
+        }
+
+        if (driveMode == DriveMode.DIFFERENTIAL) {
+
+        } else if (driveMode == DriveMode.MECANUM) {
+
+        }
+
+        switch(startingPos) {
+            case ONE:
+                switch (driveStrategy) {
+                    case ONE_CARGO:
+                        break;
+                    default:
+                        break;
+                }
+            case TWO:
+                break;
+            default:
+                break;
+        }
     }
 }
