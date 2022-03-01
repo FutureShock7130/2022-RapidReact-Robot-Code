@@ -42,4 +42,8 @@ public class IntakeReverse extends CommandBase {
   public boolean isFinished() {
     return true;
   }
+
+  public void interrupted(){
+    intake.intakeStop();
+  }
 }

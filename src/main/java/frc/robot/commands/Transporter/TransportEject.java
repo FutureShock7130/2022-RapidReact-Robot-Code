@@ -6,7 +6,7 @@ package frc.robot.commands.Transporter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Transporter;
-
+   
 public class TransportEject extends CommandBase {
   Transporter transporter;
 
@@ -27,7 +27,7 @@ public class TransportEject extends CommandBase {
   @Override
   public void execute() {
     transporter.transportEject();
-  }
+  } 
 
   // Called once the command ends or is interrupted.
   @Override

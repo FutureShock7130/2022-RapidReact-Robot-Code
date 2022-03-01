@@ -1,13 +1,12 @@
 package frc.robot.commands.Superstructure;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.SuperstructureConstants;
 import frc.robot.subsystems.Superstructure;
 
-public class SwingForward extends CommandBase{
+public class SwingStop extends CommandBase{
     Superstructure m_SuperStructure;
 
-    public SwingForward(Superstructure superStructure){
+    public SwingStop(Superstructure superStructure){
         m_SuperStructure = superStructure;
         addRequirements(superStructure);
     }
@@ -15,23 +14,15 @@ public class SwingForward extends CommandBase{
     public void initialize(){}
 
     public void execute(){
-        if(!m_SuperStructure.atLimit()){
-            m_SuperStructure.liftSwingRun(-SuperstructureConstants.swingSpeed);
-        } else {
-            m_SuperStructure.liftSwingStop();
-        }
+        m_SuperStructure.liftSwingStop();
         
     }
 
     public boolean isFinished(){
-        return false;
+        return true;
     }
 
     public void end(boolean interrupted){
-        m_SuperStructure.liftSwingStop();
-    }
-
-    public void interrupted(){
         m_SuperStructure.liftSwingStop();
     }
 
