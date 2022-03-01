@@ -59,6 +59,14 @@ public class RobotContainer {
     AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
     TurretShoot nearShoot = new TurretShoot(m_robotTurret, 1850);
     TurretShoot farShoot = new TurretShoot(m_robotTurret, 3000);
+    SwingForward swingForward = new SwingForward(m_SuperStructure);
+    SwingBack swingBack = new SwingBack(m_SuperStructure);
+    IntakeCmd intake = new IntakeCmd(m_robotIntake);
+    IntakeStop intakeStop = new IntakeStop(m_robotIntake);
+    IntakeReverse eject = new IntakeReverse(m_robotIntake);
+    TransportCmd transportCmd = new TransportCmd(m_robotTransport);
+    TransportStop transportStop = new TransportStop(m_robotTransport);
+    TransportEject transportEject = new TransportEject(m_robotTransport);
 
     BooleanSupplier targetNotIn = new BooleanSupplier() {
         @Override
@@ -87,9 +95,7 @@ public class RobotContainer {
                                     m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.5,
                                     false);
 
-                            SwingForward swingForward = new SwingForward(m_SuperStructure);
-                            SwingBack swingBack = new SwingBack(m_SuperStructure);
-
+                            // Superstructure Swinging
                             if (m_operatorController.getPOV() == OIConstants.POV_UP){}
                                 swingForward.schedule();
                             if (m_operatorController.getPOV() == OIConstants.POV_DOWN)
@@ -101,16 +107,14 @@ public class RobotContainer {
                                 swingForward.cancel();
                             }
 
-                            IntakeCmd intake = new IntakeCmd(m_robotIntake);
-                            IntakeStop intakeStop = new IntakeStop(m_robotIntake);
-                            IntakeReverse eject = new IntakeReverse(m_robotIntake);
-
+                            // Far Flywheel Logic
                             if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.4) {
                                 farShoot.schedule();
                             } else {
                                 farShoot.cancel();
                             }
 
+                            // Intake Logic
                             if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
                                 intake.schedule();
                             } else if (m_driverController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
@@ -119,10 +123,7 @@ public class RobotContainer {
                                 intakeStop.schedule();
                             }
 
-                            TransportCmd transportCmd = new TransportCmd(m_robotTransport);
-                            TransportStop transportStop = new TransportStop(m_robotTransport);
-                            TransportEject transportEject = new TransportEject(m_robotTransport);
-
+                            // Transporter Logic
                             if (m_operatorController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
                                 transportCmd.schedule();
                             } else if (m_operatorController.getRawButton(OIConstants.Btn_LB)) {

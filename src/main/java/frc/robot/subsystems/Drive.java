@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -12,15 +14,20 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
-
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.statemachines.DriveFSM;
 import frc.robot.statemachines.DriveFSM.DriveOdometryState;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import java.util.ResourceBundle.Control;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -42,6 +49,8 @@ public class Drive extends SubsystemBase {
 
   // Slew Rate Limiters for Motors during Teleoperation Mode
   SlewRateLimiter limiter = new SlewRateLimiter(DriveConstants.kSlewRate);
+
+  private final SimpleMotorFeedforward feedforward = DriveConstants.kFeedforward;
 
   /** Creates a new DriveSubsystem. */
   public Drive(DriveFSM driveFSM) {
@@ -255,6 +264,26 @@ public class Drive extends SubsystemBase {
   // the turn rate of the robot.(in degrees per second)
   public double getTurnRate() {
     return -m_gyro.getRate();
+  }
+
+  private double kP = 0.;
+  private double kI = 0;
+  private double kD = 0;
+  private PIDController controllerFL = new PIDController(kP, kI, kD);
+  private PIDController controllerRL = new PIDController(kP, kI, kD);
+  private PIDController controllerFR = new PIDController(kP, kI, kD);
+  private PIDController controllerRR = new PIDController(kP, kI, kD);
+
+  // Feedforward Drive using the WPI Controllers
+  public double feedforwardPIDDrive(double targetPos, double velocity, double acceleration) {
+    // Note that Velocity is in m/s
+    targetPos /= DriveConstants.kEncoderDistancePerPulse;
+    double kF = feedforward.calculate(velocity);
+    motorFL.setVoltage(controllerFL.calculate(targetPos, motorFL.getSelectedSensorPosition()) + kF);
+    motorRL.setVoltage(controllerRL.calculate(targetPos, motorRL.getSelectedSensorPosition()) + kF);
+    motorFR.setVoltage(controllerFR.calculate(targetPos, motorFR.getSelectedSensorPosition()) + kF);
+    motorRR.setVoltage(controllerRR.calculate(targetPos, motorRR.getSelectedSensorPosition()) + kF);
+    return controllerFL.calculate(targetPos, motorFL.getSelectedSensorPosition()) + kF;
   }
 
   public void testMotor() {

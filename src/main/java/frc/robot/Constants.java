@@ -42,6 +42,8 @@ public final class Constants {
     public static final double kGearRatio = 10.7142857;
     public static final double kEncoderDistancePerPulse = kWheelCircumference / (double) kEncoderCPR / kGearRatio
         / Math.sqrt(2) * 10;
+      
+    public static final int kPIDfCPR = 1023;
 
     // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
     // These characterization values MUST be determined either experimentally or

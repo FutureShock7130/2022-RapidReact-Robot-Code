@@ -26,6 +26,8 @@ public class TestFeedforward extends CommandBase {
 
     String dataMessage;
 
+    private final double kPercentageVoltage = 0.8;
+
     public TestFeedforward(Drive m_robotDrive) {
         m_drive = m_robotDrive;
         addRequirements(m_robotDrive);
@@ -34,6 +36,7 @@ public class TestFeedforward extends CommandBase {
     @Override
     public void initialize() {
         timer.start();
+        m_drive.resetEncoders();
         initialEncoderPos = m_drive.getLinearEncoderPosition();
     }
 
@@ -42,7 +45,7 @@ public class TestFeedforward extends CommandBase {
         linearDisplacement = m_drive.getLinearEncoderPosition() - initialEncoderPos;
         linearVelocity = m_drive.getLinearWheelSpeeds();
         linearAcceleration = (linearVelocity - lastVelocity) / kDt;
-        m_drive.feedForwardTestDrive(12);
+        m_drive.feedForwardTestDrive(12 * kPercentageVoltage);
         SmartDashboard.putNumber("Linear Acceleration", linearAcceleration);
         SmartDashboard.putNumber("Linear Velocity", linearAcceleration);
         SmartDashboard.putNumber("Linear Displacement" , linearDisplacement);
