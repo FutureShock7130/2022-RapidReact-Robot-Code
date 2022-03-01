@@ -9,5 +9,30 @@ public class AutoModePlanner implements AutoModes {
 
     public void handleAutoMode() {
         // Write Conditional Logic to decide which Autononous Path etc... to go on.
+        if (aimMode == AimMode.LIMELIGHT) {
+
+        } else if (aimMode == AimMode.ABSOLUTE) {
+
+        }
+
+        if (driveMode == DriveMode.DIFFERENTIAL) {
+
+        } else if (driveMode == DriveMode.MECANUM) {
+
+        }
+
+        switch(startingPos) {
+            case ONE:
+                switch (driveStrategy) {
+                    case ONE_CARGO:
+                        break;
+                    default:
+                        break;
+                }
+            case TWO:
+                break;
+            default:
+                break;
+        }
     }
 }
