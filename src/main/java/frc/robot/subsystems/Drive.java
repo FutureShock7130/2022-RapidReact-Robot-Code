@@ -8,6 +8,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
@@ -178,12 +179,19 @@ public class Drive extends SubsystemBase {
   }
 
   // Gets the current wheel speeds.
-  public MecanumDriveWheelSpeeds getCurrentWheelSpeeds() {
+  public MecanumDriveWheelSpeeds getCurrentMecanumWheelSpeeds() {
     return new MecanumDriveWheelSpeeds(
         motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
         motorFR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
         motorRL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
         motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
+  }
+
+  public DifferentialDriveWheelSpeeds getCurrentDifferentialDriveWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(
+      motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
+      motorFR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse
+    );
   }
 
   public double getLinearWheelSpeeds() {
@@ -194,6 +202,16 @@ public class Drive extends SubsystemBase {
       motorRR.getSelectedSensorVelocity()
     ) / 4;
     return avgWheelSpeed * DriveConstants.kEncoderDistancePerPulse;
+  }
+
+  public double getLinearEncoderPosition() {
+    double avgDisplacement = (
+      motorFR.getSelectedSensorPosition() +
+      motorRR.getSelectedSensorPosition() +
+      motorRL.getSelectedSensorPosition() +
+      motorFL.getSelectedSensorPosition()
+    ) / 4;
+    return avgDisplacement;
   }
 
   public WPI_TalonFX getMotor(int slot) {

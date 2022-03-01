@@ -54,13 +54,25 @@ public final class Constants {
     public static final double kA = 0.00297;
     public static final double kJ = 14;
 
-    public static final double kP = 0.12;
+    public static final double kPDriveVel = 0.12;
 
     public static final SimpleMotorFeedforward kDriveFeedforward = new SimpleMotorFeedforward(0, 0, 0);
 
     public static final SimpleMotorFeedforward kFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
 
     public static final double kSlewRate = 0.7;
+
+    // Ramsete Parameters
+    public static final double kRamseteB = 2.0;
+    public static final double kRamseteTheta = 0.7;
+
+    public static final double kMaxVelocityMetersPerSecond = 2.5;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
+    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+
+    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
+        kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
     // Example value only - as above, this must be tuned for your drive!
     public static final double kPFrontLeftVel = 0.9506726;
@@ -137,19 +149,13 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 5;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 2;
-    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-
     public static final double kPXController = 1.356726;
     public static final double kPYController = 1.356726;
     public static final double kDXYController = 0;
     public static final double kPThetaController = 0.5;
 
     // Constraint for the motion profilied robot angle controller
-    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
-        kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+    
   }
 
   public static final class LimelightConstants {

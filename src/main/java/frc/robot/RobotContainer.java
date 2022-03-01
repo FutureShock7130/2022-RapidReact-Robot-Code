@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SuperstructureConstants;
-import frc.robot.auto.Actions.TestPathing.TestFeedforward;
+import frc.robot.auto.actions.TestPathing.TestFeedforward;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeReverse;
 import frc.robot.commands.Intake.IntakeStop;

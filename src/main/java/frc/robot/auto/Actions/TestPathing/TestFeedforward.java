@@ -1,7 +1,8 @@
-package frc.robot.auto.Actions.TestPathing;
+package frc.robot.auto.actions.TestPathing;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -13,6 +14,18 @@ public class TestFeedforward extends CommandBase {
     WPI_TalonFX motor;
     Timer timer = new Timer();
 
+    private SimpleMotorFeedforward feedforward = DriveConstants.kFeedforward;
+
+    double initialEncoderPos;
+    double kDt = 0.02;
+    double linearDisplacement;
+    double linearVelocity;
+    double linearAcceleration;
+
+    double lastVelocity;
+
+    String dataMessage;
+
     public TestFeedforward(Drive m_robotDrive) {
         m_drive = m_robotDrive;
         addRequirements(m_robotDrive);
@@ -21,13 +34,22 @@ public class TestFeedforward extends CommandBase {
     @Override
     public void initialize() {
         timer.start();
+        initialEncoderPos = m_drive.getLinearEncoderPosition();
     }
 
     @Override
     public void execute() {
+        linearDisplacement = m_drive.getLinearEncoderPosition() - initialEncoderPos;
+        linearVelocity = m_drive.getLinearWheelSpeeds();
+        linearAcceleration = (linearVelocity - lastVelocity) / kDt;
         m_drive.feedForwardTestDrive(12);
-        SmartDashboard.putNumber("Target Motor Velocity", m_drive.getLinearWheelSpeeds());
-        System.out.println(m_drive.getLinearWheelSpeeds());
+        SmartDashboard.putNumber("Linear Acceleration", linearAcceleration);
+        SmartDashboard.putNumber("Linear Velocity", linearAcceleration);
+        SmartDashboard.putNumber("Linear Displacement" , linearDisplacement);
+        lastVelocity = linearVelocity;
+
+        String data = String.format("%f, %f, %f", linearDisplacement, linearVelocity, linearAcceleration);
+        System.out.println(data);
     }
 
     public void end() { 
@@ -38,7 +60,7 @@ public class TestFeedforward extends CommandBase {
     @Override
     public boolean isFinished() {
         double targetPulses = 1 / DriveConstants.kEncoderDistancePerPulse ;
-        if (timer.get() > 3.5) {
+        if (timer.get() > 3.0) {
             m_drive.feedForwardTestDrive(0);
             timer.reset();
             return true;
