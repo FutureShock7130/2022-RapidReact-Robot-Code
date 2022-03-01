@@ -18,12 +18,12 @@ public class Transporter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void transportRun(){
-    topTransporter.set(TransporterConstants.transportSpeed);
+  public void transportRun(double speed){
+    topTransporter.set(speed);
   }
 
-  public void transportEject(){
-    topTransporter.set(-TransporterConstants.transportSpeed);
+  public void transportEject(double speed){
+    topTransporter.set(-speed);
   }
 
   public void transportStop(){

@@ -1,4 +1,4 @@
-package frc.robot.auto.Actions.TestPathing;
+package frc.robot.auto.actions.TestPathing;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 

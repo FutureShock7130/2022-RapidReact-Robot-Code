@@ -18,12 +18,13 @@ public class Turret extends SubsystemBase {
     public Turret() {
         masterFlyWheel.setInverted(true);
         slaveFlyWheel.setInverted(false);
+        slaveFlyWheel.follow(masterFlyWheel, true);
     }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        SmartDashboard.putNumber("Flywheel Speed", getFlyWheelsVelocity());
+        SmartDashboard.putNumber("Flywheel Velocity (Periodic)", getFlyWheelsVelocity());
     }
 
     public void flywheelsRun(double speed) {
@@ -40,6 +41,4 @@ public class Turret extends SubsystemBase {
     public double getFlyWheelsVelocity() {
         return (masterFlyWheel.getEncoder().getVelocity() + slaveFlyWheel.getEncoder().getVelocity()) / 2;
     }
-
-    
 }

@@ -5,6 +5,7 @@
 package frc.robot.commands.Transporter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.TransporterConstants;
 import frc.robot.subsystems.Transporter;
    
 public class TransportEject extends CommandBase {
@@ -26,13 +27,12 @@ public class TransportEject extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    transporter.transportEject();
+    transporter.transportEject(TransporterConstants.transportSpeed);
   } 
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    transporter.transportStop();
   }
 
   // Returns true when the command should end.

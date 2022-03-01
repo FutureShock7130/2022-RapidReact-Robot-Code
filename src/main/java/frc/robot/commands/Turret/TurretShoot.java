@@ -5,8 +5,10 @@
 package frc.robot.commands.Turret;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.TurretConstants;
 import frc.robot.subsystems.Turret;
 
 public class TurretShoot extends CommandBase {
@@ -28,6 +30,8 @@ public class TurretShoot extends CommandBase {
 
   Turret turret;
 
+  private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(TurretConstants.kV, TurretConstants.kA);
+
   /** Creates a new TurretShoot. */
   public TurretShoot(Turret m_robotTurret, double targetSet) {
     target = targetSet;
@@ -45,10 +49,11 @@ public class TurretShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double kF = feedforward.calculate(target);
 
     error = target - turret.getFlyWheelsVelocity();
 
-    if (Math.abs(integralSum) < 10000) {
+    if (Math.abs(integralSum) < 40000) {
       integralSum += error;
     }
 
@@ -63,13 +68,13 @@ public class TurretShoot extends CommandBase {
     } else if (error < -500) {
       turret.flywheelsRun(-1.0);
     } else {
-      turret.flywheelsRun(output);
+      turret.flywheelsRun(output + kF);
     }
     
     lastError = error;
 
-    SmartDashboard.putNumber("velocity", turret.getFlyWheelsVelocity());
-    SmartDashboard.putNumber("Turret Output", output);
+    SmartDashboard.putNumber("Flywheel Velocity", turret.getFlyWheelsVelocity());
+    SmartDashboard.putNumber("Flywheel Voltage Output", output);
   }
 
   // Called once the command ends or is interrupted.

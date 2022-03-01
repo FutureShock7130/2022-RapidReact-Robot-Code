@@ -50,8 +50,6 @@ public class Drive extends SubsystemBase {
   // Slew Rate Limiters for Motors during Teleoperation Mode
   SlewRateLimiter limiter = new SlewRateLimiter(DriveConstants.kSlewRate);
 
-  private final SimpleMotorFeedforward feedforward = DriveConstants.kFeedforward;
-
   /** Creates a new DriveSubsystem. */
   public Drive(DriveFSM driveFSM) {
     // Sets the distance per pulse for the encoders
@@ -271,7 +269,7 @@ public class Drive extends SubsystemBase {
     return -m_gyro.getRate();
   }
 
-  private double kP = 0.;
+  private double kP = 0.0001;
   private double kI = 0;
   private double kD = 0;
   private PIDController controllerFL = new PIDController(kP, kI, kD);
@@ -279,25 +277,31 @@ public class Drive extends SubsystemBase {
   private PIDController controllerFR = new PIDController(kP, kI, kD);
   private PIDController controllerRR = new PIDController(kP, kI, kD);
 
+  private double kPVel = DriveConstants.kPDriveVel;
+
+  private final SimpleMotorFeedforward feedforward = DriveConstants.kFeedforward;
+
   // Feedforward control defined above as a constant
 
   // Feedforward Drive using the WPI Controllers
   public double feedforwardPIDDrive(double targetPos, double velocity, double acceleration) {
     // Note that Velocity is in m/s
     targetPos /= DriveConstants.kEncoderDistancePerPulse;
-    double kF = feedforward.calculate(velocity);
-    motorFL.setVoltage(controllerFL.calculate(targetPos, motorFL.getSelectedSensorPosition()) + kF);
-    motorRL.setVoltage(controllerRL.calculate(targetPos, motorRL.getSelectedSensorPosition()) + kF);
-    motorFR.setVoltage(controllerFR.calculate(targetPos, motorFR.getSelectedSensorPosition()) + kF);
-    motorRR.setVoltage(controllerRR.calculate(targetPos, motorRR.getSelectedSensorPosition()) + kF);
+    double kF = feedforward.calculate(velocity, acceleration);
+    double velError = velocity - getLinearWheelSpeeds();
+    motorFL.setVoltage(
+      velError * kPVel +
+      controllerFL.calculate(motorFL.getSelectedSensorPosition(), targetPos) + kF);
+    motorRL.setVoltage(
+      velError * kPVel +
+      controllerRL.calculate(motorRL.getSelectedSensorPosition(), targetPos) + kF);
+    motorFR.setVoltage(
+      velError * kPVel +
+      controllerFR.calculate(motorFR.getSelectedSensorPosition(), targetPos) + kF);
+    motorRR.setVoltage(
+      velError * kPVel +
+      controllerRR.calculate(motorRR.getSelectedSensorPosition(), targetPos) + kF);
     return controllerFL.calculate(targetPos, motorFL.getSelectedSensorPosition()) + kF;
-  }
-
-  public void testMotor() {
-    while ((motorFR.getSelectedSensorPosition() / 2048 * DriveConstants.kWheelCircumference / DriveConstants.kGearRatio) < 2) {
-      m_drive.driveCartesian(0, -0.1, 0);
-    }
-    m_drive.driveCartesian(0, 0, 0);
   }
 
   // Directly pass in voltage needed

@@ -21,6 +21,8 @@ public class Limelight extends SubsystemBase {
     double v;
     double area;
 
+    boolean hasValidTarget = false;
+
     // calculate angles
     double angleToGoalDegrees = LimelightConstants.limelightMounAngleDegrees + y;
     double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
@@ -28,16 +30,25 @@ public class Limelight extends SubsystemBase {
     // calculate distance
     double distanceFromLimelightToGoalInches = ((LimelightConstants.goalHeightMeters - LimelightConstants.limelightLensHeightMeters)/Math.tan(angleToGoalRadians));
 
+    public Limelight() {
+        v = table.getEntry("tv").getDouble(0);
+        setValidTarget(v);
+    }
+
     // proportional control constant for distance
     public void periodic() {
+        v = tv.getDouble(0);
+        // Check for Valid target
+        setValidTarget(v);
+
         x = tx.getDouble(0.0);
         y = ty.getDouble(0.0);
         area = ta.getDouble(0.0);
-        v = tv.getDouble(0.0);
 
         SmartDashboard.putNumber("LimelightX", x);
         SmartDashboard.putNumber("LimelightY", y);
         SmartDashboard.putNumber("LimelightArea", area);
+        SmartDashboard.putBoolean("Has Valid Target", hasValidTarget);
 
         distanceFromLimelightToGoalInches = 
         ((LimelightConstants.goalHeightMeters - LimelightConstants.limelightLensHeightMeters) / Math.tan((angleToGoalDegrees+y) * Math.PI / 180));
@@ -55,5 +66,17 @@ public class Limelight extends SubsystemBase {
     }
     public double getV(){
         return v;
+    }
+
+    public void setValidTarget(double v) {
+        if (v == 0) {
+            hasValidTarget = false;
+        } else if (v == 1) {
+            hasValidTarget = true;
+        }
+    }
+
+    public boolean getTargetStatus() {
+        return hasValidTarget;
     }
 }
