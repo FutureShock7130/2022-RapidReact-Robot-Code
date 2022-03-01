@@ -24,8 +24,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private DriveFSM driveFSM;
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -34,8 +32,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    driveFSM = new DriveFSM(); 
-    m_robotContainer = new RobotContainer(driveFSM);
+    m_robotContainer = new RobotContainer();
     UsbCamera camera = CameraServer.startAutomaticCapture();
     CvSink cvSink = CameraServer.getVideo();
     CvSource outputStream = CameraServer.putVideo("Blur", 1920, 1080);
@@ -67,7 +64,6 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    driveFSM.setOdometryDifferential();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -82,7 +78,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    driveFSM.setOdometryMecanum();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

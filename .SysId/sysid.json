@@ -1,6 +1,7 @@
 {
   "SysId": {
     "Analysis Type": "Drivetrain",
+    "AnalyzerJSONLocation": "C:\\FRCrepo\\sysid_data20220301-092726.json",
     "NetworkTables Settings": {
       "serverTeam": "7130"
     },

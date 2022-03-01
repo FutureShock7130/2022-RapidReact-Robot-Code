@@ -39,7 +39,7 @@ public class Drive extends SubsystemBase {
   DifferentialDriveOdometry m_differentialOdometry;
 
   /** Creates a new DriveSubsystem. */
-  public Drive() {
+  public Drive(DriveFSM driveFSM) {
     // Sets the distance per pulse for the encoders
     // DO WE NEED TO DO THIS?
 
@@ -49,6 +49,7 @@ public class Drive extends SubsystemBase {
     motorRR.setInverted(true);
     motorFL.setInverted(false);
     motorRL.setInverted(false);
+    driveStateMachine = driveFSM;
 
     resetEncoders();
 
@@ -83,6 +84,9 @@ public class Drive extends SubsystemBase {
             motorRL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
             motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse));
       SmartDashboard.putNumber("Linearized Wheel Speed", getLinearWheelSpeeds());
+    }
+    if (getTargetWheelSpeed(motorFL) > 0.2) {
+      System.out.println(getTargetWheelSpeed(motorFL));
     }
 
     // SmartDashboard.putNumber("velocity", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
@@ -184,7 +188,7 @@ public class Drive extends SubsystemBase {
       motorRL.getSelectedSensorVelocity() +
       motorRR.getSelectedSensorVelocity()
     ) / 4;
-    return avgWheelSpeed;
+    return avgWheelSpeed * DriveConstants.kEncoderDistancePerPulse;
   }
 
   public WPI_TalonFX getMotor(int slot) {

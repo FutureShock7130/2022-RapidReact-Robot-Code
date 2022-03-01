@@ -34,7 +34,7 @@ public class TestOneMeters extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        double targetPulses = 1 / DriveConstants.kEncoderDistancePerPulse ;
+        double targetPulses = 4 / DriveConstants.kEncoderDistancePerPulse ;
         if (m_drive.getTargetEncoderPositions(motor) > targetPulses) {
             m_drive.feedForwardTestDrive(0);
             return true;

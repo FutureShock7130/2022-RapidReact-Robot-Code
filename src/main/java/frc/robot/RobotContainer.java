@@ -15,11 +15,16 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SuperstructureConstants;
+import frc.robot.auto.Actions.TestPathing.TestOneMeters;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeReverse;
+import frc.robot.commands.Intake.IntakeStop;
 import frc.robot.commands.Superstructure.AutoClimb;
 import frc.robot.commands.Superstructure.SwingBack;
 import frc.robot.commands.Superstructure.SwingForward;
+import frc.robot.commands.Transporter.TransportCmd;
+import frc.robot.commands.Transporter.TransportEject;
+import frc.robot.commands.Transporter.TransportStop;
 import frc.robot.commands.Turret.LimelightAim;
 import frc.robot.commands.Turret.TurretSeek;
 import frc.robot.commands.Turret.TurretShoot;
@@ -43,7 +48,8 @@ import com.pathplanner.lib.PathPlanner;
 
 public class RobotContainer {
     // The robot's subsystems
-    private final Drive m_robotDrive = new Drive();
+    private final DriveFSM driveFSM = new DriveFSM();
+    private final Drive m_robotDrive = new Drive(driveFSM);
     private final Transporter m_robotTransport = new Transporter();
     private final Turret m_robotTurret = new Turret();
     private final Intake m_robotIntake = new Intake();
@@ -66,10 +72,9 @@ public class RobotContainer {
     Joystick m_operatorController = new Joystick(OIConstants.kOthersJoystickPort);
 
     // The container for the robot. Contains subsystems, OI devices, and commands.
-    public RobotContainer(DriveFSM driveFSM) {
+    public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
-        m_robotDrive.setDriveFSM(driveFSM);
 
         m_robotDrive.setDefaultCommand(
                 new RunCommand(
@@ -95,20 +100,30 @@ public class RobotContainer {
                             }
 
                             IntakeCmd intake = new IntakeCmd(m_robotIntake);
+                            IntakeStop intakeStop = new IntakeStop(m_robotIntake);
                             IntakeReverse eject = new IntakeReverse(m_robotIntake);
 
                             if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
                                 intake.schedule();
-                            } else {
-                                intake.cancel();
-                            }
-
-                            if (m_driverController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
+                            } else if (m_driverController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
                                 eject.schedule();
                             } else {
-                                eject.cancel();
+                                intakeStop.schedule();
                             }
 
+                            TransportCmd transportCmd = new TransportCmd(m_robotTransport);
+                            TransportStop transportStop = new TransportStop(m_robotTransport);
+                            TransportEject transportEject = new TransportEject(m_robotTransport);
+
+                            if (m_operatorController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
+                                transportCmd.schedule();
+                            } else if (m_operatorController.getRawButton(OIConstants.Btn_LB)) {
+                                transportEject.schedule();
+                            } else {
+                                transportStop.schedule();
+                            }
+
+                    
                             m_SuperStructure.liftHangerRun(
                                     -m_operatorController.getRawAxis(OIConstants.leftStick_Y)
                                             * SuperstructureConstants.hangerSpeed,
@@ -122,8 +137,8 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         new JoystickButton(m_driverController, OIConstants.Btn_RB)
-                .whileHeld(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler * 0.7))
-                .whenReleased(() -> m_robotDrive.setMaxOutput(DriveConstants.DriveSpeedScaler));
+                .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
+                .whenReleased(() -> m_robotDrive.setMaxOutput(0.95));
 
         new JoystickButton(m_driverController, OIConstants.Btn_Y)
                 .whenHeld(new ConditionalCommand(new TurretSeek(m_robotTurret), new LimelightAim(m_robotTurret, m_vision), targetNotIn));
@@ -164,18 +179,21 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
+        driveFSM.setOdometryDifferential();
         String trajectoryJSON = "paths/straightTest.wpilib.json";
-        
-        try {
-            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-            Trajectory Trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+        TestOneMeters testCommand = new TestOneMeters(m_robotDrive);
 
-            // Run path following command, then stop at the end.
-            // return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0,
-            // false));
-        } catch (IOException e) {
-            DriverStation.reportError("Unable to open JSON file", e.getStackTrace());
-        }
-        return null;
+        return testCommand;
+        
+        // try {
+            
+
+        //     // Run path following command, then stop at the end.
+        //     // return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0,
+        //     // false));
+        // } catch (IOException e) {
+        //     DriverStation.reportError("Unable to open JSON file", e.getStackTrace());
+        // }
+        // return null;
     }
 }
