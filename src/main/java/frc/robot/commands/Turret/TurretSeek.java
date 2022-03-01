@@ -31,6 +31,7 @@ public class TurretSeek extends CommandBase{
 
     public void execute(){
         tv = tvEntry.getDouble(0.0);
+        
         if (tv == 0.0d){
             
             if (m_turret.atLeftLimit()) speed = TurretConstants.turretSpeedMultiplier/2;
@@ -46,7 +47,7 @@ public class TurretSeek extends CommandBase{
     }
 
     public boolean isFinished(){
-        if(targetFound) return true;
+        if(targetFound == true) { return true; }
         return false;
     }
 

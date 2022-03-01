@@ -57,13 +57,15 @@ public class RobotContainer {
     private final Superstructure m_SuperStructure = new Superstructure();
 
     AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
-    TurretShoot shoot = new TurretShoot(m_robotTurret);
+    TurretShoot nearShoot = new TurretShoot(m_robotTurret, 1850);
+    TurretShoot farShoot = new TurretShoot(m_robotTurret, 3000);
 
     BooleanSupplier targetNotIn = new BooleanSupplier() {
         @Override
-        public boolean getAsBoolean(){
-            if (m_vision.getV() == 0.0d) return true;
-            return false; 
+        public boolean getAsBoolean() {
+            if (m_vision.getV() == 0.0d)
+                return true;
+            return false;
         }
     };
 
@@ -82,13 +84,13 @@ public class RobotContainer {
                             m_robotDrive.drive(
                                     -m_driverController.getRawAxis(OIConstants.leftStick_Y),
                                     m_driverController.getRawAxis(OIConstants.leftStick_X),
-                                    m_driverController.getRawAxis(OIConstants.rightStick_X),
+                                    m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.5,
                                     false);
 
                             SwingForward swingForward = new SwingForward(m_SuperStructure);
                             SwingBack swingBack = new SwingBack(m_SuperStructure);
 
-                            if (m_operatorController.getPOV() == OIConstants.POV_UP)
+                            if (m_operatorController.getPOV() == OIConstants.POV_UP){}
                                 swingForward.schedule();
                             if (m_operatorController.getPOV() == OIConstants.POV_DOWN)
                                 swingBack.schedule();
@@ -102,6 +104,12 @@ public class RobotContainer {
                             IntakeCmd intake = new IntakeCmd(m_robotIntake);
                             IntakeStop intakeStop = new IntakeStop(m_robotIntake);
                             IntakeReverse eject = new IntakeReverse(m_robotIntake);
+
+                            if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.4) {
+                                farShoot.schedule();
+                            } else {
+                                farShoot.cancel();
+                            }
 
                             if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
                                 intake.schedule();
@@ -123,7 +131,6 @@ public class RobotContainer {
                                 transportStop.schedule();
                             }
 
-                    
                             m_SuperStructure.liftHangerRun(
                                     -m_operatorController.getRawAxis(OIConstants.leftStick_Y)
                                             * SuperstructureConstants.hangerSpeed,
@@ -141,7 +148,8 @@ public class RobotContainer {
                 .whenReleased(() -> m_robotDrive.setMaxOutput(0.95));
 
         new JoystickButton(m_driverController, OIConstants.Btn_Y)
-                .whenHeld(new ConditionalCommand(new TurretSeek(m_robotTurret), new LimelightAim(m_robotTurret, m_vision), targetNotIn));
+                .whenHeld(new ConditionalCommand(new TurretSeek(m_robotTurret),
+                        new LimelightAim(m_robotTurret, m_vision), targetNotIn));
 
         new JoystickButton(m_driverController, OIConstants.Btn_B)
                 .whileHeld(new RunCommand(() -> {
@@ -160,8 +168,8 @@ public class RobotContainer {
                 }, m_robotTurret));
 
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
-                .whenHeld(shoot)
-                .whenReleased(() -> shoot.cancel());
+                .whenHeld(nearShoot)
+                .whenReleased(() -> nearShoot.cancel());
 
         // new JoystickButton(m_operatorController,
         // OIConstants.Btn_RB).whenPressed(autoClimb);
@@ -182,11 +190,11 @@ public class RobotContainer {
         TestFeedforward m_command = new TestFeedforward(m_robotDrive);
         // try {
 
-        //     // Run path following command, then stop at the end.
-        //     // return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0,
-        //     // false));
+        // // Run path following command, then stop at the end.
+        // // return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0,
+        // // false));
         // } catch (IOException e) {
-        //     DriverStation.reportError("Unable to open JSON file", e.getStackTrace());
+        // DriverStation.reportError("Unable to open JSON file", e.getStackTrace());
         // }
         return m_command;
     }
