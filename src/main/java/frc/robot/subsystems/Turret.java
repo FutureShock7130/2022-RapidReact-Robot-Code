@@ -23,7 +23,7 @@ public class Turret extends SubsystemBase {
     /** Creates a new TurretSubystem. */
     public Turret() {
         masterFlyWheel.setInverted(true);
-        slaveFlyWheel.follow(masterFlyWheel, true);
+        slaveFlyWheel.setInverted(false);
         leftAtLimit = !getforwardLimitSwitchCheck();
         rightAtLimit = !getreverseLimitSwitchCheck();
     }
@@ -40,6 +40,7 @@ public class Turret extends SubsystemBase {
 
     public void flywheelsRun(double speed) {
         masterFlyWheel.set(speed);
+        slaveFlyWheel.set(speed);
     }
 
     public void spinnerRun(double speed) {
@@ -48,6 +49,7 @@ public class Turret extends SubsystemBase {
 
     public void flywheelsStop() {
         masterFlyWheel.set(0);
+        slaveFlyWheel.set(0);
     }
 
     public void spinnerStop() {

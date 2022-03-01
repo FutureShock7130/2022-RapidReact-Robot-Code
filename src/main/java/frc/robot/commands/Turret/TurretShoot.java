@@ -10,16 +10,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
 
 public class TurretShoot extends CommandBase {
-  private static final double kP = 0.0005;
-  private static final double kI = 0;
+  private static final double kP = 0.0011;
+  private static final double kI = 0.00002;
   // a D Controller is not needed for the basic flywheel control because we only
   // need to rev the spin speed up instead of it being
   // reving up and down gradually.
-  private static final double kD = 0.0002;
+  private static final double kD = 0.00015;
   private static final double timeDiff = 0.02;  
 
-  private double target = 1500;
+  private double target;  // 1750
   private double integralSum;
+
   private double derivative;
   private double error;
   private double lastError;
@@ -28,7 +29,8 @@ public class TurretShoot extends CommandBase {
   Turret turret;
 
   /** Creates a new TurretShoot. */
-  public TurretShoot(Turret m_robotTurret) {
+  public TurretShoot(Turret m_robotTurret, double targetSet) {
+    target = targetSet;
     turret = m_robotTurret;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -46,7 +48,7 @@ public class TurretShoot extends CommandBase {
 
     error = target - turret.getFlyWheelsVelocity();
 
-    if (Math.abs(integralSum) < 100) {
+    if (Math.abs(integralSum) < 10000) {
       integralSum += error;
     }
 
@@ -63,7 +65,7 @@ public class TurretShoot extends CommandBase {
     } else {
       turret.flywheelsRun(output);
     }
-
+    
     lastError = error;
 
     SmartDashboard.putNumber("velocity", turret.getFlyWheelsVelocity());
