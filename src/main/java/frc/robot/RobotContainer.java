@@ -16,6 +16,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SuperstructureConstants;
 import frc.robot.auto.actions.TestPathing.TestFeedforward;
+import frc.robot.commands.Drive.TrapezoidProfileDrive;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeReverse;
 import frc.robot.commands.Intake.IntakeStop;
@@ -98,12 +99,8 @@ public class RobotContainer {
                                     m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.5,
                                     false);
 
-<<<<<<< HEAD
                             // Superstructure Swinging
                             if (m_operatorController.getPOV() == OIConstants.POV_UP){}
-=======
-                            if (m_operatorController.getPOV() == OIConstants.POV_UP) 
->>>>>>> 1e89ee891a2b5733d2c732810e4369808eaf9dd1
                                 swingForward.schedule();
                             if (m_operatorController.getPOV() == OIConstants.POV_DOWN)
                                 swingBack.schedule();
@@ -114,10 +111,7 @@ public class RobotContainer {
                                 swingForward.cancel();
                             }
 
-<<<<<<< HEAD
                             // Far Flywheel Logic
-=======
->>>>>>> 1e89ee891a2b5733d2c732810e4369808eaf9dd1
                             if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.4) {
                                 farShoot.schedule();
                             } else {
@@ -133,10 +127,7 @@ public class RobotContainer {
                                 intakeStop.schedule();
                             }
 
-<<<<<<< HEAD
                             // Transporter Logic
-=======
->>>>>>> 1e89ee891a2b5733d2c732810e4369808eaf9dd1
                             if (m_operatorController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
                                 transportCmd.schedule();
                             } else if (m_operatorController.getRawButton(OIConstants.Btn_LB)) {
@@ -200,7 +191,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        TestFeedforward m_command = new TestFeedforward(m_robotDrive);
+        TestFeedforward m_command1 = new TestFeedforward(m_robotDrive);
+        TrapezoidProfileDrive m_command2 = new TrapezoidProfileDrive(4.0, m_robotDrive);
         // try {
 
         // // Run path following command, then stop at the end.
@@ -209,6 +201,6 @@ public class RobotContainer {
         // } catch (IOException e) {
         // DriverStation.reportError("Unable to open JSON file", e.getStackTrace());
         // }
-        return m_command;
+        return m_command1;
     }
 }

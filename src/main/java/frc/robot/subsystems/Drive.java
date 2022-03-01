@@ -274,6 +274,8 @@ public class Drive extends SubsystemBase {
   private PIDController controllerFR = new PIDController(kP, kI, kD);
   private PIDController controllerRR = new PIDController(kP, kI, kD);
 
+  // Feedforward control defined above as a constant
+
   // Feedforward Drive using the WPI Controllers
   public double feedforwardPIDDrive(double targetPos, double velocity, double acceleration) {
     // Note that Velocity is in m/s
