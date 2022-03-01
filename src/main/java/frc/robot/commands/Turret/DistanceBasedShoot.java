@@ -4,19 +4,19 @@
 
 package frc.robot.commands.Turret;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
 
-public class TurretShoot extends CommandBase {
+public class DistanceBasedShoot extends CommandBase {
+
   private static final double kP = 0.0005;
-  private static final double kI = 0;
+  private static final double kI = 0.0002;
   // a D Controller is not needed for the basic flywheel control because we only
   // need to rev the spin speed up instead of it being
   // reving up and down gradually.
-  private static final double kD = 0.0002;
-  private static final double timeDiff = 0.02;  
+  private static final double kD = 0;
+  private static final double timeDiff = 0.02;
 
   private double target = 1500;
   private double integralSum;
@@ -28,7 +28,7 @@ public class TurretShoot extends CommandBase {
   Turret turret;
 
   /** Creates a new TurretShoot. */
-  public TurretShoot(Turret m_robotTurret) {
+  public DistanceBasedShoot(Turret m_robotTurret) {
     turret = m_robotTurret;
 
     // Use addRequirements() here to declare subsystem dependencies.

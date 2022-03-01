@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SuperstructureConstants;
-import frc.robot.auto.Actions.TestPathing.TestOneMeters;
+import frc.robot.auto.Actions.TestPathing.TestFeedforward;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeReverse;
 import frc.robot.commands.Intake.IntakeStop;
@@ -179,14 +179,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        driveFSM.setOdometryDifferential();
-        String trajectoryJSON = "paths/straightTest.wpilib.json";
-        TestOneMeters testCommand = new TestOneMeters(m_robotDrive);
-
-        return testCommand;
-        
+        TestFeedforward m_command = new TestFeedforward(m_robotDrive);
         // try {
-            
 
         //     // Run path following command, then stop at the end.
         //     // return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0,
@@ -194,6 +188,6 @@ public class RobotContainer {
         // } catch (IOException e) {
         //     DriverStation.reportError("Unable to open JSON file", e.getStackTrace());
         // }
-        // return null;
+        return m_command;
     }
 }

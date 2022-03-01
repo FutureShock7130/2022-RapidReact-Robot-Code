@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -37,6 +38,9 @@ public class Drive extends SubsystemBase {
   DriveFSM driveStateMachine; 
   MecanumDriveOdometry m_mecanumOdometry;
   DifferentialDriveOdometry m_differentialOdometry;
+
+  // Slew Rate Limiters for Motors during Teleoperation Mode
+  SlewRateLimiter limiter = new SlewRateLimiter(DriveConstants.kSlewRate);
 
   /** Creates a new DriveSubsystem. */
   public Drive(DriveFSM driveFSM) {
@@ -142,9 +146,9 @@ public class Drive extends SubsystemBase {
   @SuppressWarnings("ParameterName")
   public void drive(double ySpeed, double xSpeed, double rot, boolean fieldRelative) {
     if (fieldRelative) {
-      m_drive.driveCartesian(ySpeed, xSpeed, rot, -m_gyro.getAngle());
+      m_drive.driveCartesian(limiter.calculate(ySpeed), xSpeed, rot, -m_gyro.getAngle());
     } else {
-      m_drive.driveCartesian(ySpeed, xSpeed, rot);
+      m_drive.driveCartesian(limiter.calculate(ySpeed), xSpeed, rot);
     }
   }
 
@@ -241,6 +245,7 @@ public class Drive extends SubsystemBase {
     m_drive.driveCartesian(0, 0, 0);
   }
 
+  // Directly pass in voltage needed
   public void feedForwardTestDrive(double speed) {
     motorFL.setVoltage(speed);
     motorFR.setVoltage(speed);

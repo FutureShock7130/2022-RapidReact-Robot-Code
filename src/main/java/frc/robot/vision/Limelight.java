@@ -26,7 +26,7 @@ public class Limelight extends SubsystemBase {
     double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
 
     // calculate distance
-    double distanceFromLimeligtToGoalInches = ((LimelightConstants.goalHeightMeters - LimelightConstants.limelightLensHeightMeters)/Math.tan(angleToGoalRadians));
+    double distanceFromLimelightToGoalInches = ((LimelightConstants.goalHeightMeters - LimelightConstants.limelightLensHeightMeters)/Math.tan(angleToGoalRadians));
 
     // proportional control constant for distance
     public void periodic() {
@@ -39,12 +39,12 @@ public class Limelight extends SubsystemBase {
         SmartDashboard.putNumber("LimelightY", y);
         SmartDashboard.putNumber("LimelightArea", area);
 
-        distanceFromLimeligtToGoalInches = 
+        distanceFromLimelightToGoalInches = 
         ((LimelightConstants.goalHeightMeters - LimelightConstants.limelightLensHeightMeters) / Math.tan((angleToGoalDegrees+y) * Math.PI / 180));
     }
 
     public double getDis() {
-        return distanceFromLimeligtToGoalInches;
+        return distanceFromLimelightToGoalInches;
     }
 
     public double getX(){

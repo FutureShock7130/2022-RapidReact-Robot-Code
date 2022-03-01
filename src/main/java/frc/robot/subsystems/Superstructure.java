@@ -33,6 +33,9 @@ public class Superstructure extends SubsystemBase {
   private boolean leftAtLimit;
   private boolean rightAtLimit;
 
+  private double leftMultiplier = 0.9;
+  private double rightMultiplier = 1.0;
+
   private double minPosition;
 
   // Creates a new Superstructure.
@@ -68,8 +71,8 @@ public class Superstructure extends SubsystemBase {
   }
 
   public void liftHangerRun(double Lspeed, double Rspeed) {
-    leftHanger.set(Lspeed);
-    rightHanger.set(Rspeed);
+    leftHanger.set(Lspeed * leftMultiplier);
+    rightHanger.set(Rspeed * rightMultiplier);
   }
 
   public void liftSwingStop() {
