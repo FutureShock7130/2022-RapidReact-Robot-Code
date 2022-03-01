@@ -70,17 +70,16 @@ public class Drive extends SubsystemBase {
     // Odometry class for tracking robot pose
     if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.MECANUM_ODOMETRY) {
       m_mecanumOdometry = new MecanumDriveOdometry(DriveConstants.kMecanumDriveKinematics, m_gyro.getRotation2d());
-      resetMecanumOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
+      resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
     }
     if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
       m_differentialOdometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), new Pose2d(0, 0, new Rotation2d()));
-      resetDifferentialOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
+      resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
     }
   }
 
   @Override
   public void periodic() {
-    System.out.println(getLinearWheelSpeeds());
     // Update the odometry in the periodic block
     if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
       m_differentialOdometry.update(
@@ -101,7 +100,7 @@ public class Drive extends SubsystemBase {
       SmartDashboard.putNumber("Linearized Wheel Speed", getLinearWheelSpeeds());
     }
     if (getTargetWheelSpeed(motorFL) > 0.2) {
-      System.out.println(getTargetWheelSpeed(motorFL));
+      //System.out.println(getTargetWheelSpeed(motorFL));
     }
 
     // SmartDashboard.putNumber("velocity", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
@@ -127,12 +126,11 @@ public class Drive extends SubsystemBase {
   }
 
   // Resets the odometry to the specified pose.
-  public void resetMecanumOdometry(Pose2d pose) {
+  public void resetOdometry(Pose2d pose) {
+    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
+      m_differentialOdometry.resetPosition(pose, m_gyro.getRotation2d());;
+    } 
     m_mecanumOdometry.resetPosition(pose, m_gyro.getRotation2d());
-  }
-
-  public void resetDifferentialOdometry(Pose2d pose) {
-    m_differentialOdometry.resetPosition(pose, m_gyro.getRotation2d());
   }
 
   // Drives the robot at given x, y and theta speeds. 

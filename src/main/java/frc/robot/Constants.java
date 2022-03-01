@@ -51,9 +51,9 @@ public final class Constants {
     // The SysId tool provides a convenient method for obtaining these values for
     // your robot.
 
-    public static final double kS = 0.64316;
-    public static final double kV = 0.002;
-    public static final double kA = 0.00297;
+    public static final double kS = 0.76364;
+    public static final double kV = 3.84;
+    public static final double kA = 1.9852;
     public static final double kJ = 14;
 
     public static final double kPDriveVel = 0.12;
@@ -69,7 +69,7 @@ public final class Constants {
     public static final double kRamseteTheta = 0.7;
 
     public static final double kMaxVelocityMetersPerSecond = 2.5;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1.8;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 

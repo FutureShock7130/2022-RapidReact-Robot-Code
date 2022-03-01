@@ -20,6 +20,7 @@ public class SwingForward extends CommandBase{
         } else {
             m_SuperStructure.liftSwingStop();
         }
+        System.out.println("lift swing");
         
     }
 
