@@ -241,6 +241,7 @@ public class Drive extends SubsystemBase {
     m_drive.driveCartesian(0, 0, 0);
   }
 
+  // Directly pass in voltage needed
   public void feedForwardTestDrive(double speed) {
     motorFL.setVoltage(speed);
     motorFR.setVoltage(speed);

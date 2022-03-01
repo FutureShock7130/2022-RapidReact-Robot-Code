@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SuperstructureConstants;
+import frc.robot.auto.Actions.TestPathing.TestFeedforward;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeReverse;
 import frc.robot.commands.Superstructure.AutoClimb;
@@ -164,18 +165,15 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        String trajectoryJSON = "paths/straightTest.wpilib.json";
-        
-        try {
-            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-            Trajectory Trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+        TestFeedforward m_command = new TestFeedforward(m_robotDrive);
+        // try {
 
-            // Run path following command, then stop at the end.
-            // return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0,
-            // false));
-        } catch (IOException e) {
-            DriverStation.reportError("Unable to open JSON file", e.getStackTrace());
-        }
-        return null;
+        //     // Run path following command, then stop at the end.
+        //     // return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0,
+        //     // false));
+        // } catch (IOException e) {
+        //     DriverStation.reportError("Unable to open JSON file", e.getStackTrace());
+        // }
+        return m_command;
     }
 }

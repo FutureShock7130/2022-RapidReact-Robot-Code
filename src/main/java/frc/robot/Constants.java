@@ -50,6 +50,8 @@ public final class Constants {
     public static final double kV = 0.020661;
     public static final double kA = 0.0019347;
 
+    public static final SimpleMotorFeedforward kDriveFeedforward = new SimpleMotorFeedforward(0, 0, 0);
+
     public static final SimpleMotorFeedforward kFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
 
     public static final double kSlewRate = 0.7;
