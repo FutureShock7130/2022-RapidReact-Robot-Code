@@ -5,58 +5,63 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.TurretConstants;
+import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.Turret;
 
-public class TurretSeek extends CommandBase{
-    
-    Turret m_turret;
+public class TurretSeek extends CommandBase {
+
+    private Spinner spinner;
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tvEntry = table.getEntry("tv");
-    
+
     double tv;
-
-    double speed=TurretConstants.turretSpeedMultiplier/2;
-
+    double speed = TurretConstants.turretSpeedMultiplier / 2;
     boolean targetFound = false;
 
-    public TurretSeek(Turret m_robotTurret){
-        m_turret = m_robotTurret;
-        addRequirements(m_robotTurret);
+    public TurretSeek(Spinner m_robotSpinner) {
+        spinner = m_robotSpinner;
+
+        addRequirements(m_robotSpinner);
     }
 
-    public void initialize(){
+    public void initialize() {
+        targetFound = false;
         tv = tvEntry.getDouble(0.0);
     }
 
-    public void execute(){
+    public void execute() {
         tv = tvEntry.getDouble(0.0);
-        
-        if (tv == 0.0d){
-            
-            if (m_turret.atLeftLimit()) speed = TurretConstants.turretSpeedMultiplier/2;
-            if (m_turret.atRightLimit()) speed = -TurretConstants.turretSpeedMultiplier/2;
 
-            m_turret.spinnerRun(speed);
+        if (tv == 0.0d && targetFound == false) {
+
+            if (spinner.atLeftLimit())
+                speed = TurretConstants.turretSpeedMultiplier / 2;
+            if (spinner.atRightLimit())
+                speed = -TurretConstants.turretSpeedMultiplier / 2;
+
+            spinner.spinnerRun(speed);
 
         } else {
-            m_turret.spinnerRun(0);
+            spinner.spinnerRun(0);
             targetFound = true;
         }
         System.out.println(tv);
     }
 
-    public boolean isFinished(){
-        if(targetFound == true) { return true; }
+    public boolean isFinished() {
+        if (targetFound == true) {
+            return true;
+        }
         return false;
     }
 
-    public void end(boolean interrupted){
-        m_turret.spinnerRun(0);
+    public void end(boolean interrupted) {
+        spinner.spinnerRun(0);
     }
-    
-    public void interrupted(){
-        m_turret.spinnerRun(0);
+
+    public void interrupted() {
+        spinner.spinnerRun(0);
     }
 
 }

@@ -2,19 +2,21 @@ package frc.robot.commands.Turret;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.Turret;
 
 
 public class TurretTurnLeft extends CommandBase {
-    private Turret turret;
+
+    private Spinner spinner;
     private double turnSpeed = 0;
 
-    public TurretTurnLeft(Turret m_robotTurret, double speed) {
-        turret = m_robotTurret;
+    public TurretTurnLeft(Spinner m_robotSpinner, double speed) {
+        spinner = m_robotSpinner;
         turnSpeed = speed;
 
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(turret);
+        addRequirements(spinner);
     }
 
     public void initialize() {
@@ -25,21 +27,21 @@ public class TurretTurnLeft extends CommandBase {
         // if (checkLimit() == true) {
         //     return;
         // }
-        if (!turret.atLeftLimit()) {
-            turret.spinnerRun(turnSpeed);
+        if (!spinner.atLeftLimit()) {
+            spinner.spinnerRun(turnSpeed);
         }
 
-        SmartDashboard.putNumber("TurretLeft Speed:", turnSpeed);
-        System.out.println("TurretTurnLeft executing");
+        SmartDashboard.putNumber("spinnerLeft Speed:", turnSpeed);
+        System.out.println("spinnerTurnLeft executing");
     }
 
     public void end(boolean interrupted) {
-        turret.spinnerRun(0);
+        spinner.spinnerRun(0);
     }
 
     public boolean isFinished() {
-        if (turret.atTurningLimit()) {
-            turret.spinnerRun(0);
+        if (spinner.atTurningLimit()) {
+            spinner.spinnerRun(0);
             return true;
         }
         return false;
