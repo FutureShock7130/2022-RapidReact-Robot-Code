@@ -4,6 +4,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.vision.Limelight;
+import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.Turret;
 
 
@@ -23,14 +24,17 @@ public class LimelightAim extends CommandBase {
     
     private Turret turret;
     private Limelight limelight;
+    private Spinner spinner;
 
-    public LimelightAim(Turret m_robotTurret, Limelight m_robotLimelight) {
+    public LimelightAim(Turret m_robotTurret, Limelight m_robotLimelight, Spinner m_robotSpinner) {
         turret = m_robotTurret;
         limelight = m_robotLimelight;
+        spinner = m_robotSpinner;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(turret);
         addRequirements(limelight);
+        addRequirements(spinner);
     }
 
     public void initialize() {
@@ -50,8 +54,8 @@ public class LimelightAim extends CommandBase {
         derivative = (xError - lastError) / timeDiff;
         output = kPangle * xError + kIangle * integralSumX + kDangle * derivative;
 
-        if (!turret.atTurningLimit()) {
-            turret.spinnerRun(-output);  
+        if (!spinner.atTurningLimit()) {
+            spinner.spinnerRun(-output);  
         }
 
         lastError = xError;
@@ -61,12 +65,12 @@ public class LimelightAim extends CommandBase {
     }
 
     public void end(boolean interrupted) {
-        turret.spinnerRun(0);
+        spinner.spinnerRun(0);
     }
 
     public boolean isFinished() {
         if (Math.abs(xError) < 0.1){
-            turret.spinnerRun(0);
+            spinner.spinnerRun(0);
             return true;
         }
         integralSumX = 0;
@@ -74,6 +78,6 @@ public class LimelightAim extends CommandBase {
     }
 
     public void interrupted() {
-        turret.spinnerRun(0);
+        spinner.spinnerRun(0);
     }
 }

@@ -31,6 +31,7 @@ import frc.robot.commands.Turret.TurretShoot;
 import frc.robot.statemachines.DriveFSM;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Turret;
 import frc.robot.vision.Limelight;
@@ -55,10 +56,20 @@ public class RobotContainer {
     private final Intake m_robotIntake = new Intake();
     private final Limelight m_vision = new Limelight();
     private final Superstructure m_SuperStructure = new Superstructure();
+    private final Spinner m_robotSpinner = new Spinner();
 
+    // The commands
     AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
     TurretShoot nearShoot = new TurretShoot(m_robotTurret, 1850);
     TurretShoot farShoot = new TurretShoot(m_robotTurret, 3000);
+    SwingForward swingForward = new SwingForward(m_SuperStructure);
+    SwingBack swingBack = new SwingBack(m_SuperStructure);
+    IntakeCmd intake = new IntakeCmd(m_robotIntake);
+    IntakeStop intakeStop = new IntakeStop(m_robotIntake);
+    IntakeReverse eject = new IntakeReverse(m_robotIntake);
+    TransportCmd transportCmd = new TransportCmd(m_robotTransport);
+    TransportStop transportStop = new TransportStop(m_robotTransport);
+    TransportEject transportEject = new TransportEject(m_robotTransport);
 
     BooleanSupplier targetNotIn = new BooleanSupplier() {
         @Override
@@ -87,10 +98,7 @@ public class RobotContainer {
                                     m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.5,
                                     false);
 
-                            SwingForward swingForward = new SwingForward(m_SuperStructure);
-                            SwingBack swingBack = new SwingBack(m_SuperStructure);
-
-                            if (m_operatorController.getPOV() == OIConstants.POV_UP){}
+                            if (m_operatorController.getPOV() == OIConstants.POV_UP) 
                                 swingForward.schedule();
                             if (m_operatorController.getPOV() == OIConstants.POV_DOWN)
                                 swingBack.schedule();
@@ -100,10 +108,6 @@ public class RobotContainer {
                                 swingBack.cancel();
                                 swingForward.cancel();
                             }
-
-                            IntakeCmd intake = new IntakeCmd(m_robotIntake);
-                            IntakeStop intakeStop = new IntakeStop(m_robotIntake);
-                            IntakeReverse eject = new IntakeReverse(m_robotIntake);
 
                             if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.4) {
                                 farShoot.schedule();
@@ -118,10 +122,6 @@ public class RobotContainer {
                             } else {
                                 intakeStop.schedule();
                             }
-
-                            TransportCmd transportCmd = new TransportCmd(m_robotTransport);
-                            TransportStop transportStop = new TransportStop(m_robotTransport);
-                            TransportEject transportEject = new TransportEject(m_robotTransport);
 
                             if (m_operatorController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
                                 transportCmd.schedule();
@@ -138,7 +138,6 @@ public class RobotContainer {
                                             * SuperstructureConstants.hangerSpeed);
 
                         }, m_robotDrive));
-
     }
 
     private void configureButtonBindings() {
@@ -148,24 +147,24 @@ public class RobotContainer {
                 .whenReleased(() -> m_robotDrive.setMaxOutput(0.95));
 
         new JoystickButton(m_driverController, OIConstants.Btn_Y)
-                .whenHeld(new ConditionalCommand(new TurretSeek(m_robotTurret),
-                        new LimelightAim(m_robotTurret, m_vision), targetNotIn));
+                .whenHeld(new ConditionalCommand(new TurretSeek(m_robotSpinner),
+                        new LimelightAim(m_robotTurret, m_vision, m_robotSpinner), targetNotIn));
 
         new JoystickButton(m_driverController, OIConstants.Btn_B)
                 .whileHeld(new RunCommand(() -> {
-                    m_robotTurret.spinnerRun(0.3);
-                }, m_robotTurret))
+                    m_robotSpinner.spinnerRun(0.3);
+                }, m_robotSpinner))
                 .whenReleased(new RunCommand(() -> {
-                    m_robotTurret.spinnerRun(0.0);
-                }, m_robotTurret));
+                    m_robotSpinner.spinnerRun(0.0);
+                }, m_robotSpinner));
 
         new JoystickButton(m_driverController, OIConstants.Btn_X)
                 .whileHeld(new RunCommand(() -> {
-                    m_robotTurret.spinnerRun(-0.3);
-                }, m_robotTurret))
+                    m_robotSpinner.spinnerRun(-0.3);
+                }, m_robotSpinner))
                 .whenReleased(new RunCommand(() -> {
-                    m_robotTurret.spinnerRun(0.0);
-                }, m_robotTurret));
+                    m_robotSpinner.spinnerRun(0.0);
+                }, m_robotSpinner));
 
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
                 .whenHeld(nearShoot)

@@ -18,7 +18,7 @@ public class TurretShoot extends CommandBase {
   private static final double kD = 0.00015;
   private static final double timeDiff = 0.02;  
 
-  private double target;  // 1750
+  private double target; 
   private double integralSum;
 
   private double derivative;
