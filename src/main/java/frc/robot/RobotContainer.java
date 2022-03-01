@@ -207,7 +207,8 @@ public class RobotContainer {
         TrapezoidProfileDrive m_command2 = new TrapezoidProfileDrive(4.0, m_robotDrive);
         return m_command1;
     }
-        /**
+
+    /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
