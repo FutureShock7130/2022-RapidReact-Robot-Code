@@ -25,6 +25,7 @@ public class Telemetry {
 
     public synchronized void handle() {
         visionXEntry.getDouble(0.0);
+
     }
 
     public void setMode(String mode) {
@@ -38,4 +39,10 @@ public class Telemetry {
             return;
         }
     }
+
+    // public void initTargetListener() {
+    //     visionTable.addEntryListener("tv", (table, key, entry, value, flags) -> {
+    //         if 
+    //     }, flags)
+    // }
 }
