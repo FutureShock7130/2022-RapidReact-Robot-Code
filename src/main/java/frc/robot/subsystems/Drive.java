@@ -81,6 +81,7 @@ public class Drive extends SubsystemBase {
   @Override
   public void periodic() {
     System.out.println(m_mecanumOdometry.getPoseMeters());
+    SmartDashboard.putNumber("Right Motor Speed", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
     m_differentialOdometry.update(
         m_gyro.getRotation2d(),
         motorFL.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse / 10,

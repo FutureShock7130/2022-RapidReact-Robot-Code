@@ -101,7 +101,7 @@ public class RobotContainer {
     BooleanSupplier targetStatus = new BooleanSupplier() {
         @Override
         public boolean getAsBoolean() {
-            if (m_vision.getTargetStatus()) { 
+            if (m_vision.getTargetStatus()) {
                 return true;
             }
             return false;
@@ -127,8 +127,12 @@ public class RobotContainer {
                                     false);
 
                             // Superstructure Swinging
-                            if (m_operatorController.getPOV() == OIConstants.POV_UP) { swingForward.schedule(); }
-                            if (m_operatorController.getPOV() == OIConstants.POV_DOWN) { swingBack.schedule(); }
+                            if (m_operatorController.getPOV() == OIConstants.POV_UP) {
+                                swingForward.schedule();
+                            }
+                            if (m_operatorController.getPOV() == OIConstants.POV_DOWN) {
+                                swingBack.schedule();
+                            }
 
                             if (m_operatorController.getPOV() == OIConstants.POV_LEFT) {
                                 swingBack.end(true);
@@ -138,10 +142,9 @@ public class RobotContainer {
                             }
                             // Far Flywheel Shoot Logic
                             if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.4) {
-                                nearShoot.schedule();
-                            } else {
-                                shootPassiveState.schedule();
-                            }
+                                farShoot.schedule();
+                            } 
+
                             // Intake Logic
                             if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
                                 intake.schedule();
@@ -175,15 +178,14 @@ public class RobotContainer {
                 .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
                 .whenReleased(() -> m_robotDrive.setMaxOutput(0.95));
 
-        new JoystickButton(m_driverController, OIConstants.Btn_Y)
+        new JoystickButton(m_operatorController, OIConstants.Btn_Y)
                 .whenHeld(
-                    new ConditionalCommand(new TurretSeek(m_robotSpinner), 
-                    new LimelightAim(m_vision, m_robotSpinner), targetStatus)
-                ).whenReleased(
-                    new RunCommand(() -> {
-                        m_robotSpinner.spinnerRun(0.0);
-                    }, m_robotSpinner)
-                );
+                        new ConditionalCommand(new TurretSeek(m_robotSpinner),
+                                new LimelightAim(m_vision, m_robotSpinner), targetStatus))
+                .whenReleased(
+                        new RunCommand(() -> {
+                            m_robotSpinner.spinnerRun(0.0);
+                        }, m_robotSpinner));
 
         new JoystickButton(m_driverController, OIConstants.Btn_B)
                 .whenHeld(new RunCommand(() -> {
@@ -200,18 +202,17 @@ public class RobotContainer {
                 .whenReleased(new RunCommand(() -> {
                     m_robotSpinner.spinnerRun(0.0);
                 }, m_robotSpinner));
-        
+
         new JoystickButton(m_operatorController, OIConstants.Btn_A)
-        .whenPressed(
-            new TimedTransport(0.7, m_robotTransport)
-        );
+                .whenPressed(
+                        new TimedTransport(0.7, m_robotTransport));
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
                 .whenHeld(nearShoot)
-                .whenReleased(() -> shootPassiveState.schedule());
-                
+                .whenReleased(() -> nearShoot.cancel());
+
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
-                .whenHeld(transportEject)
-                .whenReleased(() -> transportStop.schedule());
+                .whenHeld(farShoot)
+                .whenReleased(() -> farShoot.cancel());
 
         // new JoystickButton(m_operatorController,
         // OIConstants.Btn_RB).whenPressed(autoClimb);
@@ -231,56 +232,53 @@ public class RobotContainer {
         return m_command2;
     }
 
-    /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+    // Use this to pass the autonomous command to the main {@link Robot} class.
+    // @return the command to run in autonomous
+
     public Command getAutonomousTrajectoryCommand() {
         driveFSM.setOdometryMecanum();
 
         // Create a voltage constraint to ensure we don't accelerate too fast
-        var autoVoltageConstraint =
-            new DifferentialDriveVoltageConstraint(
+        var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
                 feedforward,
                 DriveConstants.kDifferentialDriveKinematics,
                 10);
 
         // Create config for trajectory
-        TrajectoryConfig config =
-            new TrajectoryConfig(
-                    DriveConstants.kMaxVelocityMetersPerSecond,
-                    DriveConstants.kMaxAccelerationMetersPerSecondSquared)
-                // Add kinematics to ensure max speed is actually obeyed
-                .setKinematics(DriveConstants.kDifferentialDriveKinematics)
-                // Apply the voltage constraint
-                .addConstraint(autoVoltageConstraint);
+        TrajectoryConfig config = new TrajectoryConfig(
+                DriveConstants.kMaxVelocityMetersPerSecond,
+                DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+                        // Add kinematics to ensure max speed is actually obeyed
+                        .setKinematics(DriveConstants.kDifferentialDriveKinematics)
+                        // Apply the voltage constraint
+                        .addConstraint(autoVoltageConstraint);
 
         Trajectory trajectory;
-        PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("Blue-1 Cargo-2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
-        trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+        PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("Blue-2 Cargo-2",
+                DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+        trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond,
+                DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
         PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
         System.out.println(state);
 
         ProfiledPIDController thetaController = new ProfiledPIDController(
-            0.4, 0.000, 0,
-            new TrapezoidProfile.Constraints(Math.PI /2, 1.0)
-        );
+                0.8, 0.000, 0,
+                new TrapezoidProfile.Constraints(Math.PI / 2, 1.0));
 
         PPMecanumControllerCommand mecanumCommand = new PPMecanumControllerCommand(
-            trajectoryPathPlanner, 
-            m_robotDrive::getMecanumPose, 
-            DriveConstants.kMecanumDriveKinematics, 
-            new PIDController(0.3, 0.001, 0.006), 
-            new PIDController(0.2, 0.001, 0.006), 
-            thetaController,
-            DriveConstants.kMaxVelocityMetersPerSecond, 
-            m_robotDrive::setMecanumWheelSpeeds,
-            m_robotDrive);
+                trajectoryPathPlanner,
+                m_robotDrive::getMecanumPose,
+                DriveConstants.kMecanumDriveKinematics,
+                new PIDController(0.3, 0.001, 0.006),
+                new PIDController(0.2, 0.001, 0.006),
+                thetaController,
+                DriveConstants.kMaxVelocityMetersPerSecond,
+                m_robotDrive::setMecanumWheelSpeeds,
+                m_robotDrive);
 
         // Reset odometry to the starting pose of the trajectory.
-        //m_robotDrive.resetGyro();
+        // m_robotDrive.resetGyro();
         m_robotDrive.resetOdometry(trajectoryPathPlanner.getInitialPose());
         // Run path following command, then stop at the end.
         return mecanumCommand.andThen(() -> m_robotDrive.differentialDriveVolts(0, 0));

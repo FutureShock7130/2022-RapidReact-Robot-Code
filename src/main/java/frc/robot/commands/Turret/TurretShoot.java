@@ -83,17 +83,17 @@ public class TurretShoot extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    turret.flywheelsStop();
+    turret.flywheelsRun(-0.05);
   }
 
   public void interrupted() {
-    turret.flywheelsRun(0);
+    turret.flywheelsRun(-0.05);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    turret.flywheelsStop();
+    turret.flywheelsRun(-0.05);
     return false;
   }
 }
