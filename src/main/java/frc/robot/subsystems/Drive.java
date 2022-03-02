@@ -141,7 +141,7 @@ public class Drive extends SubsystemBase {
   }
 
   public void resetGyro(){
-    m_gyro.reset();
+    m_gyro.zeroYaw();
   }
 
   // Resets the odometry to the specified pose.

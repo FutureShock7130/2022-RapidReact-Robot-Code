@@ -268,8 +268,8 @@ public class RobotContainer {
         );
 
         // Reset odometry to the starting pose of the trajectory.
+        m_robotDrive.resetGyro();
         m_robotDrive.resetOdometry(trajectory.getInitialPose());
-
         // Run path following command, then stop at the end.
         return ramseteCommand.andThen(() -> m_robotDrive.differentialDriveVolts(0, 0));
     }
