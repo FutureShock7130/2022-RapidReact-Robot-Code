@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -50,6 +51,7 @@ import frc.robot.subsystems.Transporter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -258,12 +260,14 @@ public class RobotContainer {
 
         PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
         System.out.println(state);
-        RamseteCommand ramseteCommand = new RamseteCommand(
+        MecanumControllerCommand mecanumCommand = new MecanumControllerCommand(
             trajectory,
-            m_robotDrive::getDifferentialPose,
-            new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteTheta),
+            m_robotDrive::getPose,
             feedforward,
-            DriveConstants.kDifferentialDriveKinematics,
+            DriveConstants.kMecanumDriveKinematics,
+            new PIDController(kp, ki, kd),
+            new PIDController(kp, ki, kd),
+            new ProfiledPIDController(Kp, Ki, Kd, constraints),
             m_robotDrive::getCurrentDifferentialDriveWheelSpeeds,
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
@@ -276,6 +280,6 @@ public class RobotContainer {
         //m_robotDrive.resetGyro();
         m_robotDrive.resetOdometry(trajectory.getInitialPose());
         // Run path following command, then stop at the end.
-        return ramseteCommand.andThen(() -> m_robotDrive.differentialDriveVolts(0, 0));
+        return mecanumCommand.andThen(() -> m_robotDrive.differentialDriveVolts(0, 0));
     }
 }
