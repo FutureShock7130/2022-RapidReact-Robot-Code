@@ -51,12 +51,12 @@ public final class Constants {
     // The SysId tool provides a convenient method for obtaining these values for
     // your robot.
 
-    public static final double kS = 0.76364;
-    public static final double kV = 3.84;
-    public static final double kA = 1.9852;
+    public static final double kS = 0.59209; //0.76364
+    public static final double kV = 3.4735;
+    public static final double kA = 0.22; //0.22548
     public static final double kJ = 14;
 
-    public static final double kPDriveVel = 0.12;
+    public static final double kPDriveVel = 0.3; //0.3
 
     public static final SimpleMotorFeedforward kDriveFeedforward = new SimpleMotorFeedforward(0, 0, 0);
 
@@ -68,8 +68,8 @@ public final class Constants {
     public static final double kRamseteB = 2.0;
     public static final double kRamseteTheta = 0.7;
 
-    public static final double kMaxVelocityMetersPerSecond = 2.5;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 1.8;
+    public static final double kMaxVelocityMetersPerSecond = 2.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2.5;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
@@ -77,10 +77,10 @@ public final class Constants {
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
     // Example value only - as above, this must be tuned for your drive!
-    public static final double kPFrontLeftVel = 0.9506726;
-    public static final double kPRearLeftVel = 0.9506726;
-    public static final double kPFrontRightVel = 0.9506726;
-    public static final double kPRearRightVel = 0.9506726;
+    public static final double kPFrontLeftVel = 0.3;
+    public static final double kPRearLeftVel = 0.3;
+    public static final double kPFrontRightVel = 0.3;
+    public static final double kPRearRightVel = 0.3;
   }
 
   public static final class OIConstants {
