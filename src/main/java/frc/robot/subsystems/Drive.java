@@ -120,15 +120,7 @@ public class Drive extends SubsystemBase {
 
 
   public void lightStripGOGOGO() {
-    for(int i = 0; i < 255; i++) {
-      lightStrip.setRaw(i);
-      Timer.delay(0.05);
-    }
-
-    for(int i = 255; i >= 0; i--){
-      lightStrip.setRaw(i);
-      Timer.delay(0.05);
-    }
+    lightStrip.setRaw(100);
   }
 
   // Returns the currently-estimated pose of the robot.
