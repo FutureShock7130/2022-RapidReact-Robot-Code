@@ -66,11 +66,11 @@ public final class Constants {
 
     public static PIDController velController = new PIDController(kPDriveVel, 0, 0);
 
-    public static PIDController xController = new PIDController(0.32, 0.001, 0.0006);
+    public static PIDController xController = new PIDController(0.2, 0.00003, 0.00006);
     public static PIDController yController = new PIDController(0.35, 0.006, 0.0012);
 
     public static ProfiledPIDController thetaController = new ProfiledPIDController(
-      0.3, 0.002, 0.004,
+      0.15, 0.0, 0.0,
       new TrapezoidProfile.Constraints(Math.PI * 1.4, Math.PI / 2)
     );
 

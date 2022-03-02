@@ -236,31 +236,13 @@ public class RobotContainer {
     public Command getAutonomousTrajectoryCommand() {
         driveFSM.setOdometryMecanum();
 
-        Trajectory trajectory = PathPlanner.loadPath(
-            "New New Path Copy", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
-
         PathPlannerTrajectory trajectoryPathPlanner = 
-        PathPlanner.loadPath("New New Path Copy", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+        PathPlanner.loadPath("New New Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
 
         PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
         System.out.println(state);
 
-        ProfiledPIDController thetaController = new ProfiledPIDController(
-            0.00003, 0.000, 0,
-            new TrapezoidProfile.Constraints(Math.PI /2, 1.0)
-        );
-
-        PPMecanumControllerCommand mecanumCommand = new PPMecanumControllerCommand(
-                trajectoryPathPlanner,
-                m_robotDrive::getMecanumPose,
-                DriveConstants.kMecanumDriveKinematics,
-                new PIDController(0.25, 0.001, 0.006),
-                new PIDController(0.2, 0.001, 0.006),
-                thetaController,
-                DriveConstants.kMaxVelocityMetersPerSecond,
-                m_robotDrive::setMecanumWheelSpeeds,
-                m_robotDrive);
 
         MecanumControllerCommand betterMecanumCommand = new MecanumControllerCommand(
             trajectoryPathPlanner, 
@@ -281,7 +263,7 @@ public class RobotContainer {
 
         // Reset odometry to the starting pose of the trajectory.
         // m_robotDrive.resetGyro();
-        m_robotDrive.resetOdometry(trajectory.getInitialPose());
+        m_robotDrive.resetOdometry(trajectoryPathPlanner.getInitialPose());
         // Run path following command, then stop at the end.
         return betterMecanumCommand.andThen(() -> m_robotDrive.differentialDriveVolts(0, 0));
     }
