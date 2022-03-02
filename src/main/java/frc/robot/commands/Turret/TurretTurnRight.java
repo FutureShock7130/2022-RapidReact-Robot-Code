@@ -19,7 +19,7 @@ public class TurretTurnRight extends CommandBase {
     }
 
     public void initialize() {
-
+        System.out.println("spinnerTurnLeft executing");
     }
 
     public void execute() {
@@ -31,7 +31,6 @@ public class TurretTurnRight extends CommandBase {
         }
 
         SmartDashboard.putNumber("spinnerRight Speed:", turnSpeed);
-        System.out.println("spinnerTurnLeft executing");
     }
 
     public void end(boolean interrupted) {

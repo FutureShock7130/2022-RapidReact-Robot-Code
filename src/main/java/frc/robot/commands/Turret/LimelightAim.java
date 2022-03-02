@@ -1,5 +1,6 @@
 package frc.robot.commands.Turret;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -10,34 +11,28 @@ import frc.robot.subsystems.Turret;
 
 public class LimelightAim extends CommandBase {
 
-    private static final double kPangle = 0.7;
-    private static final double kIangle = 0.0;
-    private static final double kDangle = 0.0;
-    private static final double timeDiff = 0.02;
+    private static final double kP = 0.6;
+    private static final double kI = 0.001;
 
-    private double derivative;
     private double output;
 
     private double xError;
-    private double lastError;
     private double integralSumX;
-    
-    private Turret turret;
+
     private Limelight limelight;
     private Spinner spinner;
 
-    public LimelightAim(Turret m_robotTurret, Limelight m_robotLimelight, Spinner m_robotSpinner) {
-        turret = m_robotTurret;
+    public LimelightAim(Limelight m_robotLimelight, Spinner m_robotSpinner) {
         limelight = m_robotLimelight;
         spinner = m_robotSpinner;
 
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(turret);
         addRequirements(limelight);
         addRequirements(spinner);
     }
 
     public void initialize() {
+        System.out.println("LimelightAim executing");
     }
 
     public void execute() {
@@ -51,17 +46,13 @@ public class LimelightAim extends CommandBase {
             integralSumX += xError;
         }
 
-        derivative = (xError - lastError) / timeDiff;
-        output = kPangle * xError + kIangle * integralSumX + kDangle * derivative;
+        output = kP * xError + kI * integralSumX;
 
         if (!spinner.atTurningLimit()) {
-            spinner.spinnerRun(-output);  
+            spinner.spinnerRun(output);  
         }
 
-        lastError = xError;
-
-        SmartDashboard.putNumber("output",output);
-        System.out.println("LimelightAim executing");
+        SmartDashboard.putNumber("Limelight Auto Aim Output", output);
     }
 
     public void end(boolean interrupted) {
@@ -69,7 +60,7 @@ public class LimelightAim extends CommandBase {
     }
 
     public boolean isFinished() {
-        if (Math.abs(xError) < 0.1){
+        if (Math.abs(limelight.getX()) < 0.1){
             spinner.spinnerRun(0);
             return true;
         }

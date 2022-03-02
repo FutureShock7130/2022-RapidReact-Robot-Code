@@ -110,10 +110,16 @@ public final class Constants {
   public static final class TurretConstants {
     public static final int kMasterFlyWheelID = 12;
     public static final int kSlaveFlyWheelID = 13;
-    public static final int kSpinnerID = 11;
+
+    // Spinner Related Constants and Switch OIs
     public static final int forwardLimitSwitch = 1;
     public static final int reverseLimitSwitch = 0;
     public static final double turretSpeedMultiplier = 0.3;
+    public static final int kSpinnerID = 11;
+
+    // Flywheel Feedforward Constants
+    public static final double kV = 0.00002;
+    public static final double kA = 0.00012;
   }
 
   public static final class IntakeConstants {
@@ -128,6 +134,8 @@ public final class Constants {
     public static final int kDownTransporterID = 5;
     public static final double transportSpeed = 0.75;
     public static final double transportTime = 1;
+
+    public static final double idealTransportDt = 0.75;
   }
 
   public static final class SuperstructureConstants {
