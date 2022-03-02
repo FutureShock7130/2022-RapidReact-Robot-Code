@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SuperstructureConstants;
-import frc.robot.auto.Actions.TestPathing.TestFeedforward;
 import frc.robot.commands.Drive.TrapezoidProfileDrive;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeReverse;
@@ -227,7 +226,6 @@ public class RobotContainer {
     // AUTONOMOUS COMMANDS
 
     public Command getAutonomousCommand() {
-        TestFeedforward m_command1 = new TestFeedforward(m_robotDrive);
         TrapezoidProfileDrive m_command2 = new TrapezoidProfileDrive(4.0, m_robotDrive);
         return m_command2;
     }
@@ -237,6 +235,9 @@ public class RobotContainer {
 
     public Command getAutonomousTrajectoryCommand() {
         driveFSM.setOdometryMecanum();
+
+        Trajectory trajectory = PathPlanner.loadPath(
+            "Blue-1 Cargo-2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
         PathPlannerTrajectory trajectoryPathPlanner = 
         PathPlanner.loadPath("Blue-1 Cargo-2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
@@ -261,10 +262,27 @@ public class RobotContainer {
                 m_robotDrive::setMecanumWheelSpeeds,
                 m_robotDrive);
 
+        MecanumControllerCommand betterMecanumCommand = new MecanumControllerCommand(
+            trajectory, 
+            m_robotDrive::getMecanumPose,
+            DriveConstants.kFeedforward, 
+            DriveConstants.kMecanumDriveKinematics,
+            DriveConstants.xController, 
+            DriveConstants.yController, 
+            DriveConstants.thetaController, 
+            DriveConstants.kMaxVelocityMetersPerSecond, 
+            new PIDController(DriveConstants.kPDriveVel, 0, 0),
+            new PIDController(DriveConstants.kPDriveVel, 0, 0),
+            new PIDController(DriveConstants.kPDriveVel, 0, 0),
+            new PIDController(DriveConstants.kPDriveVel, 0, 0),
+            m_robotDrive::getCurrentMecanumWheelSpeeds,
+            m_robotDrive::setDriveMotorControllersVolts,
+            m_robotDrive);
+
         // Reset odometry to the starting pose of the trajectory.
         // m_robotDrive.resetGyro();
-        m_robotDrive.resetOdometry(trajectoryPathPlanner.getInitialPose());
+        m_robotDrive.resetOdometry(trajectory.getInitialPose());
         // Run path following command, then stop at the end.
-        return mecanumCommand.andThen(() -> m_robotDrive.differentialDriveVolts(0, 0));
+        return betterMecanumCommand.andThen(() -> m_robotDrive.differentialDriveVolts(0, 0));
     }
 }

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -61,6 +63,17 @@ public final class Constants {
     public static final SimpleMotorFeedforward kDriveFeedforward = new SimpleMotorFeedforward(0, 0, 0);
 
     public static final SimpleMotorFeedforward kFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
+
+    public static PIDController velController = new PIDController(kPDriveVel, 0, 0);
+
+    public static PIDController xController = new PIDController(0.2, 0.006, 0.0012);
+    public static PIDController yController = new PIDController(0.2, 0.006, 0.0012);
+
+    public static ProfiledPIDController thetaController = new ProfiledPIDController(
+      0.8, 0.0006, 0.0012,
+      new TrapezoidProfile.Constraints(Math.PI, 1.0)
+    );
+
 
     public static final double kSlewRate = 0.7;
 
