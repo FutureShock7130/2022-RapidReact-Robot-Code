@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
@@ -40,8 +41,9 @@ public class Superstructure extends SubsystemBase {
 
   // Creates a new Superstructure.
   public Superstructure() {
-    rightSwing.follow(leftSwing);
-    leftSwing.setInverted(true);
+    leftSwing.setInverted(false);
+    rightSwing.setInverted(false);
+
     rightHanger.setInverted(true);
 
     rightHanger.setIdleMode(IdleMode.kBrake);
@@ -68,6 +70,7 @@ public class Superstructure extends SubsystemBase {
 
   public void liftSwingRun(double speed) {
     leftSwing.set(speed);
+    rightSwing.set(speed);
   }
 
   public void liftHangerRun(double Lspeed, double Rspeed) {
@@ -77,6 +80,7 @@ public class Superstructure extends SubsystemBase {
 
   public void liftSwingStop() {
     leftSwing.set(0);
+    rightSwing.set(0);
   }
 
   public void liftHangerStop() {

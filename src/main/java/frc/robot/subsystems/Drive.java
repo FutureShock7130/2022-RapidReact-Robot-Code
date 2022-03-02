@@ -80,8 +80,7 @@ public class Drive extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println(m_mecanumOdometry.getPoseMeters());
-    SmartDashboard.putNumber("Right Motor Speed", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
+    // System.out.println(m_mecanumOdometry.getPoseMeters());
     m_differentialOdometry.update(
         m_gyro.getRotation2d(),
         motorFL.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse / 10,
@@ -104,7 +103,6 @@ public class Drive extends SubsystemBase {
             motorFR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
             motorRL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
             motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse));
-      SmartDashboard.putNumber("Linearized Wheel Speed", getLinearWheelSpeeds());
       SmartDashboard.putNumber("Pose X", m_mecanumOdometry.getPoseMeters().getX());
       SmartDashboard.putNumber("Pose Y", m_mecanumOdometry.getPoseMeters().getY());
     }
@@ -117,6 +115,8 @@ public class Drive extends SubsystemBase {
     // SmartDashboard.putNumber("Pose Y", m_odometry.getPoseMeters().getY());
 
     this.lightStripGOGOGO();
+
+    System.out.println(m_gyro.getAngle());
 
     SmartDashboard.putNumber("gyro", m_gyro.getAngle());
   }
@@ -196,6 +196,10 @@ public class Drive extends SubsystemBase {
     motorRL.setVoltage(volts.rearLeftVoltage);
     motorFR.setVoltage(volts.frontRightVoltage);
     motorRR.setVoltage(volts.rearRightVoltage);
+    SmartDashboard.putNumber("FrontLeftV", volts.frontLeftVoltage);
+    SmartDashboard.putNumber("RearLeftV", volts.rearLeftVoltage);
+    SmartDashboard.putNumber("FrontRightV", volts.frontRightVoltage);
+    SmartDashboard.putNumber("RearRightV", volts.rearRightVoltage);
   }
 
   public void setMecanumWheelSpeeds(MecanumDriveWheelSpeeds speeds) {

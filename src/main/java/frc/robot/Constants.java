@@ -53,9 +53,9 @@ public final class Constants {
     // The SysId tool provides a convenient method for obtaining these values for
     // your robot.
 
-    public static final double kS = 0.59209; //0.76364
+    public static final double kS = 0.76364; //0.76364
     public static final double kV = 3.8435;
-    public static final double kA = 0.22; //0.22548
+    public static final double kA = 0.25; //0.22548
     public static final double kJ = 14;
 
     public static final double kPDriveVel = 0.3; //0.3
@@ -66,16 +66,16 @@ public final class Constants {
 
     public static PIDController velController = new PIDController(kPDriveVel, 0, 0);
 
-    public static PIDController xController = new PIDController(0.2, 0.006, 0.0012);
-    public static PIDController yController = new PIDController(0.2, 0.006, 0.0012);
+    public static PIDController xController = new PIDController(0.32, 0.001, 0.0006);
+    public static PIDController yController = new PIDController(0.35, 0.006, 0.0012);
 
     public static ProfiledPIDController thetaController = new ProfiledPIDController(
-      0.8, 0.0006, 0.0012,
-      new TrapezoidProfile.Constraints(Math.PI, 1.0)
+      0.3, 0.002, 0.004,
+      new TrapezoidProfile.Constraints(Math.PI * 1.4, Math.PI / 2)
     );
 
 
-    public static final double kSlewRate = 0.7;
+    public static final double kSlewRate = 0.8;
 
     // Ramsete Parameters
     public static final double kRamseteB = 2.0;

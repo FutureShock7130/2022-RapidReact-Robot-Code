@@ -237,17 +237,17 @@ public class RobotContainer {
         driveFSM.setOdometryMecanum();
 
         Trajectory trajectory = PathPlanner.loadPath(
-            "Blue-1 Cargo-2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+            "New New Path Copy", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
         PathPlannerTrajectory trajectoryPathPlanner = 
-        PathPlanner.loadPath("Blue-1 Cargo-2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+        PathPlanner.loadPath("New New Path Copy", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
 
         PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
         System.out.println(state);
 
         ProfiledPIDController thetaController = new ProfiledPIDController(
-            0.8, 0.000, 0,
+            0.00003, 0.000, 0,
             new TrapezoidProfile.Constraints(Math.PI /2, 1.0)
         );
 
@@ -255,7 +255,7 @@ public class RobotContainer {
                 trajectoryPathPlanner,
                 m_robotDrive::getMecanumPose,
                 DriveConstants.kMecanumDriveKinematics,
-                new PIDController(0.3, 0.001, 0.006),
+                new PIDController(0.25, 0.001, 0.006),
                 new PIDController(0.2, 0.001, 0.006),
                 thetaController,
                 DriveConstants.kMaxVelocityMetersPerSecond,
@@ -263,7 +263,7 @@ public class RobotContainer {
                 m_robotDrive);
 
         MecanumControllerCommand betterMecanumCommand = new MecanumControllerCommand(
-            trajectory, 
+            trajectoryPathPlanner, 
             m_robotDrive::getMecanumPose,
             DriveConstants.kFeedforward, 
             DriveConstants.kMecanumDriveKinematics,
