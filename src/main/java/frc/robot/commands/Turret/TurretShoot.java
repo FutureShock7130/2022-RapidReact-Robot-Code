@@ -14,13 +14,15 @@ import frc.robot.subsystems.Turret;
 public class TurretShoot extends CommandBase {
   private static final double kP = 0.0013;
   private static final double kI = 0.00002;
-  // a D Controller is not needed for the basic flywheel control because we only
-  // need to rev the spin speed up instead of it being
-  // reving up and down gradually.
-  private static final double kD = 0.00015;
-  private static final double timeDiff = 0.02;  
 
-  private double target; 
+  // a D Controller is not needed for the basic flywheel control because we only
+  // need to rev the spin speed up instead of it being reving up and down
+  // gradually.
+  
+  private static final double kD = 0.00015;
+  private static final double timeDiff = 0.02;
+
+  private double target;
   private double integralSum;
 
   private double derivative;
@@ -63,6 +65,7 @@ public class TurretShoot extends CommandBase {
     // The Conditional Loop below tries to implement PID with Bang-Bang control,
     // this ensures that when large errors occur, the
     // Flywheel should rev up quickly
+
     if (error > 500) {
       turret.flywheelsRun(1.0);
     } else if (error < -500) {
@@ -70,7 +73,7 @@ public class TurretShoot extends CommandBase {
     } else {
       turret.flywheelsRun(output + kF);
     }
-    
+
     lastError = error;
 
     SmartDashboard.putNumber("Flywheel Velocity", turret.getFlyWheelsVelocity());

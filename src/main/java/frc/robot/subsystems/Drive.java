@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,6 +40,8 @@ public class Drive extends SubsystemBase {
   public final WPI_TalonFX motorRR = new WPI_TalonFX(DriveConstants.kRearRightMotorID);
 
   private final MecanumDrive m_drive = new MecanumDrive(motorFL, motorRL, motorFR, motorRR);
+
+  PWM lightStrip = new PWM(0);
 
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -104,6 +107,14 @@ public class Drive extends SubsystemBase {
     // SmartDashboard.putNumber("velocity", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
     // SmartDashboard.putNumber("Pose X", m_odometry.getPoseMeters().getX());
     // SmartDashboard.putNumber("Pose Y", m_odometry.getPoseMeters().getY());
+
+    for(int i = 0; i < 255; i++) {
+      lightStrip.setRaw(i);
+    }
+
+    for(int i = 255; i >= 0; i--){
+      lightStrip.setRaw(i);
+    }
 
   }
 

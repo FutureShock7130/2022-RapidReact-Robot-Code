@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SuperstructureConstants;
-import frc.robot.auto.actions.TestPathing.TestFeedforward;
+import frc.robot.auto.Actions.TestPathing.TestFeedforward;
 import frc.robot.commands.Drive.TrapezoidProfileDrive;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeReverse;
@@ -131,7 +131,7 @@ public class RobotContainer {
                             }
                             // Far Flywheel Shoot Logic
                             if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.4) {
-                                farShoot.schedule();
+                                nearShoot.schedule();
                             } else {
                                 shootPassiveState.schedule();
                             }
@@ -221,7 +221,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         TestFeedforward m_command1 = new TestFeedforward(m_robotDrive);
         TrapezoidProfileDrive m_command2 = new TrapezoidProfileDrive(4.0, m_robotDrive);
-        return m_command1;
+        return m_command2;
     }
 
     /**

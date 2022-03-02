@@ -41,9 +41,7 @@ public class Superstructure extends SubsystemBase {
   // Creates a new Superstructure.
   public Superstructure() {
     rightSwing.follow(leftSwing);
-
     leftSwing.setInverted(true);
-    m_StateMachine = new SuperstructureStateMachine();
     rightHanger.setInverted(true);
 
     rightHanger.setIdleMode(IdleMode.kBrake);
@@ -57,6 +55,8 @@ public class Superstructure extends SubsystemBase {
     minPosition = (this.getLHangerPosition() + this.getRHangerPosition()) / 2;
 
     resetEncoder(0,0);
+
+    m_StateMachine = new SuperstructureStateMachine();
   }
 
   @Override
