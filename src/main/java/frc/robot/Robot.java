@@ -8,9 +8,11 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.OIConstants;
 import frc.robot.statemachines.DriveFSM;
 
 /**
@@ -25,6 +27,11 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private Telemetry telemetry;
+
+  Joystick m_driverController;
+  Joystick m_operatorController;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -37,6 +44,10 @@ public class Robot extends TimedRobot {
     UsbCamera camera = CameraServer.startAutomaticCapture();
     CvSink cvSink = CameraServer.getVideo();
     CvSource outputStream = CameraServer.putVideo("Blur", 1920, 1080);
+    telemetry = new Telemetry();
+
+    Joystick m_driverController = new Joystick(OIConstants.kDriveTrainJoystickPort);
+    Joystick m_operatorController = new Joystick(OIConstants.kOthersJoystickPort);
   }
 
   /**
@@ -90,7 +101,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   @Override
   public void testInit() {
