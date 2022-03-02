@@ -239,32 +239,15 @@ public class RobotContainer {
     public Command getAutonomousTrajectoryCommand() {
         driveFSM.setOdometryMecanum();
 
-        // Create a voltage constraint to ensure we don't accelerate too fast
-        var autoVoltageConstraint =
-            new DifferentialDriveVoltageConstraint(
-                feedforward,
-                DriveConstants.kDifferentialDriveKinematics,
-                10);
+        PathPlannerTrajectory trajectoryPathPlanner = 
+        PathPlanner.loadPath("Blue-1 Cargo-2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
-        // Create config for trajectory
-        TrajectoryConfig config =
-            new TrajectoryConfig(
-                    DriveConstants.kMaxVelocityMetersPerSecond,
-                    DriveConstants.kMaxAccelerationMetersPerSecondSquared)
-                // Add kinematics to ensure max speed is actually obeyed
-                .setKinematics(DriveConstants.kDifferentialDriveKinematics)
-                // Apply the voltage constraint
-                .addConstraint(autoVoltageConstraint);
-
-        Trajectory trajectory;
-        PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("Blue-1 Cargo-2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
-        trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
         PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
         System.out.println(state);
 
         ProfiledPIDController thetaController = new ProfiledPIDController(
-            0.4, 0.000, 0,
+            0.8, 0.000, 0,
             new TrapezoidProfile.Constraints(Math.PI /2, 1.0)
         );
 
