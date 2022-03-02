@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SuperstructureConstants;
+import frc.robot.Constants.TransporterConstants;
 import frc.robot.commands.Drive.TrapezoidProfileDrive;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeReverse;
@@ -125,6 +126,31 @@ public class RobotContainer {
                                     m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.5,
                                     false);
 
+                            // Intake Logic
+                            if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
+                                intake.schedule();
+                            } else if (m_driverController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
+                                eject.schedule();
+                            } else {
+                                intakeStop.schedule();
+                            }
+                            // Transporter Logic
+                            if (m_operatorController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
+                                transportCmd.schedule();
+                            } else if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.5) { 
+                                transportEject.schedule();
+                            } else {
+                                transportStop.schedule();
+                            }
+
+                            // Superstructure Lifting Logic
+                            m_SuperStructure.liftHangerRun(
+                                    -m_operatorController.getRawAxis(OIConstants.leftStick_Y)
+                                            * SuperstructureConstants.hangerSpeed,
+                                    -m_operatorController.getRawAxis(OIConstants.rightStick_Y)
+                                            * SuperstructureConstants.hangerSpeed);
+
+
                             // Superstructure Swinging
                             if (m_operatorController.getPOV() == OIConstants.POV_UP) {
                                 swingForward.schedule();
@@ -139,54 +165,29 @@ public class RobotContainer {
                                 swingBack.cancel();
                                 swingForward.cancel();
                             }
-                            // Far Flywheel Shoot Logic
-                            if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.4) {
-                                farShoot.schedule();
-                            } 
-
-                            // Intake Logic
-                            if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
-                                intake.schedule();
-                            } else if (m_driverController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
-                                eject.schedule();
-                            } else {
-                                intakeStop.schedule();
-                            }
-                            // Transporter Logic
-                            if (m_operatorController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
-                                transportCmd.schedule();
-                            } else {
-                                transportStop.schedule();
-                            }
-                            // Superstructure Lifting Logic
-                            m_SuperStructure.liftHangerRun(
-                                    -m_operatorController.getRawAxis(OIConstants.leftStick_Y)
-                                            * SuperstructureConstants.hangerSpeed,
-                                    -m_operatorController.getRawAxis(OIConstants.rightStick_Y)
-                                            * SuperstructureConstants.hangerSpeed);
 
                         }, m_robotDrive));
     }
 
     private void configureButtonBindings() {
-
-        new JoystickButton(m_operatorController, OIConstants.trigger_L)
-                .whenPressed(new PrintCommand("Left Trigger Working!"));
-
         new JoystickButton(m_driverController, OIConstants.Btn_RB)
                 .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
                 .whenReleased(() -> m_robotDrive.setMaxOutput(0.95));
 
-        new JoystickButton(m_operatorController, OIConstants.Btn_Y)
-                .whenHeld(
-                        new ConditionalCommand(new TurretSeek(m_robotSpinner),
-                                new LimelightAim(m_vision, m_robotSpinner), targetStatus))
-                .whenReleased(
-                        new RunCommand(() -> {
-                            m_robotSpinner.spinnerRun(0.0);
-                        }, m_robotSpinner));
+                
+        new JoystickButton(m_operatorController, OIConstants.trigger_L)
+        .whenPressed(new PrintCommand("Left Trigger Working!"));
 
-        new JoystickButton(m_driverController, OIConstants.Btn_B)
+        new JoystickButton(m_operatorController, OIConstants.Btn_Y) 
+        .whenHeld(
+                new ConditionalCommand(new TurretSeek(m_robotSpinner),
+                        new LimelightAim(m_vision, m_robotSpinner), targetStatus))
+        .whenReleased(
+                new RunCommand(() -> {
+                    m_robotSpinner.spinnerRun(0.0);
+                }, m_robotSpinner));
+
+        new JoystickButton(m_operatorController, OIConstants.Btn_B)
                 .whenHeld(new RunCommand(() -> {
                     m_robotSpinner.spinnerRun(0.3);
                 }, m_robotSpinner))
@@ -194,22 +195,27 @@ public class RobotContainer {
                     m_robotSpinner.spinnerRun(0.0);
                 }, m_robotSpinner));
 
-        new JoystickButton(m_driverController, OIConstants.Btn_X)
+        new JoystickButton(m_operatorController, OIConstants.Btn_X)
                 .whenHeld(new RunCommand(() -> {
                     m_robotSpinner.spinnerRun(-0.3);
                 }, m_robotSpinner))
                 .whenReleased(new RunCommand(() -> {
                     m_robotSpinner.spinnerRun(0.0);
                 }, m_robotSpinner));
+        
+        // Timed Transportation
 
         new JoystickButton(m_operatorController, OIConstants.Btn_A)
                 .whenPressed(
-                        new TimedTransport(0.7, m_robotTransport));
+                        new TimedTransport(0.7, TransporterConstants.idealTransportDt, m_robotTransport));
+
+        // Shooting Bindings
+
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
                 .whenHeld(nearShoot)
                 .whenReleased(() -> nearShoot.cancel());
 
-        new JoystickButton(m_operatorController, OIConstants.Btn_RB)
+        new JoystickButton(m_operatorController, OIConstants.Btn_LB)
                 .whenHeld(farShoot)
                 .whenReleased(() -> farShoot.cancel());
 
