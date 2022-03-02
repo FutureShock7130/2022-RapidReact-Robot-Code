@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -14,6 +15,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -62,6 +64,7 @@ import java.util.function.BooleanSupplier;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.commands.PPMecanumControllerCommand;
 
 public class RobotContainer {
     // The robot's subsystems
@@ -232,7 +235,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
     public Command getAutonomousTrajectoryCommand() {
-        driveFSM.setOdometryDifferential();
+        driveFSM.setOdometryMecanum();
 
         // Create a voltage constraint to ensure we don't accelerate too fast
         var autoVoltageConstraint =
@@ -270,6 +273,22 @@ public class RobotContainer {
             m_robotDrive::differentialDriveVolts,
             m_robotDrive
         );
+
+        ProfiledPIDController thetaController = new ProfiledPIDController(
+            0.008, 0.0004, 0,
+            new TrapezoidProfile.Constraints(Math.PI, 1.0)
+        );
+
+        PPMecanumControllerCommand mecanumCommand = new PPMecanumControllerCommand(
+            trajectoryPathPlanner, 
+            m_robotDrive::getMecanumPose, 
+            DriveConstants.kMecanumDriveKinematics, 
+            new PIDController(0.004, 0.00002, 0.00002), 
+            new PIDController(0.005, 0.00002, 0.00002), 
+            thetaController,
+            DriveConstants.kMaxVelocityMetersPerSecond, 
+            m_robotDrive::getCurrentMecanumWheelSpeeds,
+            m_robotDrive);
 
         // Reset odometry to the starting pose of the trajectory.
         //m_robotDrive.resetGyro();
