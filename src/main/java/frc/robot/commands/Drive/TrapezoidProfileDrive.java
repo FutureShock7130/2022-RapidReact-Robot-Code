@@ -1,8 +1,10 @@
 package frc.robot.commands.Drive;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileCommand;
 import frc.robot.Constants.DriveConstants;
@@ -20,6 +22,11 @@ public class TrapezoidProfileDrive extends CommandBase {
     private TrapezoidProfile profile;
 
     private double kDt = 0.02;
+
+    private double linearDisplacement;
+    private double linearVelocity;
+    private double linearAcceleration;
+    private double lastVelocity;
 
     public TrapezoidProfileDrive(double meters, Drive m_drive) {
         drive = m_drive;
@@ -42,6 +49,16 @@ public class TrapezoidProfileDrive extends CommandBase {
   public void execute() {
       TrapezoidProfile.State setpoint = profile.calculate(timer.get());
       output = drive.feedforwardPIDDrive(setpoint.position, setpoint.velocity, 0);
+
+      linearDisplacement = drive.getLinearEncoderPosition();
+      linearVelocity = drive.getLinearWheelSpeeds();
+      linearAcceleration = (linearVelocity - lastVelocity) / kDt;
+      drive.feedForwardTestDrive(DriveConstants.kS);
+      //m_drive.feedForwardTestDrive(12 * kPercentageVoltage);
+      SmartDashboard.putNumber("Linear Acceleration", linearAcceleration);
+      SmartDashboard.putNumber("Linear Velocity", linearAcceleration);
+      SmartDashboard.putNumber("Linear Displacement" , linearDisplacement);
+      lastVelocity = linearVelocity;
   }
 
   // Called once the command ends or is interrupted.
@@ -60,5 +77,38 @@ public class TrapezoidProfileDrive extends CommandBase {
 
   public void interrupted(){
     drive.feedForwardTestDrive(0);
+  }
+
+  private double kP = 0.0001;
+  private double kI = 0;
+  private double kD = 0;
+  private PIDController controllerFL = new PIDController(kP, kI, kD);
+  private PIDController controllerRL = new PIDController(kP, kI, kD);
+  private PIDController controllerFR = new PIDController(kP, kI, kD);
+  private PIDController controllerRR = new PIDController(kP, kI, kD);
+
+  private double kPVel = DriveConstants.kPDriveVel;
+
+  // Feedforward control defined above as a constant
+
+  // Feedforward Drive using the WPI Controllers
+  public double feedforwardPIDDrive(double targetPos, double velocity, double acceleration) {
+    // Note that Velocity is in m/s
+    targetPos /= DriveConstants.kEncoderDistancePerPulse;
+    double kF = feedforward.calculate(velocity, acceleration);
+    double velError = velocity - drive.getLinearWheelSpeeds();
+    drive.motorFL.setVoltage(
+      velError * kPVel +
+      controllerFL.calculate(drive.motorFL.getSelectedSensorPosition(), targetPos) + kF);
+    drive.motorRL.setVoltage(
+      velError * kPVel +
+      controllerRL.calculate(drive.motorRL.getSelectedSensorPosition(), targetPos) + kF);
+    drive.motorFR.setVoltage(
+      velError * kPVel +
+      controllerFR.calculate(drive.motorFR.getSelectedSensorPosition(), targetPos) + kF);
+    drive.motorRR.setVoltage(
+      velError * kPVel +
+      controllerRR.calculate(drive.motorRR.getSelectedSensorPosition(), targetPos) + kF);
+    return controllerFL.calculate(targetPos, drive.motorFL.getSelectedSensorPosition()) + kF;
   }
 }
