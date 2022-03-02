@@ -69,7 +69,7 @@ public final class Constants {
     public static final double kRamseteTheta = 0.7;
 
     public static final double kMaxVelocityMetersPerSecond = 2.0;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 2.5;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1.0;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 

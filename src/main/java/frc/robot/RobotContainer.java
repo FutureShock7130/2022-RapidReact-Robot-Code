@@ -231,7 +231,6 @@ public class RobotContainer {
    */
     public Command getAutonomousTrajectoryCommand() {
         driveFSM.setOdometryDifferential();
-        m_robotDrive.resetGyro();
 
         // Create a voltage constraint to ensure we don't accelerate too fast
         var autoVoltageConstraint =
@@ -251,7 +250,7 @@ public class RobotContainer {
                 .addConstraint(autoVoltageConstraint);
 
         Trajectory trajectory;
-        trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+        trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared, true);
 
         RamseteCommand ramseteCommand = new RamseteCommand(
             trajectory,
@@ -268,7 +267,7 @@ public class RobotContainer {
         );
 
         // Reset odometry to the starting pose of the trajectory.
-        m_robotDrive.resetGyro();
+        //m_robotDrive.resetGyro();
         m_robotDrive.resetOdometry(trajectory.getInitialPose());
         // Run path following command, then stop at the end.
         return ramseteCommand.andThen(() -> m_robotDrive.differentialDriveVolts(0, 0));

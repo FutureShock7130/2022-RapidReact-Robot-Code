@@ -67,7 +67,6 @@ public class Drive extends SubsystemBase {
     driveStateMachine = driveFSM;
 
     resetEncoders();
-    m_gyro.zeroYaw();
 
     // Odometry class for tracking robot pose
     if (true) {
