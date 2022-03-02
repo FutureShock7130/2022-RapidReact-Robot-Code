@@ -61,6 +61,8 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 public class RobotContainer {
     // The robot's subsystems
@@ -251,16 +253,11 @@ public class RobotContainer {
                 .addConstraint(autoVoltageConstraint);
 
         Trajectory trajectory;
-        //trajectory = PathPlanner.loadPath("Blue-1 Cargo-2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
-        try {
-        String path = "/paths/CurveTestPath.wpilib.json";
-        Path json = Filesystem.getDeployDirectory().toPath().resolve(path);
-        trajectory = TrajectoryUtil.fromPathweaverJson(json);
-        } catch (IOException e) {
-            trajectory = null;
-            DriverStation.reportError("Can't open file", e.getStackTrace());
-        }
+        trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared, true);
+        PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
+        PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
+        System.out.println(state);
         RamseteCommand ramseteCommand = new RamseteCommand(
             trajectory,
             m_robotDrive::getDifferentialPose,
