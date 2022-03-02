@@ -69,11 +69,11 @@ public class Drive extends SubsystemBase {
     resetEncoders();
 
     // Odometry class for tracking robot pose
-    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.MECANUM_ODOMETRY) {
+    if (true) {
       m_mecanumOdometry = new MecanumDriveOdometry(DriveConstants.kMecanumDriveKinematics, m_gyro.getRotation2d());
       resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
     }
-    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
+    if (true) {
       m_differentialOdometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), new Pose2d(0, 0, new Rotation2d()));
       resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
     }
@@ -81,6 +81,7 @@ public class Drive extends SubsystemBase {
 
   @Override
   public void periodic() {
+    System.out.println(driveStateMachine.getCurrentOdometry());
     // Update the odometry in the periodic block
     if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
       m_differentialOdometry.update(
@@ -116,6 +117,7 @@ public class Drive extends SubsystemBase {
       lightStrip.setRaw(i);
     }
 
+    SmartDashboard.putNumber("gyro", m_gyro.getAngle());
   }
 
   // Returns the currently-estimated pose of the robot.
@@ -132,6 +134,10 @@ public class Drive extends SubsystemBase {
       return m_differentialOdometry.getPoseMeters();
     } 
     return m_mecanumOdometry.getPoseMeters();
+  }
+
+  public void resetGyro(){
+    m_gyro.zeroYaw();
   }
 
   // Resets the odometry to the specified pose.

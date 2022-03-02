@@ -230,6 +230,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
     public Command getAutonomousTrajectoryCommand() {
+        driveFSM.setOdometryDifferential();
+        m_robotDrive.resetGyro();
+        m_robotDrive.resetEncoders();
+        m_robotDrive.resetOdometry(new Pose2d(0,0,new Rotation2d(0)));
         // Create a voltage constraint to ensure we don't accelerate too fast
         var autoVoltageConstraint =
             new DifferentialDriveVoltageConstraint(
@@ -248,7 +252,7 @@ public class RobotContainer {
                 .addConstraint(autoVoltageConstraint);
 
         Trajectory trajectory;
-        trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+        trajectory = PathPlanner.loadPath("1-Cargo Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
         // try {
         //     trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
