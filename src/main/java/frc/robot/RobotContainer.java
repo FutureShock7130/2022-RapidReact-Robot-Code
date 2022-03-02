@@ -287,7 +287,7 @@ public class RobotContainer {
             new PIDController(0.005, 0.00002, 0.00002), 
             thetaController,
             DriveConstants.kMaxVelocityMetersPerSecond, 
-            m_robotDrive::getCurrentMecanumWheelSpeeds,
+            m_robotDrive::setMecanumWheelSpeeds,
             m_robotDrive);
 
         // Reset odometry to the starting pose of the trajectory.

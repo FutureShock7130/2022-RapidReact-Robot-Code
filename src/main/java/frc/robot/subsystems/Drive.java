@@ -186,6 +186,14 @@ public class Drive extends SubsystemBase {
     motorRR.setVoltage(volts.rearRightVoltage);
   }
 
+  public void setMecanumWheelSpeeds(MecanumDriveWheelSpeeds speeds) {
+    motorFL.setVoltage(feedforward.calculate(speeds.frontLeftMetersPerSecond));
+    motorRL.setVoltage(feedforward.calculate(speeds.rearLeftMetersPerSecond));
+    motorFR.setVoltage(feedforward.calculate(speeds.frontRightMetersPerSecond));
+    motorRR.setVoltage(feedforward.calculate(speeds.rearRightMetersPerSecond));
+    m_drive.feed();
+  }
+
   public void differentialDriveVolts(double leftVolts, double rightVolts) {
     motorFL.setVoltage(leftVolts);
     motorRL.setVoltage(leftVolts);
