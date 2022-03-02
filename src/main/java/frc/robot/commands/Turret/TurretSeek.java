@@ -25,6 +25,7 @@ public class TurretSeek extends CommandBase {
         vision = limelight;
 
         addRequirements(m_robotSpinner);
+        addRequirements(vision);
     }
 
     public void initialize() {

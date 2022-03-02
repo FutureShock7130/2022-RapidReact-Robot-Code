@@ -34,7 +34,13 @@ public class Spinner extends SubsystemBase {
   }
 
   public void spinnerRun(double speed) {
-    spinner.set(speed);
+    if (speed > 0 && atLeftLimit()) {
+      return;
+    } else if (speed < 0 && atRightLimit()) {
+      return;
+    } else {
+      spinner.set(speed);
+    }
   }
 
   public void spinnerStop() {
