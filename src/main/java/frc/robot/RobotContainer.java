@@ -255,7 +255,7 @@ public class RobotContainer {
                 .addConstraint(autoVoltageConstraint);
 
         Trajectory trajectory;
-        PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+        PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("Blue-1 Cargo-2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
         trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
         PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
@@ -275,16 +275,16 @@ public class RobotContainer {
         );
 
         ProfiledPIDController thetaController = new ProfiledPIDController(
-            0.008, 0.0004, 0,
-            new TrapezoidProfile.Constraints(Math.PI, 1.0)
+            0.4, 0.000, 0,
+            new TrapezoidProfile.Constraints(Math.PI /2, 1.0)
         );
 
         PPMecanumControllerCommand mecanumCommand = new PPMecanumControllerCommand(
             trajectoryPathPlanner, 
             m_robotDrive::getMecanumPose, 
             DriveConstants.kMecanumDriveKinematics, 
-            new PIDController(0.004, 0.00002, 0.00002), 
-            new PIDController(0.005, 0.00002, 0.00002), 
+            new PIDController(0.3, 0.001, 0.006), 
+            new PIDController(0.2, 0.001, 0.006), 
             thetaController,
             DriveConstants.kMaxVelocityMetersPerSecond, 
             m_robotDrive::setMecanumWheelSpeeds,

@@ -79,7 +79,7 @@ public class Drive extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println(m_differentialOdometry.getPoseMeters());
+    System.out.println(m_mecanumOdometry.getPoseMeters());
     m_differentialOdometry.update(
         m_gyro.getRotation2d(),
         motorFL.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse / 10,
@@ -103,6 +103,8 @@ public class Drive extends SubsystemBase {
             motorRL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse,
             motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse));
       SmartDashboard.putNumber("Linearized Wheel Speed", getLinearWheelSpeeds());
+      SmartDashboard.putNumber("Pose X", m_mecanumOdometry.getPoseMeters().getX());
+      SmartDashboard.putNumber("Pose Y", m_mecanumOdometry.getPoseMeters().getY());
     }
     if (getTargetWheelSpeed(motorFL) > 0.2) {
       //System.out.println(getTargetWheelSpeed(motorFL));
