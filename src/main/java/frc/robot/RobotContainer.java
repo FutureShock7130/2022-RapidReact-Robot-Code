@@ -132,9 +132,9 @@ public class RobotContainer {
 
                             // Far Flywheel Logic
                             if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.4) {
-                                farShoot.schedule();
+                                nearShoot.schedule();
                             } else {
-                                farShoot.cancel();
+                                nearShoot.cancel();
                             }
 
                             // Intake Logic
@@ -212,7 +212,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         TestFeedforward m_command1 = new TestFeedforward(m_robotDrive);
         TrapezoidProfileDrive m_command2 = new TrapezoidProfileDrive(4.0, m_robotDrive);
-        return m_command1;
+        return m_command2;
     }
 
     /**

@@ -95,7 +95,6 @@ public class AbsoluteAim extends CommandBase {
                 lastError = rError;
 
                 SmartDashboard.putNumber("output", output);
-
         }
 
         public void end(boolean isInterrupted) {
