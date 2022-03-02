@@ -150,6 +150,15 @@ public class Drive extends SubsystemBase {
   public void resetGyro(){
     m_gyro.zeroYaw();
   }
+  public void setGyroZeroYaw() {
+    m_gyro.calibrate();
+  }
+  
+  public double getAverageWheelPosition() {
+    return (motorFL.getSelectedSensorPosition() + motorFR.getSelectedSensorPosition()
+        + motorRL.getSelectedSensorPosition() + motorRR.getSelectedSensorPosition()) / 4
+        * DriveConstants.kEncoderDistancePerPulse;
+  }
 
   // Resets the odometry to the specified pose.
   public void resetOdometry(Pose2d pose) {

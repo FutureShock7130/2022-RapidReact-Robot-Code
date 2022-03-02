@@ -127,6 +127,7 @@ public final class Constants {
     public static final int kDownTransporterID = 5;
     public static final double intakeSpeed = 0.9;
     public static final double transportSpeed = 0.75;
+    public static final double idealIntakeDt = 0.75;
   }
 
   public static final class TransporterConstants {
