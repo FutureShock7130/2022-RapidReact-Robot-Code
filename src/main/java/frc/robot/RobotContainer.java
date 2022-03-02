@@ -256,7 +256,7 @@ public class RobotContainer {
         PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
         trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
-        PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.sample(2.0);
+        PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
         System.out.println(state);
         RamseteCommand ramseteCommand = new RamseteCommand(
             trajectory,
