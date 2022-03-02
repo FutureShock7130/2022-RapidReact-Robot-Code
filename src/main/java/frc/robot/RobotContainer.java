@@ -252,12 +252,8 @@ public class RobotContainer {
                 .addConstraint(autoVoltageConstraint);
 
         Trajectory trajectory;
-<<<<<<< HEAD
         PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
         trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
-=======
-        trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared, true);
->>>>>>> ec42c998d429803e13e62a2eb3ebca5a8d925608
 
         PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
         System.out.println(state);
