@@ -67,29 +67,34 @@ public class Drive extends SubsystemBase {
     driveStateMachine = driveFSM;
 
     resetEncoders();
+    m_gyro.zeroYaw();
 
     // Odometry class for tracking robot pose
-    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.MECANUM_ODOMETRY) {
+    if (true) {
       m_mecanumOdometry = new MecanumDriveOdometry(DriveConstants.kMecanumDriveKinematics, m_gyro.getRotation2d());
-      resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
     }
-    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
-      m_differentialOdometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), new Pose2d(0, 0, new Rotation2d()));
-      resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
+    if (true) {
+      m_differentialOdometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
     }
   }
 
   @Override
   public void periodic() {
-    // Update the odometry in the periodic block
-    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
-      m_differentialOdometry.update(
+    System.out.println(m_differentialOdometry.getPoseMeters());
+    m_differentialOdometry.update(
         m_gyro.getRotation2d(),
-        motorFL.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse,
-        motorFR.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse
-        );
-      SmartDashboard.putNumber("Linearized Wheel Speed", getLinearWheelSpeeds());
-    }
+        motorFL.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse / 10,
+        motorFR.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse / 10
+    );
+    // Update the odometry in the periodic block
+    // if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
+    //   m_differentialOdometry.update(
+    //     m_gyro.getRotation2d(),
+    //     motorFL.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse,
+    //     motorFR.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse
+    //     );
+    //   SmartDashboard.putNumber("Linearized Wheel Speed", getLinearWheelSpeeds());
+    // }
     if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.MECANUM_ODOMETRY) {
       m_mecanumOdometry.update(
           m_gyro.getRotation2d(),
@@ -116,6 +121,7 @@ public class Drive extends SubsystemBase {
       lightStrip.setRaw(i);
     }
 
+    SmartDashboard.putNumber("gyro", m_gyro.getAngle());
   }
 
   // Returns the currently-estimated pose of the robot.
@@ -134,11 +140,14 @@ public class Drive extends SubsystemBase {
     return m_mecanumOdometry.getPoseMeters();
   }
 
+  public void resetGyro(){
+    m_gyro.reset();
+  }
+
   // Resets the odometry to the specified pose.
   public void resetOdometry(Pose2d pose) {
-    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
-      m_differentialOdometry.resetPosition(pose, m_gyro.getRotation2d());;
-    } 
+    resetEncoders();
+    m_differentialOdometry.resetPosition(pose, m_gyro.getRotation2d());;
     m_mecanumOdometry.resetPosition(pose, m_gyro.getRotation2d());
   }
 
@@ -183,6 +192,7 @@ public class Drive extends SubsystemBase {
     motorRL.setVoltage(leftVolts);
     motorFR.setVoltage(rightVolts);
     motorRR.setVoltage(rightVolts);
+    m_drive.feed();
   }
 
   public void setTargetMotorVolts(WPI_TalonFX motor, double volts) {
@@ -298,6 +308,7 @@ public class Drive extends SubsystemBase {
   public double feedforwardPIDDrive(double targetPos, double velocity, double acceleration) {
     // Note that Velocity is in m/s
     targetPos /= DriveConstants.kEncoderDistancePerPulse;
+    targetPos *= 10;
     double kF = feedforward.calculate(velocity, acceleration);
     double velError = velocity - getLinearWheelSpeeds();
     motorFL.setVoltage(
