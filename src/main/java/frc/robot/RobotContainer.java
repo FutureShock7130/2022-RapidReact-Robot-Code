@@ -60,6 +60,8 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 public class RobotContainer {
     // The robot's subsystems
@@ -251,8 +253,11 @@ public class RobotContainer {
                 .addConstraint(autoVoltageConstraint);
 
         Trajectory trajectory;
+        PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
         trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
+        PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.sample(2.0);
+        System.out.println(state);
         RamseteCommand ramseteCommand = new RamseteCommand(
             trajectory,
             m_robotDrive::getDifferentialPose,
