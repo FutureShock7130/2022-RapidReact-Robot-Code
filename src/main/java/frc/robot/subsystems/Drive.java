@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
@@ -112,15 +113,22 @@ public class Drive extends SubsystemBase {
     // SmartDashboard.putNumber("Pose X", m_odometry.getPoseMeters().getX());
     // SmartDashboard.putNumber("Pose Y", m_odometry.getPoseMeters().getY());
 
+    this.lightStripGOGOGO();
+
+    SmartDashboard.putNumber("gyro", m_gyro.getAngle());
+  }
+
+
+  public void lightStripGOGOGO() {
     for(int i = 0; i < 255; i++) {
       lightStrip.setRaw(i);
+      Timer.delay(0.05);
     }
 
     for(int i = 255; i >= 0; i--){
       lightStrip.setRaw(i);
+      Timer.delay(0.05);
     }
-
-    SmartDashboard.putNumber("gyro", m_gyro.getAngle());
   }
 
   // Returns the currently-estimated pose of the robot.

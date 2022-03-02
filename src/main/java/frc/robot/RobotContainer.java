@@ -54,6 +54,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -250,7 +251,15 @@ public class RobotContainer {
                 .addConstraint(autoVoltageConstraint);
 
         Trajectory trajectory;
-        trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared, true);
+        //trajectory = PathPlanner.loadPath("Blue-1 Cargo-2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+        try {
+        String path = "/paths/CurveTestPath.wpilib.json";
+        Path json = Filesystem.getDeployDirectory().toPath().resolve(path);
+        trajectory = TrajectoryUtil.fromPathweaverJson(json);
+        } catch (IOException e) {
+            trajectory = null;
+            DriverStation.reportError("Can't open file", e.getStackTrace());
+        }
 
         RamseteCommand ramseteCommand = new RamseteCommand(
             trajectory,
