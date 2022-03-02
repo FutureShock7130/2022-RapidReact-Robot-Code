@@ -15,6 +15,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -65,6 +66,7 @@ import java.util.function.BooleanSupplier;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.commands.PPMecanumControllerCommand;
 
 public class RobotContainer {
     // The robot's subsystems
@@ -235,7 +237,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
     public Command getAutonomousTrajectoryCommand() {
-        driveFSM.setOdometryDifferential();
+        driveFSM.setOdometryMecanum();
 
         // Create a voltage constraint to ensure we don't accelerate too fast
         var autoVoltageConstraint =
@@ -255,30 +257,31 @@ public class RobotContainer {
                 .addConstraint(autoVoltageConstraint);
 
         Trajectory trajectory;
-        trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared, true);
-        PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+        PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("Blue-1 Cargo-2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+        trajectory = PathPlanner.loadPath("Straight Test Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
         PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
         System.out.println(state);
-        MecanumControllerCommand mecanumCommand = new MecanumControllerCommand(
-            trajectory,
-            m_robotDrive::getPose,
-            feedforward,
-            DriveConstants.kMecanumDriveKinematics,
-            new PIDController(kp, ki, kd),
-            new PIDController(kp, ki, kd),
-            new ProfiledPIDController(Kp, Ki, Kd, constraints),
-            m_robotDrive::getCurrentDifferentialDriveWheelSpeeds,
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            // RamseteCommand passes volts to the callback
-            m_robotDrive::differentialDriveVolts,
-            m_robotDrive
+
+        ProfiledPIDController thetaController = new ProfiledPIDController(
+            0.4, 0.000, 0,
+            new TrapezoidProfile.Constraints(Math.PI /2, 1.0)
         );
+
+        PPMecanumControllerCommand mecanumCommand = new PPMecanumControllerCommand(
+            trajectoryPathPlanner, 
+            m_robotDrive::getMecanumPose, 
+            DriveConstants.kMecanumDriveKinematics, 
+            new PIDController(0.3, 0.001, 0.006), 
+            new PIDController(0.2, 0.001, 0.006), 
+            thetaController,
+            DriveConstants.kMaxVelocityMetersPerSecond, 
+            m_robotDrive::setMecanumWheelSpeeds,
+            m_robotDrive);
 
         // Reset odometry to the starting pose of the trajectory.
         //m_robotDrive.resetGyro();
-        m_robotDrive.resetOdometry(trajectory.getInitialPose());
+        m_robotDrive.resetOdometry(trajectoryPathPlanner.getInitialPose());
         // Run path following command, then stop at the end.
         return mecanumCommand.andThen(() -> m_robotDrive.differentialDriveVolts(0, 0));
     }

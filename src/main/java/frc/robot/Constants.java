@@ -52,7 +52,7 @@ public final class Constants {
     // your robot.
 
     public static final double kS = 0.59209; //0.76364
-    public static final double kV = 3.4735;
+    public static final double kV = 3.8435;
     public static final double kA = 0.22; //0.22548
     public static final double kJ = 14;
 
