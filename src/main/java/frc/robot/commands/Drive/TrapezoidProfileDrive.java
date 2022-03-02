@@ -41,7 +41,8 @@ public class TrapezoidProfileDrive extends CommandBase {
   @Override
   public void execute() {
       TrapezoidProfile.State setpoint = profile.calculate(timer.get());
-      output = drive.feedforwardPIDDrive(setpoint.position, setpoint.velocity, 0);
+      output = drive.feedforwardPIDDrive(setpoint.position, setpoint.velocity, 1);
+      //System.out.println(""+setpoint.position+" "+setpoint.velocity);
   }
 
   // Called once the command ends or is interrupted.
