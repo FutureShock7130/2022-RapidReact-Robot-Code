@@ -32,5 +32,4 @@ public class FourCargo {
             new ParallelCommandGroup(new TimedTransport(1, m_robot.m_robotTransport), new TimedTurret(m_robot.m_robotTurret, 1, 1750))
         );
     }
-
 }
