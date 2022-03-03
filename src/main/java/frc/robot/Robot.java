@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.OIConstants;
+import frc.robot.auto.AutoModePlanner;
 import frc.robot.statemachines.DriveFSM;
 
 /**
@@ -31,6 +32,7 @@ public class Robot extends TimedRobot {
 
   Joystick m_driverController;
   Joystick m_operatorController;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -76,6 +78,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    AutoModePlanner autoPlanner = new AutoModePlanner(m_robotContainer);
+    // m_autonomousCommand = autoPlanner.handleAutoMode();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)

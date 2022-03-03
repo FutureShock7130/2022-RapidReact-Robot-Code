@@ -59,6 +59,7 @@ public final class Constants {
     public static final double kJ = 14;
 
     public static final double kPDriveVel = 0.3; //0.3
+    public static final double kDDriveVel = 0.012;
 
     public static final SimpleMotorFeedforward kDriveFeedforward = new SimpleMotorFeedforward(0, 0, 0);
 
@@ -66,10 +67,10 @@ public final class Constants {
 
     public static PIDController velController = new PIDController(kPDriveVel, 0, 0);
 
-    public static PIDController xController = new PIDController(0.03, 0.00003, 0.00006);
-    public static PIDController yController = new PIDController(0.03, 0.00006, 0.00006);
+    public static PIDController idealXController = new PIDController(0.03, 0.00003, 0.00006);
+    public static PIDController idealYController = new PIDController(0.03, 0.00006, 0.00006);
 
-    public static ProfiledPIDController thetaController = new ProfiledPIDController(
+    public static ProfiledPIDController idealThetaController = new ProfiledPIDController(
       0.003, 0.0, 0.0,
       new TrapezoidProfile.Constraints(Math.PI * 1.4, Math.PI / 2)
     );
