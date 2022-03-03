@@ -31,6 +31,7 @@ public class OneCargo {
     private ProfiledPIDController thetaController = DriveConstants.idealThetaController;
 
     private AutoAim AutoAim;
+    private TrajectoryGenerator trajectoryGenerator;
 
     public OneCargo(Intake m_robotIntake, Transporter m_robotTransport, Turret m_robotTurret, Drive m_robotDrive,
             Limelight m_vision, Spinner m_robotSpinner) {
@@ -39,9 +40,10 @@ public class OneCargo {
         this.m_robotDrive = m_robotDrive;
         this.m_vision = m_vision;
         this.m_robotSpinner = m_robotSpinner;
+        this.trajectoryGenerator = new TrajectoryGenerator(this.m_robotDrive);
 
         AutoAim = new AutoAim(this.m_robotDrive, this.m_robotSpinner, this.m_vision);
-        route = TrajectoryGenerator.generate("One", this.xController, this.yController, this.thetaController);
+        route = trajectoryGenerator.generate("One", this.xController, this.yController, this.thetaController);
     }
 
     public SequentialCommandGroup getCommand() {
