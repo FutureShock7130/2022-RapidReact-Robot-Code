@@ -24,6 +24,10 @@ public class FourCargo {
                 new TrajectoryGenerator(m_robot.m_robotDrive).generate("2S to 4 from 1 B", DriveConstants.idealXController, DriveConstants.idealYController, DriveConstants.idealThetaController),
                 new IntakeCmd(m_robot.m_robotIntake)
             ),
+            new ParallelDeadlineGroup(
+                new TrajectoryGenerator(m_robot.m_robotDrive).generate("4 to 4S from 1 B", DriveConstants.idealXController, DriveConstants.idealYController, DriveConstants.idealThetaController),
+                new IntakeCmd(m_robot.m_robotIntake)
+            ),
             new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
             new ParallelCommandGroup(new TimedTransport(1, m_robot.m_robotTransport), new TimedTurret(m_robot.m_robotTurret, 1, 1750))
         );
