@@ -26,6 +26,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SuperstructureConstants;
 import frc.robot.Constants.TransporterConstants;
+import frc.robot.auto.Actions.TestPathing.TestFeedforward;
 import frc.robot.commands.Drive.TrapezoidProfileDrive;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeReverse;
@@ -241,8 +242,9 @@ public class RobotContainer {
     // AUTONOMOUS COMMANDS
 
     public Command getAutonomousCommand() {
+        TestFeedforward m_command = new TestFeedforward(m_robotDrive);
         TrapezoidProfileDrive m_command2 = new TrapezoidProfileDrive(4.0, m_robotDrive);
-        return m_command2;
+        return m_command;
     }
 
     // Use this to pass the autonomous command to the main {@link Robot} class.

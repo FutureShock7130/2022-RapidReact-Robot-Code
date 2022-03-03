@@ -22,6 +22,9 @@ public class TestFeedforward extends CommandBase {
     double linearVelocity;
     double linearAcceleration;
 
+    double maxVelocity = 0;
+    double maxAcc = 0;
+
     double lastVelocity;
 
     String dataMessage;
@@ -45,14 +48,22 @@ public class TestFeedforward extends CommandBase {
         linearDisplacement = m_drive.getLinearEncoderPosition() - initialEncoderPos;
         linearVelocity = m_drive.getLinearWheelSpeeds();
         linearAcceleration = (linearVelocity - lastVelocity) / kDt;
-        m_drive.feedForwardTestDrive(DriveConstants.kS);
+        m_drive.feedForwardTestDrive(11.4);
         //m_drive.feedForwardTestDrive(12 * kPercentageVoltage);
         SmartDashboard.putNumber("Linear Acceleration", linearAcceleration);
         SmartDashboard.putNumber("Linear Velocity", linearAcceleration);
         SmartDashboard.putNumber("Linear Displacement" , linearDisplacement);
         lastVelocity = linearVelocity;
 
-        String data = String.format("%f, %f, %f", linearDisplacement*DriveConstants.kEncoderDistancePerPulse/10, linearVelocity, linearAcceleration);
+        if (linearVelocity > maxVelocity) {
+            maxVelocity = linearVelocity;
+        }
+
+        if (linearAcceleration > maxAcc) {
+            maxAcc = linearAcceleration;
+        }
+
+        String data = String.format("%f, %f, %f", maxVelocity, maxAcc, linearAcceleration);
         System.out.println(data);
     }
 
@@ -64,7 +75,7 @@ public class TestFeedforward extends CommandBase {
     @Override
     public boolean isFinished() {
         double targetPulses = 1 / DriveConstants.kEncoderDistancePerPulse ;
-        if (timer.get() > 2) {
+        if (timer.get() > 3) {
             m_drive.feedForwardTestDrive(0);
             timer.reset();
             return true;

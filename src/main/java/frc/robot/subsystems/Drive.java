@@ -116,8 +116,6 @@ public class Drive extends SubsystemBase {
 
     this.lightStripGOGOGO();
 
-    System.out.println(m_gyro.getAngle());
-
     SmartDashboard.putNumber("gyro", m_gyro.getAngle());
   }
 
