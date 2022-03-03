@@ -53,6 +53,7 @@ public class LimelightAim extends CommandBase {
 
         output = controller.calculate(0, xError);
 
+
         spinner.spinnerRun(output);
 
         SmartDashboard.putNumber("Limelight Auto Aim Power", output);
