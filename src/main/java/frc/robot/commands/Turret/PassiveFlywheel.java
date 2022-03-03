@@ -13,7 +13,7 @@ public class PassiveFlywheel extends CommandBase {
     public void initialize() { }
 
     public void execute() {
-        m_turret.flywheelsRun(-0.001);
+        m_turret.flywheelsRun(0);
     }
 
     public void end() { }

@@ -49,7 +49,7 @@ public class LimelightAim extends CommandBase {
         output = kP * xError + kI * integralSumX;
 
         if (!spinner.atTurningLimit()) {
-            spinner.spinnerRun(output);  
+            spinner.spinnerRun(-output);  
         }
 
         SmartDashboard.putNumber("Limelight Auto Aim Output", output);

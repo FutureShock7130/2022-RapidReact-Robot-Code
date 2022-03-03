@@ -55,7 +55,7 @@ public final class Constants {
 
     public static final double kS = 0.76364; //0.76364
     public static final double kV = 3.8435;
-    public static final double kA = 0.25; //0.22548
+    public static final double kA = 0.23; //0.22548
     public static final double kJ = 14;
 
     public static final double kPDriveVel = 0.3; //0.3
@@ -66,11 +66,11 @@ public final class Constants {
 
     public static PIDController velController = new PIDController(kPDriveVel, 0, 0);
 
-    public static PIDController xController = new PIDController(0.2, 0.00003, 0.00006);
-    public static PIDController yController = new PIDController(0.35, 0.006, 0.0012);
+    public static PIDController xController = new PIDController(0.03, 0.00003, 0.00006);
+    public static PIDController yController = new PIDController(0.03, 0.00006, 0.00006);
 
     public static ProfiledPIDController thetaController = new ProfiledPIDController(
-      0.15, 0.0, 0.0,
+      0.003, 0.0, 0.0,
       new TrapezoidProfile.Constraints(Math.PI * 1.4, Math.PI / 2)
     );
 
@@ -131,8 +131,12 @@ public final class Constants {
     public static final int kSpinnerID = 11;
 
     // Flywheel Feedforward Constants
+    public static final double kS = 0.0118;
     public static final double kV = 0.00002;
     public static final double kA = 0.00012;
+
+    public static final double closeVoltage = 0.32;
+    public static final double farVoltage = 0.45;
   }
 
   public static final class IntakeConstants {
@@ -161,7 +165,7 @@ public final class Constants {
     public static final int RlimitSwitch = 3;
 
     public static final double swingSpeed = 0.3;
-    public static final double hangerSpeed = 0.8;
+    public static final double hangerSpeed = 0.98;
     public static final double HangerMaxPosition = -54; // Need to be tested, in rotation unit
     public static final double HangerMinPosition = -176;
     public static final double SwingMaxPosition = 5000; // Need to be tested, in rotation unit

@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SuperstructureConstants;
+import frc.robot.Constants.TurretConstants;
 import frc.robot.commands.Drive.TrapezoidProfileDrive;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeReverse;
@@ -94,7 +95,7 @@ public class RobotContainer {
 
     // The commands
     AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
-    TurretShoot nearShoot = new TurretShoot(m_robotTurret, 1850);
+    TurretShoot nearShoot = new TurretShoot(m_robotTurret, 1750);
     TurretShoot farShoot = new TurretShoot(m_robotTurret, 3000);
 
     BooleanSupplier targetStatus = new BooleanSupplier() {
@@ -142,15 +143,18 @@ public class RobotContainer {
                             // Far Flywheel Shoot Logic
                             if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.4) {
                                 farShoot.schedule();
-                            } 
+                            }
 
                             // Intake Logic
                             if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
                                 intake.schedule();
+                                transportCmd.schedule();
                             } else if (m_driverController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
                                 eject.schedule();
+                                transportEject.schedule();
                             } else {
                                 intakeStop.schedule();
+                                transportStop.schedule();
                             }
                             // Transporter Logic
                             if (m_operatorController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
@@ -165,6 +169,12 @@ public class RobotContainer {
                                     -m_operatorController.getRawAxis(OIConstants.rightStick_Y)
                                             * SuperstructureConstants.hangerSpeed);
 
+                            if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
+                                farShoot.schedule();
+                            } else {
+                                farShoot.cancel();
+                            }
+
                         }, m_robotDrive));
     }
 
@@ -178,9 +188,10 @@ public class RobotContainer {
                 .whenReleased(() -> m_robotDrive.setMaxOutput(0.95));
 
         new JoystickButton(m_operatorController, OIConstants.Btn_Y)
-                .whenHeld(
-                        new ConditionalCommand(new TurretSeek(m_robotSpinner),
-                                new LimelightAim(m_vision, m_robotSpinner), targetStatus))
+                .whenPressed(new LimelightAim(m_vision, m_robotSpinner)
+                        // new ConditionalCommand(new TurretSeek(m_robotSpinner),
+                        //         new LimelightAim(m_vision, m_robotSpinner), targetStatus))
+                )
                 .whenReleased(
                         new RunCommand(() -> {
                             m_robotSpinner.spinnerRun(0.0);
@@ -205,13 +216,8 @@ public class RobotContainer {
         new JoystickButton(m_operatorController, OIConstants.Btn_A)
                 .whenPressed(
                         new TimedTransport(0.7, m_robotTransport));
-        new JoystickButton(m_operatorController, OIConstants.Btn_RB)
-                .whenHeld(nearShoot)
-                .whenReleased(() -> nearShoot.cancel());
-
-        new JoystickButton(m_operatorController, OIConstants.Btn_RB)
-                .whenHeld(farShoot)
-                .whenReleased(() -> farShoot.cancel());
+        //\new JoystickButton(m_operatorController, OIConstants.Btn_RB).whenHeld(nearShoot).whenReleased(()->nearShoot.cancel());
+        new JoystickButton(m_operatorController, OIConstants.Btn_RB).whenPressed(()->m_robotTurret.flywheelsRun(0.27)).whenReleased(()->m_robotTurret.flywheelsStop());
 
         // new JoystickButton(m_operatorController,
         // OIConstants.Btn_RB).whenPressed(autoClimb);
@@ -236,30 +242,28 @@ public class RobotContainer {
     public Command getAutonomousTrajectoryCommand() {
         driveFSM.setOdometryMecanum();
 
-        PathPlannerTrajectory trajectoryPathPlanner = 
-        PathPlanner.loadPath("New New Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
-
+        PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("New New Path",
+                DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
         PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
         System.out.println(state);
 
-
         MecanumControllerCommand betterMecanumCommand = new MecanumControllerCommand(
-            trajectoryPathPlanner, 
-            m_robotDrive::getMecanumPose,
-            DriveConstants.kFeedforward, 
-            DriveConstants.kMecanumDriveKinematics,
-            DriveConstants.xController, 
-            DriveConstants.yController, 
-            DriveConstants.thetaController, 
-            DriveConstants.kMaxVelocityMetersPerSecond, 
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            m_robotDrive::getCurrentMecanumWheelSpeeds,
-            m_robotDrive::setDriveMotorControllersVolts,
-            m_robotDrive);
+                trajectoryPathPlanner,
+                m_robotDrive::getMecanumPose,
+                DriveConstants.kFeedforward,
+                DriveConstants.kMecanumDriveKinematics,
+                DriveConstants.xController,
+                DriveConstants.yController,
+                DriveConstants.thetaController,
+                DriveConstants.kMaxVelocityMetersPerSecond,
+                new PIDController(DriveConstants.kPDriveVel, 0, 0),
+                new PIDController(DriveConstants.kPDriveVel, 0, 0),
+                new PIDController(DriveConstants.kPDriveVel, 0, 0),
+                new PIDController(DriveConstants.kPDriveVel, 0, 0),
+                m_robotDrive::getCurrentMecanumWheelSpeeds,
+                m_robotDrive::setDriveMotorControllersVolts,
+                m_robotDrive);
 
         // Reset odometry to the starting pose of the trajectory.
         // m_robotDrive.resetGyro();

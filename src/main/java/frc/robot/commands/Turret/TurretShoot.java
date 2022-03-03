@@ -12,7 +12,7 @@ import frc.robot.Constants.TurretConstants;
 import frc.robot.subsystems.Turret;
 
 public class TurretShoot extends CommandBase {
-  private static final double kP = 0.0013;
+  private static final double kP = 0.00013;
   private static final double kI = 0.00002;
 
   // a D Controller is not needed for the basic flywheel control because we only
@@ -71,8 +71,9 @@ public class TurretShoot extends CommandBase {
     } else if (error < -500) {
       turret.flywheelsRun(-1.0);
     } else {
-      turret.flywheelsRun(output + kF);
+      turret.flywheelsRun(output);
     }
+    turret.flywheelsRun(output+kF);
 
     lastError = error;
 
@@ -83,17 +84,16 @@ public class TurretShoot extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    turret.flywheelsRun(-0.05);
+    turret.flywheelsRun(0);
   }
 
   public void interrupted() {
-    turret.flywheelsRun(-0.05);
+    turret.flywheelsRun(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    turret.flywheelsRun(-0.05);
     return false;
   }
 }
