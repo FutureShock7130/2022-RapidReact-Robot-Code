@@ -47,6 +47,6 @@ public class TwoCargoFromOne {
                                 new TimedTransport(1, m_robot.m_robotTransport)
                 ),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
-                new TimedTurret(m_robot.m_robotTurret, 1.5, 1750)));
+                new TimedTurret(m_robot.m_robotTurret, 2, 1750)));
     }
 }
