@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.TurretConstants;
 import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.Turret;
@@ -47,6 +48,7 @@ public class TurretSeek extends CommandBase {
     public boolean isFinished() {
         if (vision.getTargetStatus() == true) {
             spinner.spinnerRun(0);
+            CommandScheduler.getInstance().schedule(new LimelightAim(vision,spinner));
             return true;
         }
         return false;

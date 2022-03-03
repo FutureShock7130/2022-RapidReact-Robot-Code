@@ -10,11 +10,11 @@ import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
 
-public class FourCargo {
+public class FourCargoFromOne {
 
     private RobotContainer m_robot;
 
-    public FourCargo(RobotContainer m_robot) {
+    public FourCargoFromOne(RobotContainer m_robot) {
         this.m_robot = m_robot;
     }
 
@@ -32,4 +32,5 @@ public class FourCargo {
             new ParallelCommandGroup(new TimedTransport(1, m_robot.m_robotTransport), new TimedTurret(m_robot.m_robotTurret, 1, 1750))
         );
     }
+
 }
