@@ -18,7 +18,7 @@ public class TurretShoot extends CommandBase {
   // a D Controller is not needed for the basic flywheel control because we only
   // need to rev the spin speed up instead of it being reving up and down
   // gradually.
-  
+
   private static final double kD = 0.00015;
   private static final double timeDiff = 0.02;
 
@@ -73,7 +73,7 @@ public class TurretShoot extends CommandBase {
     } else {
       turret.flywheelsRun(output);
     }
-    turret.flywheelsRun(output+kF);
+    turret.flywheelsRun(output + kF);
 
     lastError = error;
 
