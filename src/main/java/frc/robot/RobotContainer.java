@@ -79,15 +79,12 @@ public class RobotContainer {
     TransportCmd transportCmd = new TransportCmd(m_robotTransport);
     TransportStop transportStop = new TransportStop(m_robotTransport);
     TransportEject transportEject = new TransportEject(m_robotTransport);
-
     PassiveFlywheel shootPassiveState = new PassiveFlywheel(m_robotTurret);
-
-    private final SimpleMotorFeedforward feedforward = DriveConstants.kFeedforward;
-
-    // The commands
     AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
     TurretShoot nearShoot = new TurretShoot(m_robotTurret, 1850);
     TurretShoot farShoot = new TurretShoot(m_robotTurret, 3000);
+
+    private final SimpleMotorFeedforward feedforward = DriveConstants.kFeedforward;
 
     BooleanSupplier targetStatus = new BooleanSupplier() {
         @Override
@@ -117,6 +114,7 @@ public class RobotContainer {
                                     m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.5,
                                     false);
                         }, m_robotDrive));
+
         m_robotIntake.setDefaultCommand(
             new RunCommand(() -> {
                 // Intake Logic
@@ -129,6 +127,7 @@ public class RobotContainer {
                 }
             }, m_robotIntake)
         );
+
         m_robotTransport.setDefaultCommand(
             new RunCommand(() -> {
                 // Transporter Logic
@@ -141,6 +140,7 @@ public class RobotContainer {
                 }
             }, m_robotTransport)
         );
+
         m_SuperStructure.setDefaultCommand(
             new RunCommand(() -> {
                 // Superstructure Lifting Logic
@@ -150,15 +150,17 @@ public class RobotContainer {
                         -m_operatorController.getRawAxis(OIConstants.rightStick_Y)
                                 * SuperstructureConstants.hangerSpeed);
 
-
-                // Superstructure Swinging
+                // Superstructure Swinging Forward
                 if (m_operatorController.getPOV() == OIConstants.POV_UP) {
                     swingForward.schedule();
                 }
+
+                // Superstucture Swinging Backward
                 if (m_operatorController.getPOV() == OIConstants.POV_DOWN) {
                     swingBack.schedule();
                 }
 
+                // Superstructure Stop
                 if (m_operatorController.getPOV() == OIConstants.POV_LEFT) {
                     swingBack.end(true);
                     swingForward.end(true);
@@ -170,14 +172,15 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
+        // drivetrain sub
         new JoystickButton(m_driverController, OIConstants.Btn_RB)
                 .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
                 .whenReleased(() -> m_robotDrive.setMaxOutput(0.95));
 
-                
         new JoystickButton(m_operatorController, OIConstants.trigger_L)
         .whenPressed(new PrintCommand("Left Trigger Working!"));
 
+        // spinner auto aim 
         new JoystickButton(m_operatorController, OIConstants.Btn_Y)
         .whenHeld(
                 new ConditionalCommand(new TurretSeek(m_robotSpinner, m_vision),
@@ -187,6 +190,7 @@ public class RobotContainer {
                     m_robotSpinner.spinnerRun(0.0);
                 }, m_robotSpinner));
 
+        // spinner spin right
         new JoystickButton(m_operatorController, OIConstants.Btn_B)
                 .whenHeld(new RunCommand(() -> {
                     m_robotSpinner.spinnerRun(0.3);
@@ -194,7 +198,8 @@ public class RobotContainer {
                 .whenReleased(new RunCommand(() -> {
                     m_robotSpinner.spinnerRun(0.0);
                 }, m_robotSpinner));
-
+        
+        // spinner spin left
         new JoystickButton(m_operatorController, OIConstants.Btn_X)
                 .whenHeld(new RunCommand(() -> {
                     m_robotSpinner.spinnerRun(-0.3);
@@ -203,14 +208,13 @@ public class RobotContainer {
                     m_robotSpinner.spinnerRun(0.0);
                 }, m_robotSpinner));
         
+        // For testing 
         // Timed Transportation
-
         new JoystickButton(m_operatorController, OIConstants.Btn_A)
                 .whenPressed(
                         new TimedTransport(0.7, TransporterConstants.idealTransportDt, m_robotTransport));
 
         // Shooting Bindings
-
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
                 .whenHeld(nearShoot)
                 .whenReleased(() -> nearShoot.cancel());
