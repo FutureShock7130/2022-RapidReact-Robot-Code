@@ -23,7 +23,7 @@ public class ThreeCargoFromOne {
 
     private MecanumControllerCommand route1;
     private MecanumControllerCommand route2;
-    
+
     private Transporter m_robotTransport;
     private Turret m_robotTurret;
     private Drive m_robotDrive;
@@ -36,8 +36,9 @@ public class ThreeCargoFromOne {
     private ProfiledPIDController thetaController = DriveConstants.idealThetaController;
 
     private TrajectoryGenerator trajectoryGenerator;
-    
-    public ThreeCargoFromOne(Drive m_robotDrive, Intake m_robotIntake, Spinner m_robotSpinner, Transporter m_robotTransport){
+
+    public ThreeCargoFromOne(Drive m_robotDrive, Intake m_robotIntake, Spinner m_robotSpinner,
+            Transporter m_robotTransport) {
         this.m_robotDrive = m_robotDrive;
         this.m_robotIntake = m_robotIntake;
         this.m_robotSpinner = m_robotSpinner;
@@ -47,13 +48,14 @@ public class ThreeCargoFromOne {
         route2 = trajectoryGenerator.generate("3 to 3S from 1 A", xController, yController, thetaController);
     }
 
-    public SequentialCommandGroup getCommand(){
+    public SequentialCommandGroup getCommand() {
         return new SequentialCommandGroup(
-            new ParallelDeadlineGroup(route1, new SequentialCommandGroup(new WaitCommand(1), new TimedIntake(1, m_robotIntake))),
-            route2,
-            new AutoAim(this.m_robotDrive, this.m_robotSpinner, this.m_vision).getCommand(),
-            new ParallelCommandGroup(new TimedTransport(1, this.m_robotTransport), new TimedTurret(this.m_robotTurret, 1, 1750))
-        );
+                new ParallelDeadlineGroup(route1,
+                        new SequentialCommandGroup(new WaitCommand(1), new TimedIntake(1, m_robotIntake))),
+                route2,
+                new AutoAim(this.m_robotDrive, this.m_robotSpinner, this.m_vision).getCommand(),
+                new ParallelCommandGroup(new TimedTransport(1, this.m_robotTransport),
+                        new TimedTurret(this.m_robotTurret, 1, 1750)));
     }
 
 }
