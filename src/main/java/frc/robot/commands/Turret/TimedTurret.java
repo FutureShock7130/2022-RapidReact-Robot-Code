@@ -14,7 +14,7 @@ import frc.robot.subsystems.Turret;
 public class TimedTurret extends CommandBase {
   Timer timer = new Timer();
   private double t;
-  private static final double kP = 0.0013;
+  private static final double kP = 0.00013;
   private static final double kI = 0.00002;
 
   // a D Controller is not needed for the basic flywheel control because we only
@@ -37,9 +37,9 @@ public class TimedTurret extends CommandBase {
   private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(TurretConstants.kV, TurretConstants.kA);
 
 
-  public TimedTurret(Turret m_robotTurret, double time, double targetSetPercentageOutput) {
+  public TimedTurret(Turret m_robotTurret, double time, double targetSetRPM) {
     turret = m_robotTurret;
-    target = targetSetPercentageOutput;
+    target = targetSetRPM;
     t = time;
 
     addRequirements(turret);
@@ -54,35 +54,30 @@ public class TimedTurret extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // double kF = feedforward.calculate(target);
+    double kF = feedforward.calculate(target);
 
-    // error = target - turret.getFlyWheelsVelocity();
+    error = target - turret.getFlyWheelsVelocity();
 
-    // if (Math.abs(integralSum) < 40000) {
-    //   integralSum += error;
-    // }
+    if (Math.abs(integralSum) < 40000) {
+      integralSum += error;
+    }
 
-    // derivative = (error - lastError) / timeDiff;
-    // output = kP * error + kI * integralSum + kD * derivative;
+    derivative = (error - lastError) / timeDiff;
+    output = kP * error + kI * integralSum + kD * derivative;
 
     // The Conditional Loop below tries to implement PID with Bang-Bang control,
     // this ensures that when large errors occur, the
     // Flywheel should rev up quickly
 
-    // if (error > 500) {
-    //   turret.flywheelsRun(1.0);
-    // } else if (error < -500) {
-    //   turret.flywheelsRun(-1.0);
-    // } else {
-    //   turret.flywheelsRun(output + kF);
-    // }
+    if (error > 500) {
+      turret.flywheelsRun(1.0);
+    } else if (error < -500) {
+      turret.flywheelsRun(-1.0);
+    } else {
+      turret.flywheelsRun(output + kF);
+    }
 
-    // lastError = error;
-
-    turret.flywheelsRun(target);
-
-    SmartDashboard.putNumber("Flywheel Velocity", turret.getFlyWheelsVelocity());
-    SmartDashboard.putNumber("Flywheel Voltage Output", output);
+    lastError = error;
   }
 
   // Called once the command ends or is interrupted.

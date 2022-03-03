@@ -24,7 +24,7 @@ public class TimedTransport extends CommandBase {
     addRequirements(transporter);
   }
 
-  /** Creates a new intakeCmd. */
+  /** Creates a new TimedTransport. */
   public TimedTransport(double speed, double time, Transporter m_robotTransporter) {
     transporter = m_robotTransporter;
     s = speed;
