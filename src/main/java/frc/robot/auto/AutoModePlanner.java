@@ -1,5 +1,7 @@
 package frc.robot.auto;
 
+import edu.wpi.first.wpilibj.command.CommandGroup;
+
 public class AutoModePlanner implements AutoModes {
     private AutoModes.DriveStrategy driveStrategy = DriveStrategy.ONE_CARGO;
     private AutoModes.Alliance alliance = Alliance.BLUE_ALLIANCE;
@@ -7,32 +9,47 @@ public class AutoModePlanner implements AutoModes {
     private AutoModes.StartingPosition startingPos = StartingPosition.ONE;
     private AutoModes.AimMode aimMode = AimMode.LIMELIGHT;
 
-    public void handleAutoMode() {
-        // Write Conditional Logic to decide which Autononous Path etc... to go on.
-        if (aimMode == AimMode.LIMELIGHT) {
-
-        } else if (aimMode == AimMode.ABSOLUTE) {
-
-        }
-
-        if (driveMode == DriveMode.DIFFERENTIAL) {
-
-        } else if (driveMode == DriveMode.MECANUM) {
-
-        }
-
-        switch(startingPos) {
+    public CommandGroup handleAutoMode() {
+        switch (startingPos) {
             case ONE:
                 switch (driveStrategy) {
-                    case ONE_CARGO:
-                        break;
-                    default:
-                        break;
+                    case TWO_CARGO:
+                        // return the two cargo from pos 1
+                    case THREE_CARGO:
+                        // for the rest of the logic, follow the one above
+                    case FOUR_CARGO:
+                    case FIVE_CARGO:
                 }
             case TWO:
-                break;
+                switch (driveStrategy) {
+                    case TWO_CARGO:
+                    case THREE_CARGO:
+                    case FOUR_CARGO:
+                    case FIVE_CARGO:
+                }
+            case THREE:
+                switch (driveStrategy) {
+                    case TWO_CARGO:
+                    case THREE_CARGO:
+                    case FOUR_CARGO:
+                    case FIVE_CARGO:
+                }
+
             default:
-                break;
+                // return a generic shoot command here
+                return new CommandGroup();
         }
+    }
+
+    public void setCargoCount(AutoModes.DriveStrategy cargo) {
+        driveStrategy = cargo;
+    }
+
+    public void setAlliance(AutoModes.Alliance _alliance) {
+        alliance = _alliance;
+    }
+
+    public void setAimMode(AutoModes.AimMode mode) {
+        aimMode = mode;
     }
 }
