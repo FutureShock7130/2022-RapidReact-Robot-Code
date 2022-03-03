@@ -18,9 +18,9 @@ import frc.robot.subsystems.Turret;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class IntakeShoot extends ParallelCommandGroup {
+public class IntakeShootOneBall extends ParallelCommandGroup {
   /** Creates a new IntakeShoot. */
-  public IntakeShoot(Intake m_robotIntake, Transporter m_roboTransporter, Turret m_robotTurret, double autoShootSpeedPercentageOutput, double intakeTimeSec, double transportTimeSec, double shootTimeSec) {
+  public IntakeShootOneBall(Intake m_robotIntake, Transporter m_roboTransporter, Turret m_robotTurret, double autoShootSpeedPercentageOutput, double intakeTimeSec, double transportTimeSec, double shootTimeSec) {
   
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
