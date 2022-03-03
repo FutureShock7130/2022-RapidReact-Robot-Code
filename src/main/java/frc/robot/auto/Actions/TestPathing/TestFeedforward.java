@@ -17,7 +17,7 @@ public class TestFeedforward extends CommandBase {
     private SimpleMotorFeedforward feedforward = DriveConstants.kFeedforward;
 
     double initialEncoderPos;
-    double kDt = 0.02;
+    double kDt = 0.1;
     double linearDisplacement;
     double linearVelocity;
     double linearAcceleration;
@@ -63,13 +63,16 @@ public class TestFeedforward extends CommandBase {
             maxAcc = linearAcceleration;
         }
 
-        String data = String.format("%f, %f, %f", maxVelocity, maxAcc, linearAcceleration);
+        String data = String.format("%f, %f", timer.get(), linearVelocity);
         System.out.println(data);
     }
 
     public void end() { 
         m_drive.feedForwardTestDrive(0);
         timer.reset();
+
+        String data = String.format("%f, %f, %f", maxVelocity, maxAcc);
+        System.out.println(data);
     }
 
     @Override
