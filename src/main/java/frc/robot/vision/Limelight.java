@@ -66,9 +66,9 @@ public class Limelight extends SubsystemBase {
     }
 
     public void setValidTarget(double v) {
-        if (v == 0) {
+        if (v == 0 || v == 0.0) {
             hasValidTarget = false;
-        } else if (v == 1) {
+        } else if (v == 1 || v == 1.0) {
             hasValidTarget = true;
         }
     }

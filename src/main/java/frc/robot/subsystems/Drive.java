@@ -116,8 +116,6 @@ public class Drive extends SubsystemBase {
 
     this.lightStripGOGOGO();
 
-    System.out.println(m_gyro.getAngle());
-
     SmartDashboard.putNumber("gyro", m_gyro.getAngle());
   }
 
@@ -184,9 +182,9 @@ public class Drive extends SubsystemBase {
   @SuppressWarnings("ParameterName")
   public void drive(double ySpeed, double xSpeed, double rot, boolean fieldRelative) {
     if (fieldRelative) {
-      m_drive.driveCartesian(limiter.calculate(ySpeed), xSpeed, rot, -m_gyro.getAngle());
+      m_drive.driveCartesian(limiter.calculate(ySpeed), limiter.calculate(xSpeed), rot, -m_gyro.getAngle());
     } else {
-      m_drive.driveCartesian(limiter.calculate(ySpeed), xSpeed, rot);
+      m_drive.driveCartesian(limiter.calculate(ySpeed), limiter.calculate(xSpeed), rot);
     }
   }
 

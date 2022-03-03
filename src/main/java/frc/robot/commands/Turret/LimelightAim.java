@@ -12,7 +12,10 @@ import frc.robot.subsystems.Turret;
 public class LimelightAim extends CommandBase {
 
     private static final double kP = 0.6;
-    private static final double kI = 0.001;
+    private static final double kI = 0.0;
+    private static final double kD = 0.0;
+
+    private static PIDController controller = new PIDController(kP, kI, kD);
 
     private double output;
 
@@ -33,6 +36,8 @@ public class LimelightAim extends CommandBase {
 
     public void initialize() {
         System.out.println("LimelightAim executing");
+        controller.enableContinuousInput(-180, 180);
+        controller.setIntegratorRange(-100, 100);
     }
 
     public void execute() {
@@ -46,13 +51,17 @@ public class LimelightAim extends CommandBase {
             integralSumX += xError;
         }
 
-        output = kP * xError + kI * integralSumX;
+        output = controller.calculate(0, xError);
 
+<<<<<<< HEAD
         if (!spinner.atTurningLimit()) {
             spinner.spinnerRun(-output);  
         }
+=======
+        spinner.spinnerRun(output);
+>>>>>>> origin/main
 
-        SmartDashboard.putNumber("Limelight Auto Aim Output", output);
+        SmartDashboard.putNumber("Limelight Auto Aim Power", output);
     }
 
     public void end(boolean interrupted) {
@@ -64,7 +73,6 @@ public class LimelightAim extends CommandBase {
             spinner.spinnerRun(0);
             return true;
         }
-        integralSumX = 0;
         return false;
     }
 
