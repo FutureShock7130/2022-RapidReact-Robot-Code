@@ -64,10 +64,6 @@ public final class Constants {
 
     public static final SimpleMotorFeedforward kFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
 
-<<<<<<< HEAD
-    public static final double kSlewRate = 0.7;  // the smaller the number is, the more it shift
- 
-=======
     public static PIDController velController = new PIDController(kPDriveVel, 0, 0);
 
     public static PIDController xController = new PIDController(0.03, 0.00003, 0.00006);
@@ -81,7 +77,6 @@ public final class Constants {
 
     public static final double kSlewRate = 0.8;
 
->>>>>>> 07af6b24103b46a26ba89d766c2197e97e7f2bb0
     // Ramsete Parameters
     public static final double kRamseteB = 2.0;
     public static final double kRamseteTheta = 0.7;
