@@ -1,13 +1,9 @@
 package frc.robot.auto.Paths;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.auto.AutoModes;
 import frc.robot.commands.Intake.TimedIntake;
 
 public class TwoCargoFromOne {
@@ -19,10 +15,12 @@ public class TwoCargoFromOne {
         trajectoryGenerator = new TrajectoryGenerator(m_robot.m_robotDrive);
     }
 
-    new SequentialCommandGroup(
-        new ParallelCommandGroup(
-            trajectoryGenerator.generateTranslationalPrimary("1 to 2 from 1", new PIDController(0.03, 0.003, 0.003), new PIDController(0.03, 0.003, 0.003)),
-            new TimedIntake(2.0, m_robot.m_robotIntake)
-        )
-    )
+    public SequentialCommandGroup getCommand() {
+        return new SequentialCommandGroup(
+                new ParallelCommandGroup(
+                        trajectoryGenerator.generateTranslationalPrimary("1 to 2 from 1",
+                                new PIDController(0.03, 0.003, 0.003), new PIDController(0.03, 0.003, 0.003)),
+                        new TimedIntake(2.0, m_robot.m_robotIntake)));
+    }
+
 }
