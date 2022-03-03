@@ -40,7 +40,9 @@ public class ThreeCargoFromOne {
     }
 
     public SequentialCommandGroup getCommand() {
+        SequentialCommandGroup lastCommand = new TwoCargoFromOne(m_robot).getCommand();
         return new SequentialCommandGroup(
+                lastCommand,
                 new ParallelDeadlineGroup(route1,
                         new SequentialCommandGroup(new WaitCommand(1), new TimedIntake(1, m_robot.m_robotIntake))),
                 route2,

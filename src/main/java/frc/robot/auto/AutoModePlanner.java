@@ -8,8 +8,10 @@ import frc.robot.RobotContainer;
 import frc.robot.auto.Paths.FourCargoFromOne;
 import frc.robot.auto.Paths.FourCargoFromThree;
 import frc.robot.auto.Paths.ThreeCargoFromOne;
+import frc.robot.auto.Paths.ThreeCargoFromThree;
 import frc.robot.auto.Paths.ThreeCargoFromTwo;
 import frc.robot.auto.Paths.TwoCargoFromOne;
+import frc.robot.auto.Paths.TwoCargoFromThree;
 import frc.robot.auto.Paths.TwoCargoFromTwo;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
@@ -52,7 +54,7 @@ public class AutoModePlanner implements AutoModes {
                     case THREE_CARGO:
                         return new ThreeCargoFromTwo(robot).getCommand();
                     case FOUR_CARGO:
-                        return new FourCargoFromTwo(robot).getCommand();
+                        // return new FourCargoFromTwo(robot).getCommand();
                     case FIVE_CARGO:
                         break;
                 }
@@ -63,7 +65,7 @@ public class AutoModePlanner implements AutoModes {
                     case THREE_CARGO:
                         return new ThreeCargoFromThree(robot).getCommand();
                     case FOUR_CARGO:
-                        return new FourCargoFromThree(robot).getCommand();
+                        // return new FourCargoFromThree(robot).getCommand();
                     case FIVE_CARGO:
                         break;
                 }

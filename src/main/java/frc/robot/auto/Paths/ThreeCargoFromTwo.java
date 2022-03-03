@@ -40,23 +40,16 @@ public class ThreeCargoFromTwo {
     public ThreeCargoFromTwo(RobotContainer robot) {
         m_robot = robot;
         trajectoryGenerator = new TrajectoryGenerator(m_robot.m_robotDrive);
-        route1 = trajectoryGenerator.generate("1 to 2 from 2", xController, yController, thetaController);
+        route1 = trajectoryGenerator.generate("1 to 2 fr2om ", xController, yController, thetaController);
         route2 = trajectoryGenerator.generate("2 to 2s from 2", xController, yController, thetaController);
         route3 = trajectoryGenerator.generate("2s to 3 from 2", xController, yController, thetaController);
         route4 = trajectoryGenerator.generate("3 to 3s from 2 (new)", xController, yController, thetaController);
     }
 
     public SequentialCommandGroup getCommand() {
+        SequentialCommandGroup lastCommand = new TwoCargoFromTwo(m_robot).getCommand();
         return new SequentialCommandGroup(
-                new ParallelDeadlineGroup(route1,
-                        new SequentialCommandGroup(new WaitCommand(1), new TimedIntake(1, m_robot.m_robotIntake))),
-                route2,
-                new ParallelCommandGroup(
-                        new TimedTurret(m_robot.m_robotTurret, 1.5, 1750),
-                        new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
-                        new SequentialCommandGroup(new WaitCommand(0.5),
-                                new ParallelCommandGroup(new TimedIntake(1, m_robot.m_robotIntake),
-                                        new TimedTransport(1, m_robot.m_robotTransport)))),
+                lastCommand,
                 new ParallelDeadlineGroup(route3,
                         new SequentialCommandGroup(new WaitCommand(1), new TimedIntake(2.5, m_robot.m_robotIntake))),
                 route4,
