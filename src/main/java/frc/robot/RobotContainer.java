@@ -55,14 +55,14 @@ import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 public class RobotContainer {
     // The robot's subsystems
-    private final DriveFSM driveFSM = new DriveFSM();
-    private final Drive m_robotDrive = new Drive(driveFSM);
-    private final Transporter m_robotTransport = new Transporter();
-    private final Turret m_robotTurret = new Turret();
-    private final Intake m_robotIntake = new Intake();
-    private final Limelight m_vision = new Limelight();
-    private final Superstructure m_SuperStructure = new Superstructure();
-    private final Spinner m_robotSpinner = new Spinner();
+    public final DriveFSM driveFSM = new DriveFSM();
+    public final Drive m_robotDrive = new Drive(driveFSM);
+    public final Transporter m_robotTransport = new Transporter();
+    public final Turret m_robotTurret = new Turret();
+    public final Intake m_robotIntake = new Intake();
+    public final Limelight m_vision = new Limelight();
+    public final Superstructure m_SuperStructure = new Superstructure();
+    public final Spinner m_robotSpinner = new Spinner();
 
     // The commands
     SwingForward swingForward = new SwingForward(m_SuperStructure);
@@ -249,9 +249,9 @@ public class RobotContainer {
                 m_robotDrive::getMecanumPose,
                 DriveConstants.kFeedforward,
                 DriveConstants.kMecanumDriveKinematics,
-                DriveConstants.xController,
-                DriveConstants.yController,
-                DriveConstants.thetaController,
+                DriveConstants.idealXController,
+                DriveConstants.idealYController,
+                DriveConstants.idealThetaController,
                 DriveConstants.kMaxVelocityMetersPerSecond,
                 new PIDController(DriveConstants.kPDriveVel, 0, 0),
                 new PIDController(DriveConstants.kPDriveVel, 0, 0),

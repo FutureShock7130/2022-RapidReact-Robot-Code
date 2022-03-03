@@ -1,4 +1,4 @@
-package frc.robot.auto.Modes;
+package frc.robot.auto.Paths;
 
 public class FourCargo {
     

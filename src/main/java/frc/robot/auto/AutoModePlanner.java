@@ -1,6 +1,14 @@
 package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Spinner;
+import frc.robot.subsystems.Transporter;
+import frc.robot.vision.Limelight;
 
 public class AutoModePlanner implements AutoModes {
     private AutoModes.DriveStrategy driveStrategy = DriveStrategy.ONE_CARGO;
@@ -9,7 +17,15 @@ public class AutoModePlanner implements AutoModes {
     private AutoModes.StartingPosition startingPos = StartingPosition.ONE;
     private AutoModes.AimMode aimMode = AimMode.LIMELIGHT;
 
-    public CommandGroup handleAutoMode() {
+    private RobotContainer robot;
+
+    public AutoModePlanner(
+        RobotContainer robotContainer
+    ) {
+        robot = robotContainer;
+    }
+
+    public Command handleAutoMode() {
         switch (startingPos) {
             case ONE:
                 switch (driveStrategy) {
@@ -37,7 +53,7 @@ public class AutoModePlanner implements AutoModes {
 
             default:
                 // return a generic shoot command here
-                return new CommandGroup();
+                return new RunCommand(toRun, requirements);
         }
     }
 
