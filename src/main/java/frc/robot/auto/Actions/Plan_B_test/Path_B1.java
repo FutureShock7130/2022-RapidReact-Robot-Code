@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Spinner;
+import frc.robot.subsystems.Transporter;
 import frc.robot.subsystems.Turret;
 import frc.robot.vision.Limelight;
 
@@ -15,6 +16,7 @@ public class Path_B1 extends CommandBase {
   Spinner spinner;
   Limelight limelight;
   Turret turret;
+  Transporter transporter;
 
   private double currentPositionMeter;
   private double targetPositionMeter;
@@ -25,18 +27,20 @@ public class Path_B1 extends CommandBase {
   private double initTime;
 
   public Path_B1(Drive m_drive, Intake m_robotIntake, Spinner m_robotSpinner, Limelight m_robotLimelight,
-      Turret m_robotTurret) {
+      Turret m_robotTurret, Transporter m_roboTransporter) {
     drive = m_drive;
     intake = m_robotIntake;
     spinner = m_robotSpinner;
     limelight = m_robotLimelight;
     turret = m_robotTurret;
+    transporter = m_roboTransporter;
 
     addRequirements(drive);
     addRequirements(intake);
     addRequirements(limelight);
     addRequirements(spinner);
     addRequirements(turret);
+    addRequirements(transporter);
   }
 
   @Override
@@ -89,9 +93,10 @@ public class Path_B1 extends CommandBase {
     while (initTime >= Timer.getFPGATimestamp() - 1) { // time adjust
       spinner.spinnerRun(0.2); // velocity still need to adjust
     }
-
+    
     initTime = Timer.getFPGATimestamp();
     while (initTime >= Timer.getFPGATimestamp() - 2.5) { // time adjust
+      transporter.transportRun(0.7);
       turret.flywheelsRun(0.4); // veclocity still need to adjust
     }
 
@@ -117,6 +122,16 @@ public class Path_B1 extends CommandBase {
     drive.setGyroZeroYaw();
 
     // spinner aim limelight and shoot 1 balls
+    initTime = Timer.getFPGATimestamp();
+    while (initTime >= Timer.getFPGATimestamp() - 1) { // time adjust
+      spinner.spinnerRun(0.2); // velocity still need to adjust
+    }
+    
+    initTime = Timer.getFPGATimestamp();
+    while (initTime >= Timer.getFPGATimestamp() - 1.75) { // time adjust
+      transporter.transportRun(0.7);
+      turret.flywheelsRun(0.4); // veclocity still need to adjust
+    }
 
     // turn left 133 deg
     currentAngleDegrees = 0;

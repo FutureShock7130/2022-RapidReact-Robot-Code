@@ -12,9 +12,11 @@ import frc.robot.subsystems.Intake;
 public class TimedIntake extends CommandBase {
   Intake intake;
   Timer timer = new Timer();
+  private double t;
 
-  public TimedIntake(Intake m_robotIntake) {
+  public TimedIntake(Intake m_robotIntake, double time) {
     intake = m_robotIntake;
+    t = time;
 
     addRequirements(intake);
     
@@ -42,7 +44,7 @@ public class TimedIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (timer.get() > IntakeConstants.idealIntakeDt){
+    if (timer.get() > t){
       intake.intakeStop();
       return true;
     }

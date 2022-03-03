@@ -4,13 +4,14 @@
 
 package frc.robot.commands.Intake;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
 public class IntakeCmd extends CommandBase {
 
   Intake intake;
-
+  
   /** Creates a new intakeCmd. */
   public IntakeCmd(Intake m_robotIntake) {
     intake = m_robotIntake;

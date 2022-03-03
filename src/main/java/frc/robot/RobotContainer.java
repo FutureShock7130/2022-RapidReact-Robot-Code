@@ -180,8 +180,8 @@ public class RobotContainer {
 
         new JoystickButton(m_operatorController, OIConstants.Btn_Y)
                 .whenHeld(
-                        new ConditionalCommand(new TurretSeek(m_robotSpinner),
-                                new LimelightAim(m_vision, m_robotSpinner), targetStatus))
+                        new ConditionalCommand(new LimelightAim(m_vision, m_robotSpinner),
+                                new TurretSeek(m_robotSpinner), targetStatus))
                 .whenReleased(
                         new RunCommand(() -> {
                             m_robotSpinner.spinnerRun(0.0);
@@ -205,7 +205,7 @@ public class RobotContainer {
 
         new JoystickButton(m_operatorController, OIConstants.Btn_A)
                 .whenPressed(
-                        new TimedTransport(0.7, m_robotTransport));
+                        new TimedTransport(m_robotTransport, 0.7));
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
                 .whenHeld(nearShoot)
                 .whenReleased(() -> nearShoot.cancel());

@@ -62,8 +62,8 @@ public final class Constants {
 
     public static final SimpleMotorFeedforward kFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
 
-    public static final double kSlewRate = 0.7;
-
+    public static final double kSlewRate = 0.7;  // the smaller the number is, the more it shift
+ 
     // Ramsete Parameters
     public static final double kRamseteB = 2.0;
     public static final double kRamseteTheta = 0.7;

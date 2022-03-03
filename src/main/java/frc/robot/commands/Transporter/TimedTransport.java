@@ -12,12 +12,12 @@ import frc.robot.subsystems.Transporter;
 public class TimedTransport extends CommandBase {
   Transporter transporter;
   Timer timer = new Timer();
-  private double voltage;
+  private double t;
 
   /** Creates a new intakeCmd. */
-  public TimedTransport(double speed, Transporter m_robotTransporter) {
+  public TimedTransport(Transporter m_robotTransporter, double time) {
     transporter = m_robotTransporter;
-    voltage = speed;
+    t = time;
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(transporter);
@@ -33,20 +33,20 @@ public class TimedTransport extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    transporter.transportRun(voltage);
+    transporter.transportRun(TransporterConstants.transportSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    transporter.transportRun(0);
+    transporter.transportStop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (timer.get() > TransporterConstants.idealTransportDt) {
-        transporter.transportRun(0);
+    if (timer.get() > t) {
+        transporter.transportStop();
         return true;
     }
     return false;
