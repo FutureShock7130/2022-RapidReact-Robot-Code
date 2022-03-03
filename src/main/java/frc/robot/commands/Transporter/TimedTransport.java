@@ -15,6 +15,15 @@ public class TimedTransport extends CommandBase {
   private double s;
   private double t;
 
+  public TimedTransport(double time, Transporter m_robotTransporter) {
+    transporter = m_robotTransporter;
+    s = TransporterConstants.transportSpeed;
+    t = time;
+    
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(transporter);
+  }
+
   /** Creates a new intakeCmd. */
   public TimedTransport(double speed, double time, Transporter m_robotTransporter) {
     transporter = m_robotTransporter;

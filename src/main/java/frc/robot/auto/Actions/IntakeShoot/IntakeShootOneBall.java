@@ -28,9 +28,9 @@ public class IntakeShootOneBall extends ParallelCommandGroup {
       new ParallelCommandGroup(
         new TimedTurret(m_robotTurret, shootTimeSec, autoShootSpeedPercentageOutput),
         new SequentialCommandGroup(
-          new TimedIntake(m_robotIntake, intakeTimeSec),
+          new TimedIntake(intakeTimeSec, m_robotIntake),
           new WaitCommand(0.2),
-          new TimedTransport(m_roboTransporter, transportTimeSec)
+          new TimedTransport(intakeTimeSec, m_roboTransporter)
         )
       )
     );
