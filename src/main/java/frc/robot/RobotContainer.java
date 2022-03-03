@@ -110,59 +110,56 @@ public class RobotContainer {
                         }, m_robotDrive));
 
         m_robotIntake.setDefaultCommand(
-            new RunCommand(() -> {
-                // Intake Logic
-                if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
-                    intake.schedule();
-                } else if (m_driverController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
-                    eject.schedule();
-                } else {
-                    intakeStop.schedule();
-                }
-            }, m_robotIntake)
-        );
+                new RunCommand(() -> {
+                    // Intake Logic
+                    if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
+                        intake.schedule();
+                    } else if (m_driverController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
+                        eject.schedule();
+                    } else {
+                        intakeStop.schedule();
+                    }
+                }, m_robotIntake));
 
         m_robotTransport.setDefaultCommand(
-            new RunCommand(() -> {
-                // Transporter Logic
-                if (m_operatorController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
-                    transportCmd.schedule();
-                } else if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.5) { 
-                    transportEject.schedule();
-                } else {
-                    transportStop.schedule();
-                }
-            }, m_robotTransport)
-        );
+                new RunCommand(() -> {
+                    // Transporter Logic
+                    if (m_operatorController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
+                        transportCmd.schedule();
+                    } else if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
+                        transportEject.schedule();
+                    } else {
+                        transportStop.schedule();
+                    }
+                }, m_robotTransport));
 
         m_SuperStructure.setDefaultCommand(
-            new RunCommand(() -> {
-                // Superstructure Lifting Logic
-                m_SuperStructure.liftHangerRun(
-                        -m_operatorController.getRawAxis(OIConstants.leftStick_Y)
-                                * SuperstructureConstants.hangerSpeed,
-                        -m_operatorController.getRawAxis(OIConstants.rightStick_Y)
-                                * SuperstructureConstants.hangerSpeed);
+                new RunCommand(() -> {
+                    // Superstructure Lifting Logic
+                    m_SuperStructure.liftHangerRun(
+                            -m_operatorController.getRawAxis(OIConstants.leftStick_Y)
+                                    * SuperstructureConstants.hangerSpeed,
+                            -m_operatorController.getRawAxis(OIConstants.rightStick_Y)
+                                    * SuperstructureConstants.hangerSpeed);
 
-                // Superstructure Swinging Forward
-                if (m_operatorController.getPOV() == OIConstants.POV_UP) {
-                    swingForward.schedule();
-                }
+                    // Superstructure Swinging Forward
+                    if (m_operatorController.getPOV() == OIConstants.POV_UP) {
+                        swingForward.schedule();
+                    }
 
-                // Superstucture Swinging Backward
-                if (m_operatorController.getPOV() == OIConstants.POV_DOWN) {
-                    swingBack.schedule();
-                }
+                    // Superstucture Swinging Backward
+                    if (m_operatorController.getPOV() == OIConstants.POV_DOWN) {
+                        swingBack.schedule();
+                    }
 
-                // Superstructure Stop
-                if (m_operatorController.getPOV() == OIConstants.POV_LEFT) {
-                    swingBack.end(true);
-                    swingForward.end(true);
-                    swingBack.cancel();
-                    swingForward.cancel();
-                }
-            }, m_SuperStructure)
-        );
+                    // Superstructure Stop
+                    if (m_operatorController.getPOV() == OIConstants.POV_LEFT) {
+                        swingBack.end(true);
+                        swingForward.end(true);
+                        swingBack.cancel();
+                        swingForward.cancel();
+                    }
+                }, m_SuperStructure));
     }
 
     private void configureButtonBindings() {
@@ -172,17 +169,17 @@ public class RobotContainer {
                 .whenReleased(() -> m_robotDrive.setMaxOutput(0.95));
 
         new JoystickButton(m_operatorController, OIConstants.trigger_L)
-        .whenPressed(new PrintCommand("Left Trigger Working!"));
+                .whenPressed(new PrintCommand("Left Trigger Working!"));
 
-        // spinner auto aim 
+        // spinner auto aim
         new JoystickButton(m_operatorController, OIConstants.Btn_Y)
-        .whenHeld(
-                new ConditionalCommand(new TurretSeek(m_robotSpinner, m_vision),
-                        new LimelightAim(m_vision, m_robotSpinner), targetStatus))
-        .whenReleased(
-                new RunCommand(() -> {
-                    m_robotSpinner.spinnerRun(0.0);
-                }, m_robotSpinner));
+                .whenHeld(
+                        new ConditionalCommand(new TurretSeek(m_robotSpinner, m_vision),
+                                new LimelightAim(m_vision, m_robotSpinner), targetStatus))
+                .whenReleased(
+                        new RunCommand(() -> {
+                            m_robotSpinner.spinnerRun(0.0);
+                        }, m_robotSpinner));
 
         // spinner spin right
         new JoystickButton(m_operatorController, OIConstants.Btn_B)
@@ -192,7 +189,7 @@ public class RobotContainer {
                 .whenReleased(new RunCommand(() -> {
                     m_robotSpinner.spinnerRun(0.0);
                 }, m_robotSpinner));
-        
+
         // spinner spin left
         new JoystickButton(m_operatorController, OIConstants.Btn_X)
                 .whenHeld(new RunCommand(() -> {
@@ -201,8 +198,8 @@ public class RobotContainer {
                 .whenReleased(new RunCommand(() -> {
                     m_robotSpinner.spinnerRun(0.0);
                 }, m_robotSpinner));
-        
-        // For testing 
+
+        // For testing
         // Timed Transportation
         new JoystickButton(m_operatorController, OIConstants.Btn_A)
                 .whenPressed(
@@ -241,30 +238,28 @@ public class RobotContainer {
     public Command getAutonomousTrajectoryCommand() {
         driveFSM.setOdometryMecanum();
 
-        PathPlannerTrajectory trajectoryPathPlanner = 
-        PathPlanner.loadPath("New New Path", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
-
+        PathPlannerTrajectory trajectoryPathPlanner = PathPlanner.loadPath("New New Path",
+                DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
 
         PathPlannerState state = (PathPlannerState) trajectoryPathPlanner.getEndState();
         System.out.println(state);
 
-
         MecanumControllerCommand betterMecanumCommand = new MecanumControllerCommand(
-            trajectoryPathPlanner, 
-            m_robotDrive::getMecanumPose,
-            DriveConstants.kFeedforward, 
-            DriveConstants.kMecanumDriveKinematics,
-            DriveConstants.xController, 
-            DriveConstants.yController, 
-            DriveConstants.thetaController, 
-            DriveConstants.kMaxVelocityMetersPerSecond, 
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            m_robotDrive::getCurrentMecanumWheelSpeeds,
-            m_robotDrive::setDriveMotorControllersVolts,
-            m_robotDrive);
+                trajectoryPathPlanner,
+                m_robotDrive::getMecanumPose,
+                DriveConstants.kFeedforward,
+                DriveConstants.kMecanumDriveKinematics,
+                DriveConstants.xController,
+                DriveConstants.yController,
+                DriveConstants.thetaController,
+                DriveConstants.kMaxVelocityMetersPerSecond,
+                new PIDController(DriveConstants.kPDriveVel, 0, 0),
+                new PIDController(DriveConstants.kPDriveVel, 0, 0),
+                new PIDController(DriveConstants.kPDriveVel, 0, 0),
+                new PIDController(DriveConstants.kPDriveVel, 0, 0),
+                m_robotDrive::getCurrentMecanumWheelSpeeds,
+                m_robotDrive::setDriveMotorControllersVolts,
+                m_robotDrive);
 
         // Reset odometry to the starting pose of the trajectory.
         // m_robotDrive.resetGyro();
