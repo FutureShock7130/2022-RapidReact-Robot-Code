@@ -14,7 +14,7 @@ public class TimedIntake extends CommandBase {
   Timer timer = new Timer();
   private double t;
 
-  public TimedIntake(Intake m_robotIntake, double time) {
+  public TimedIntake(double time, Intake m_robotIntake) {
     intake = m_robotIntake;
     t = time;
 

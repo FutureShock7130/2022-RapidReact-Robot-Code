@@ -20,7 +20,14 @@ import frc.robot.subsystems.Turret;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class IntakeShootTwoBalls extends ParallelCommandGroup {
   /** Creates a new IntakeShoot. */
-  public IntakeShootTwoBalls(Intake m_robotIntake, Transporter m_roboTransporter, Turret m_robotTurret, double autoShootSpeedPercentageOutput, double intakeTimeSec, double transportTimeSec, double shootTimeSec) {
+  public IntakeShootTwoBalls(
+    Intake m_robotIntake, 
+    Transporter m_roboTransporter, 
+    Turret m_robotTurret, 
+    double autoShootSpeedPercentageOutput, 
+    double intakeTimeSec, 
+    double transportTimeSec, 
+    double shootTimeSec) {
   
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -28,11 +35,11 @@ public class IntakeShootTwoBalls extends ParallelCommandGroup {
       new ParallelCommandGroup(
         new TimedTurret(m_robotTurret, shootTimeSec, autoShootSpeedPercentageOutput),
         new SequentialCommandGroup(
-          new TimedIntake(m_robotIntake, intakeTimeSec),
+          new TimedIntake(intakeTimeSec, m_robotIntake),
           new WaitCommand(0.1),
-          new TimedTransport(m_roboTransporter, transportTimeSec),
+          new TimedTransport(0.75, m_roboTransporter),
           new WaitCommand(0.1),
-          new TimedTransport(m_roboTransporter, transportTimeSec)
+          new TimedTransport(0.75, m_roboTransporter)
         )
       )
     );

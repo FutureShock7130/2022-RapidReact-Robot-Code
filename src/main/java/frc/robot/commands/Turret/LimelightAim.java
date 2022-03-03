@@ -53,13 +53,7 @@ public class LimelightAim extends CommandBase {
 
         output = controller.calculate(0, xError);
 
-<<<<<<< HEAD
-        if (!spinner.atTurningLimit()) {
-            spinner.spinnerRun(-output);  
-        }
-=======
         spinner.spinnerRun(output);
->>>>>>> origin/main
 
         SmartDashboard.putNumber("Limelight Auto Aim Power", output);
     }
