@@ -46,9 +46,6 @@ public class Limelight extends SubsystemBase {
         area = ta.getDouble(0.0);
 
         SmartDashboard.putNumber("LimelightX", x);
-        SmartDashboard.putNumber("LimelightY", y);
-        SmartDashboard.putNumber("LimelightArea", area);
-        SmartDashboard.putBoolean("Has Valid Target", hasValidTarget);
 
         distanceFromLimelightToGoalInches = 
         ((LimelightConstants.goalHeightMeters - LimelightConstants.limelightLensHeightMeters) / Math.tan((angleToGoalDegrees+y) * Math.PI / 180));
@@ -69,9 +66,9 @@ public class Limelight extends SubsystemBase {
     }
 
     public void setValidTarget(double v) {
-        if (v == 0) {
+        if (v == 0 || v == 0.0) {
             hasValidTarget = false;
-        } else if (v == 1) {
+        } else if (v == 1 || v == 1.0) {
             hasValidTarget = true;
         }
     }

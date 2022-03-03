@@ -29,15 +29,18 @@ public class Spinner extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
-    SmartDashboard.putBoolean("Left Turning Limit", leftAtLimit);
-    SmartDashboard.putBoolean("Right Turning Limit", rightAtLimit);
     leftAtLimit = !getforwardLimitSwitchCheck();
     rightAtLimit = !getreverseLimitSwitchCheck();
   }
 
   public void spinnerRun(double speed) {
-    spinner.set(speed);
+    if (speed > 0 && atLeftLimit()) {
+      return;
+    } else if (speed < 0 && atRightLimit()) {
+      return;
+    } else {
+      spinner.set(speed);
+    }
   }
 
   public void spinnerStop() {

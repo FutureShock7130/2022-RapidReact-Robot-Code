@@ -55,9 +55,6 @@ public class TrapezoidProfileDrive extends CommandBase {
       linearAcceleration = (linearVelocity - lastVelocity) / kDt;
       drive.feedForwardTestDrive(DriveConstants.kS);
       //m_drive.feedForwardTestDrive(12 * kPercentageVoltage);
-      SmartDashboard.putNumber("Linear Acceleration", linearAcceleration);
-      SmartDashboard.putNumber("Linear Velocity", linearAcceleration);
-      SmartDashboard.putNumber("Linear Displacement" , linearDisplacement);
       lastVelocity = linearVelocity;
   }
 
