@@ -5,7 +5,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
+import frc.robot.auto.Paths.FourCargoFromOne;
+import frc.robot.auto.Paths.FourCargoFromThree;
+import frc.robot.auto.Paths.ThreeCargoFromOne;
+import frc.robot.auto.Paths.ThreeCargoFromTwo;
 import frc.robot.auto.Paths.TwoCargoFromOne;
+import frc.robot.auto.Paths.TwoCargoFromTwo;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Spinner;
@@ -32,35 +37,33 @@ public class AutoModePlanner implements AutoModes {
             case ONE:
                 switch (driveStrategy) {
                     case TWO_CARGO:
-                        // return the two cargo from pos 1
                         return new TwoCargoFromOne(robot).getCommand();
                     case THREE_CARGO:
-                        // for the rest of the logic, follow the one above
-                        break;
+                        return new ThreeCargoFromOne(robot).getCommand();
                     case FOUR_CARGO:
-                        break;
+                        return new FourCargoFromOne(robot).getCommand();
                     case FIVE_CARGO:
                         break;
                 }
             case TWO:
                 switch (driveStrategy) {
                     case TWO_CARGO:
-                        break;
+                        return new TwoCargoFromTwo(robot).getCommand();
                     case THREE_CARGO:
-                        break;
+                        return new ThreeCargoFromTwo(robot).getCommand();
                     case FOUR_CARGO:
-                        break;
+                        return new FourCargoFromTwo(robot).getCommand();
                     case FIVE_CARGO:
                         break;
                 }
             case THREE:
                 switch (driveStrategy) {
                     case TWO_CARGO:
-                        break;
+                        return new TwoCargoFromThree(robot).getCommand();
                     case THREE_CARGO:
-                        break;
+                        return new ThreeCargoFromThree(robot).getCommand();
                     case FOUR_CARGO:
-                        break;
+                        return new FourCargoFromThree(robot).getCommand();
                     case FIVE_CARGO:
                         break;
                 }

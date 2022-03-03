@@ -36,4 +36,12 @@ public class Intake extends SubsystemBase {
     intaker.set(-IntakeConstants.intakeSpeed);
     downTransporter.set(-IntakeConstants.transportSpeed);
   }
+
+  public void downRun() {
+    downTransporter.set(-IntakeConstants.transportSpeed);
+  }
+
+  public void downStop() {
+    downTransporter.set(0);
+  }
 }
