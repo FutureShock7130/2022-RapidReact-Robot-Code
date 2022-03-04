@@ -1,5 +1,6 @@
 package frc.robot.commands.Superstructure;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SuperstructureConstants;
 import frc.robot.subsystems.Superstructure;
@@ -7,25 +8,27 @@ import frc.robot.subsystems.Superstructure;
 public class SwingForward extends CommandBase{
     Superstructure m_SuperStructure;
 
+    double time;
+
     public SwingForward(Superstructure superStructure){
         m_SuperStructure = superStructure;
         addRequirements(superStructure);
     }
 
-    public void initialize(){}
+    public void initialize(){
+        time = Timer.getFPGATimestamp();
+    }
 
     public void execute(){
-        if(!m_SuperStructure.atLimit()){
+        while (Timer.getFPGATimestamp() < time + 0.5) {
             m_SuperStructure.liftSwingRun(-SuperstructureConstants.swingSpeed);
-        } else {
-            m_SuperStructure.liftSwingStop();
         }
-        System.out.println("lift swing");
+        m_SuperStructure.liftSwingStop();
         
     }
 
     public boolean isFinished(){
-        return false;
+        return true;
     }
 
     public void end(boolean interrupted){

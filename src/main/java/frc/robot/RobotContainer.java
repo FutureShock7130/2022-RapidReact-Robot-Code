@@ -74,7 +74,7 @@ public class RobotContainer {
     PassiveFlywheel shootPassiveState = new PassiveFlywheel(m_robotTurret);
     AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
     TurretShoot nearShoot = new TurretShoot(m_robotTurret, 1850);
-    TurretShoot farShoot = new TurretShoot(m_robotTurret, 3000);
+    TurretShoot farShoot = new TurretShoot(m_robotTurret, 2000);
 
     private final SimpleMotorFeedforward feedforward = DriveConstants.kFeedforward;
 
@@ -111,11 +111,13 @@ public class RobotContainer {
                 new RunCommand(() -> {
                     // Intake Logic
                     if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
-                        intake.schedule();
+                        new RunCommand(() -> m_robotIntake.intakeRun(), m_robotIntake);
                     } else if (m_driverController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
-                        eject.schedule();
+                        new RunCommand(() -> m_robotIntake.intakeReverse(), m_robotIntake);
+    
                     } else {
-                        intakeStop.schedule();
+                        new RunCommand(() -> m_robotIntake.intakeStop(), m_robotIntake);
+                        
                     }
                 }, m_robotIntake));
 
@@ -151,7 +153,7 @@ public class RobotContainer {
                     }
 
                     // Superstructure Stop
-                    if (m_operatorController.getPOV() == OIConstants.POV_LEFT) {
+                    if(m_operatorController.getPOV()==-1){
                         swingBack.end(true);
                         swingForward.end(true);
                         swingBack.cancel();

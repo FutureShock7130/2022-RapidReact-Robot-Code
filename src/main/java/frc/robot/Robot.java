@@ -56,14 +56,14 @@ public class Robot extends TimedRobot {
     Joystick m_driverController = new Joystick(OIConstants.kDriveTrainJoystickPort);
     Joystick m_operatorController = new Joystick(OIConstants.kOthersJoystickPort);
 
-    m_autoChooser.setDefaultOption("Default", autoPlanner.handleAutoMode(AutoModes.StartingPosition.ONE, AutoModes.DriveStrategy.TWO_CARGO));
-    m_autoChooser.addOption("Two Cargo from 2", autoPlanner.handleAutoMode(AutoModes.StartingPosition.TWO, AutoModes.DriveStrategy.TWO_CARGO));
-    m_autoChooser.addOption("Two Cargo from 3", autoPlanner.handleAutoMode(AutoModes.StartingPosition.THREE, AutoModes.DriveStrategy.TWO_CARGO));
-    m_autoChooser.addOption("Three Cargo from 1", autoPlanner.handleAutoMode(AutoModes.StartingPosition.ONE, AutoModes.DriveStrategy.THREE_CARGO));
-    m_autoChooser.addOption("Three Cargo from 2", autoPlanner.handleAutoMode(AutoModes.StartingPosition.TWO, AutoModes.DriveStrategy.THREE_CARGO));
-    m_autoChooser.addOption("Three Cargo from 3", autoPlanner.handleAutoMode(AutoModes.StartingPosition.THREE, AutoModes.DriveStrategy.THREE_CARGO));
-    m_autoChooser.addOption("Four Cargo from 1", autoPlanner.handleAutoMode(AutoModes.StartingPosition.ONE, AutoModes.DriveStrategy.FOUR_CARGO));
-    m_autoChooser.addOption("Four Cargo from 3 B", autoPlanner.handleAutoMode(AutoModes.StartingPosition.THREE, AutoModes.DriveStrategy.FOUR_CARGO));
+    // m_autoChooser.setDefaultOption("Default", autoPlanner.handleAutoMode(AutoModes.StartingPosition.TWO, AutoModes.DriveStrategy.TWO_CARGO));
+    // m_autoChooser.addOption("Two Cargo from 2", autoPlanner.handleAutoMode(AutoModes.StartingPosition.TWO, AutoModes.DriveStrategy.TWO_CARGO));
+    // m_autoChooser.addOption("Two Cargo from 3", autoPlanner.handleAutoMode(AutoModes.StartingPosition.THREE, AutoModes.DriveStrategy.TWO_CARGO));
+    // m_autoChooser.addOption("Three Cargo from 1", autoPlanner.handleAutoMode(AutoModes.StartingPosition.ONE, AutoModes.DriveStrategy.THREE_CARGO));
+    // m_autoChooser.addOption("Three Cargo from 2", autoPlanner.handleAutoMode(AutoModes.StartingPosition.TWO, AutoModes.DriveStrategy.THREE_CARGO));
+    // m_autoChooser.addOption("Three Cargo from 3", autoPlanner.handleAutoMode(AutoModes.StartingPosition.THREE, AutoModes.DriveStrategy.THREE_CARGO));
+    // m_autoChooser.addOption("Four Cargo from 1", autoPlanner.handleAutoMode(AutoModes.StartingPosition.ONE, AutoModes.DriveStrategy.FOUR_CARGO));
+    // m_autoChooser.addOption("Four Cargo from 3 B", autoPlanner.handleAutoMode(AutoModes.StartingPosition.THREE, AutoModes.DriveStrategy.FOUR_CARGO));
 
     SmartDashboard.putData(m_autoChooser);
   }

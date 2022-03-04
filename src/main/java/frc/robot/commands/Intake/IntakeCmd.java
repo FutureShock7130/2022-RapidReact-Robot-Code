@@ -35,6 +35,7 @@ public class IntakeCmd extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.intakeStop();
     System.out.println("IntakeCmd ended");
   }
 
