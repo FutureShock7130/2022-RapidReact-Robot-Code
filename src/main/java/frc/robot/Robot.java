@@ -109,9 +109,7 @@ public class Robot extends TimedRobot {
     PathPlannerTrajectory trajectory = PathPlanner.loadPath("1 to 2 from 2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
     m_robotContainer.m_robotDrive.resetOdometry(trajectory.getInitialPose());
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_auto.schedule();
-    }
+    m_auto.schedule();
   }
 
   /** This function is called periodically during autonomous. */

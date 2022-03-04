@@ -55,10 +55,10 @@ public final class Constants {
 
     public static final double kS = 0.76364; //0.76364
     public static final double kV = 3.5;
-    public static final double kA = 0.22548; //0.22548
+    public static final double kA = 0.23; //0.22548
     public static final double kJ = 14;
 
-    public static final double kPDriveVel = 0.3; //0.3 //3.7308
+    public static final double kPDriveVel = 3.7308; //0.3 //3.7308
     public static final double kDDriveVel = 0.012;
 
     public static final SimpleMotorFeedforward kDriveFeedforward = new SimpleMotorFeedforward(0, 0, 0);
@@ -67,8 +67,8 @@ public final class Constants {
 
     public static PIDController velController = new PIDController(kPDriveVel, 0, 0);
 
-    public static PIDController idealXController = new PIDController(0.03, 0.00003, 0.00006);
-    public static PIDController idealYController = new PIDController(0.03, 0.00006, 0.00006);
+    public static PIDController idealXController = new PIDController(0.4, 0.00003, 0.00006);
+    public static PIDController idealYController = new PIDController(0.4, 0.00006, 0.00006);
 
     public static ProfiledPIDController idealThetaController = new ProfiledPIDController(
       0.003, 0.0, 0.0,
@@ -76,7 +76,7 @@ public final class Constants {
     );
 
 
-    public static final double kSlewRate = 0.9;
+    public static final double kSlewRate = 0.95;
 
     // Ramsete Parameters
     public static final double kRamseteB = 2.0;

@@ -105,8 +105,55 @@ public class RobotContainer {
                                     m_driverController.getRawAxis(OIConstants.leftStick_X),
                                     m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.5,
                                     false);
+    
+                            // Superstructure Swinging
+                            if (m_operatorController.getPOV() == OIConstants.POV_UP) {
+                                swingForward.schedule();
+                            }
+                            if (m_operatorController.getPOV() == OIConstants.POV_DOWN) {
+                                swingBack.schedule();
+                            }
+
+                            if (m_operatorController.getPOV() == OIConstants.POV_LEFT) {
+                                swingBack.end(true);
+                                swingForward.end(true);
+                                swingBack.cancel();
+                                swingForward.cancel();
+                            }
+
+                            // Superstructure Lifting Logic
+                            m_SuperStructure.liftHangerRun(
+                                    -m_operatorController.getRawAxis(OIConstants.leftStick_Y)
+                                            * SuperstructureConstants.hangerSpeed,
+                                    -m_operatorController.getRawAxis(OIConstants.rightStick_Y)
+                                            * SuperstructureConstants.hangerSpeed);
                         }, m_robotDrive));
 
+        // m_robotIntake.setDefaultCommand(
+        //         new RunCommand(() -> {
+        //             // Intake Logic
+        //             if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
+        //                 new RunCommand(() -> m_robotIntake.intakeRun(), m_robotIntake);
+        //             } else if (m_driverController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
+        //                 new RunCommand(() -> m_robotIntake.intakeReverse(), m_robotIntake);
+    
+        //             } else {
+        //                 new RunCommand(() -> m_robotIntake.intakeStop(), m_robotIntake);
+                        
+        //             }
+        //         }, m_robotIntake));
+
+        // m_robotTransport.setDefaultCommand(
+        //         new RunCommand(() -> {
+        //             // Transporter Logic
+        //             if (m_operatorController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
+        //                 transportCmd.schedule();
+        //             } else if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
+        //                 transportEject.schedule();
+        //             } else {
+        //                 transportStop.schedule();
+        //             }
+        //         }, m_robotTransport));
         m_robotIntake.setDefaultCommand(
                 new RunCommand(() -> {
                     // Intake Logic
@@ -123,33 +170,33 @@ public class RobotContainer {
                     );
                 }, m_robotTransport));
 
-        m_SuperStructure.setDefaultCommand(
-                new RunCommand(() -> {
-                    // Superstructure Lifting Logic
-                    m_SuperStructure.liftHangerRun(
-                            -m_operatorController.getRawAxis(OIConstants.leftStick_Y)
-                                    * SuperstructureConstants.hangerSpeed,
-                            -m_operatorController.getRawAxis(OIConstants.rightStick_Y)
-                                    * SuperstructureConstants.hangerSpeed);
+        // m_SuperStructure.setDefaultCommand(
+        //         new RunCommand(() -> {
+        //             // Superstructure Lifting Logic
+        //             m_SuperStructure.liftHangerRun(
+        //                     -m_operatorController.getRawAxis(OIConstants.leftStick_Y)
+        //                             * SuperstructureConstants.hangerSpeed,
+        //                     -m_operatorController.getRawAxis(OIConstants.rightStick_Y)
+        //                             * SuperstructureConstants.hangerSpeed);
 
-                    // Superstructure Swinging Forward
-                    if (m_operatorController.getPOV() == OIConstants.POV_UP) {
-                        swingForward.schedule();
-                    }
+        //             // Superstructure Swinging Forward
+        //             if (m_operatorController.getPOV() == OIConstants.POV_UP) {
+        //                 swingForward.schedule();
+        //             }
 
-                    // Superstucture Swinging Backward
-                    if (m_operatorController.getPOV() == OIConstants.POV_DOWN) {
-                        swingBack.schedule();
-                    }
+        //             // Superstucture Swinging Backward
+        //             if (m_operatorController.getPOV() == OIConstants.POV_DOWN) {
+        //                 swingBack.schedule();
+        //             }
 
-                    // Superstructure Stop
-                    if(m_operatorController.getPOV()==-1){
-                        swingBack.end(true);
-                        swingForward.end(true);
-                        swingBack.cancel();
-                        swingForward.cancel();
-                    }
-                }, m_SuperStructure));
+        //             // Superstructure Stop
+        //             if(m_operatorController.getPOV()==-1){
+        //                 swingBack.end(true);
+        //                 swingForward.end(true);
+        //                 swingBack.cancel();
+        //                 swingForward.cancel();
+        //             }
+        //         }, m_SuperStructure));
     }
 
     private void configureButtonBindings() {
