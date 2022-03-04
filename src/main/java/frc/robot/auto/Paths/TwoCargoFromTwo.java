@@ -31,7 +31,7 @@ public class TwoCargoFromTwo {
                                 new PIDController(1.4, 0.003, 0.003),
                                 new PIDController(1.4, 0.003, 0.003),
                                 new ProfiledPIDController(
-                                        1.3, 0.01, 0.013,
+                                        0.6, 0.01, 0.013,
                                         new TrapezoidProfile.Constraints(DriveConstants.kMaxVelocityMetersPerSecond,
                                                 DriveConstants.kMaxAccelerationMetersPerSecondSquared))
                         ),
@@ -39,8 +39,8 @@ public class TwoCargoFromTwo {
                 new ParallelCommandGroup(
                         trajectoryGenerator.generate(
                                 "2 to 2s from 2",
-                                new PIDController(0.4, 0.003, 0.003),
-                                new PIDController(0.4, 0.003, 0.003),
+                                new PIDController(0.04, 0.003, 0.003),
+                                new PIDController(0.04, 0.003, 0.003),
                                 new ProfiledPIDController(
                                         1.3, 0.01, 0.013,
                                         new TrapezoidProfile.Constraints(DriveConstants.kMaxVelocityMetersPerSecond,

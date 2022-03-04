@@ -26,6 +26,7 @@ import frc.robot.auto.Actions.TestPathing.TestFeedforward;
 import frc.robot.auto.Paths.TwoCargoFromOne;
 import frc.robot.auto.Paths.TwoCargoFromTwo;
 import frc.robot.commands.Reset.resetZero;
+import frc.robot.commands.Turret.TimedTurret;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -105,11 +106,14 @@ public class Robot extends TimedRobot {
     // m_autonomousCommand = autoPlanner.handleAutoMode();
     // m_autonomousCommand = m_autoChooser.getSelected();
 
-    SequentialCommandGroup m_auto = new TwoCargoFromTwo(m_robotContainer).getCommand();
-    PathPlannerTrajectory trajectory = PathPlanner.loadPath("1 to 2 from 2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+    SequentialCommandGroup m_auto = new TwoCargoFromOne(m_robotContainer).getCommand();
+    PathPlannerTrajectory trajectory = PathPlanner.loadPath("1 to 2 from 1", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
     m_robotContainer.m_robotDrive.resetOdometry(trajectory.getInitialPose());
+
+    new TimedTurret(m_robotContainer.m_robotTurret, 3.0, 1600);
+
     // schedule the autonomous command (example)
-    m_auto.schedule();
+    // m_auto.schedule();
   }
 
   /** This function is called periodically during autonomous. */

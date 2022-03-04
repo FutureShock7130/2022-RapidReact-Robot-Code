@@ -82,7 +82,6 @@ public class Drive extends SubsystemBase {
     //     );
     //   SmartDashboard.putNumber("Linearized Wheel Speed", getLinearWheelSpeeds());
     // }
-    if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.MECANUM_ODOMETRY) {
       m_mecanumOdometry.update(
           m_gyro.getRotation2d(),
           new MecanumDriveWheelSpeeds(
@@ -92,13 +91,12 @@ public class Drive extends SubsystemBase {
             motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse));
       SmartDashboard.putNumber("Pose X", m_mecanumOdometry.getPoseMeters().getX());
       SmartDashboard.putNumber("Pose Y", m_mecanumOdometry.getPoseMeters().getY());
-    }
 
     // SmartDashboard.putNumber("velocity", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
     // SmartDashboard.putNumber("Pose X", m_odometry.getPoseMeters().getX());
     // SmartDashboard.putNumber("Pose Y", m_odometry.getPoseMeters().getY());
-
-    this.lightStripGOGOGO();
+// this.lightStripGOGOGO();
+    
 
     SmartDashboard.putNumber("gyro", m_gyro.getAngle());
   }

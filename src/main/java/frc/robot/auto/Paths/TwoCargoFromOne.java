@@ -27,14 +27,14 @@ public class TwoCargoFromOne {
                 new ParallelCommandGroup(
                         trajectoryGenerator.generateTranslationalPrimary(
                                 "1 to 2 from 1",
-                                new PIDController(0.4, 0.003, 0.003),
-                                new PIDController(0.4, 0.003, 0.003)),
+                                new PIDController(1.2, 0.003, 0.003),
+                                new PIDController(1.2, 0.003, 0.003)),
                         new TimedIntake(2.0, m_robot.m_robotIntake)),
                 new ParallelCommandGroup(
                         trajectoryGenerator.generate(
                                 "2 to 2S from 1",
-                                new PIDController(0.13, 0.003, 0.003),
-                                new PIDController(0.13, 0.003, 0.003),
+                                new PIDController(0.7, 0.003, 0.003),
+                                new PIDController(0.7, 0.003, 0.003),
                                 new ProfiledPIDController(
                                         1.3, 0.01, 0.013,
                                         new TrapezoidProfile.Constraints(DriveConstants.kMaxVelocityMetersPerSecond,
@@ -42,14 +42,15 @@ public class TwoCargoFromOne {
                         new SequentialCommandGroup(
                                 new TimedIntake(0.5, m_robot.m_robotIntake),
                                 new WaitCommand(0.5),
-                                new TimedTransport(1, m_robot.m_robotTransport)),
-                        new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
-                        new ParallelCommandGroup(
+                                new TimedTransport(1, m_robot.m_robotTransport)
+                        )
+                ),
+                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
+                new ParallelCommandGroup(
                                 new TimedTurret(m_robot.m_robotTurret, 4, 1800),
                                 new TimedTransport(4.0, m_robot.m_robotTransport),
                                 new TimedIntake(4.0, m_robot.m_robotIntake)
-                        )
-                        )
+                )
                 );
     }
 }
