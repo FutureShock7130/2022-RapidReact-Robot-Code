@@ -26,8 +26,8 @@ public class Turret extends SubsystemBase {
     }
 
     public void flywheelsRun(double speed) {
-        masterFlyWheel.set(speed);
-        slaveFlyWheel.set(speed);
+        masterFlyWheel.setVoltage(speed);
+        slaveFlyWheel.setVoltage(speed);
     }
 
 
