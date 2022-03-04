@@ -14,11 +14,9 @@ import frc.robot.commands.Intake.TimedIntake;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
 
-public class ThreeCargoFromThree {
+public class FourCargoFromThreeB {
 
-    private MecanumControllerCommand route1;
-    private MecanumControllerCommand route2;
-    private MecanumControllerCommand route3;
+    private MecanumControllerCommand route;
 
     RobotContainer m_robot;
 
@@ -28,29 +26,21 @@ public class ThreeCargoFromThree {
 
     private TrajectoryGenerator trajectoryGenerator;
 
-    public ThreeCargoFromThree(RobotContainer robot) {
+    public FourCargoFromThreeB(RobotContainer robot) {
         m_robot = robot;
         trajectoryGenerator = new TrajectoryGenerator(m_robot.m_robotDrive);
-        route1 = trajectoryGenerator.generate("2 to 3 from 3 copy", xController, yController, thetaController);
-        route2 = trajectoryGenerator.generate("4 to 5 from 3 copy", xController, yController, thetaController);
-        route3 = trajectoryGenerator.generate("5 to 6 from 3 copy", xController, yController, thetaController);
+        route = trajectoryGenerator.generate("2S to 4S from 3", xController, yController, thetaController);
     }
 
     public SequentialCommandGroup getCommand() {
+        SequentialCommandGroup lastCommand = new TwoCargoFromThree(m_robot).getCommand();
         return new SequentialCommandGroup(
-                new ParallelDeadlineGroup(route1,
+                lastCommand,
+                new ParallelDeadlineGroup(route,
                         new SequentialCommandGroup(new WaitCommand(1), new TimedIntake(3, m_robot.m_robotIntake))),
+
                 new ParallelCommandGroup(
-                        new TimedTurret(m_robot.m_robotTurret, 1.5, 2050),
-                        new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
-                        new SequentialCommandGroup(new WaitCommand(0.5),
-                                new ParallelCommandGroup(new TimedIntake(1, m_robot.m_robotIntake),
-                                        new TimedTransport(1, m_robot.m_robotTransport)))),
-                new ParallelDeadlineGroup(route2,
-                        new SequentialCommandGroup(new WaitCommand(1.5), new TimedIntake(3, m_robot.m_robotIntake))),
-                route3,
-                new ParallelCommandGroup(
-                        new TimedTurret(m_robot.m_robotTurret, 1.5, 2050),
+                        new TimedTurret(m_robot.m_robotTurret, 1.5, 1750),
                         new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
                         new SequentialCommandGroup(new WaitCommand(0.5),
                                 new ParallelCommandGroup(new TimedIntake(1, m_robot.m_robotIntake),

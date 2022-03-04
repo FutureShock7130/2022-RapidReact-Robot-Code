@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.TurretConstants;
 import frc.robot.subsystems.Spinner;
-import frc.robot.subsystems.Turret;
 import frc.robot.vision.Limelight;
 
 public class TurretSeek extends CommandBase {

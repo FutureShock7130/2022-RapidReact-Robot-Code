@@ -27,6 +27,11 @@ public class Intake extends SubsystemBase {
 
   }
 
+  public void intakeSet(double speed) {
+    intaker.set(speed);
+    downTransporter.set(speed);
+  }
+
   public void intakeStop(){
     intaker.set(0);
     downTransporter.set(0);
@@ -35,5 +40,13 @@ public class Intake extends SubsystemBase {
   public void intakeReverse() {
     intaker.set(-IntakeConstants.intakeSpeed);
     downTransporter.set(-IntakeConstants.transportSpeed);
+  }
+
+  public void downRun() {
+    downTransporter.set(-IntakeConstants.transportSpeed);
+  }
+
+  public void downStop() {
+    downTransporter.set(0);
   }
 }

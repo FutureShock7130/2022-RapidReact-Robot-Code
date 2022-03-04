@@ -32,7 +32,7 @@ public class TwoCargoFromOne {
                         new TimedIntake(2.0, m_robot.m_robotIntake)),
                 new ParallelCommandGroup(
                         trajectoryGenerator.generate(
-                                "2 to 2s from 1",
+                                "2 to 2S from 1",
                                 new PIDController(0.13, 0.003, 0.003),
                                 new PIDController(0.13, 0.003, 0.003),
                                 new ProfiledPIDController(
@@ -44,6 +44,12 @@ public class TwoCargoFromOne {
                                 new WaitCommand(0.5),
                                 new TimedTransport(1, m_robot.m_robotTransport)),
                         new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
-                        new TimedTurret(m_robot.m_robotTurret, 2, 1750)));
+                        new ParallelCommandGroup(
+                                new TimedTurret(m_robot.m_robotTurret, 4, 1800),
+                                new TimedTransport(4.0, m_robot.m_robotTransport),
+                                new TimedIntake(4.0, m_robot.m_robotIntake)
+                        )
+                        )
+                );
     }
 }

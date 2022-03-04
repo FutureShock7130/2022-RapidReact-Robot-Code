@@ -12,7 +12,7 @@ import frc.robot.Constants.TurretConstants;
 import frc.robot.subsystems.Turret;
 
 public class TurretShoot extends CommandBase {
-  private static final double kP = 0.00013;
+  private static final double kP = 0.0000125;
   private static final double kI = 0.00002;
 
   // a D Controller is not needed for the basic flywheel control because we only
@@ -73,7 +73,7 @@ public class TurretShoot extends CommandBase {
     } else {
       turret.flywheelsRun(output);
     }
-    turret.flywheelsRun(output + kF);
+
 
     lastError = error;
 

@@ -1,24 +1,17 @@
 package frc.robot.auto;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
+import frc.robot.auto.Paths.FourCargoFromOne;
+import frc.robot.auto.Paths.FourCargoFromThreeB;
+import frc.robot.auto.Paths.ThreeCargoFromOne;
+import frc.robot.auto.Paths.ThreeCargoFromThree;
+import frc.robot.auto.Paths.ThreeCargoFromTwo;
 import frc.robot.auto.Paths.TwoCargoFromOne;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Spinner;
-import frc.robot.subsystems.Transporter;
-import frc.robot.vision.Limelight;
+import frc.robot.auto.Paths.TwoCargoFromThree;
+import frc.robot.auto.Paths.TwoCargoFromTwo;
 
 public class AutoModePlanner implements AutoModes {
-    private AutoModes.DriveStrategy driveStrategy = DriveStrategy.ONE_CARGO;
-    private AutoModes.Alliance alliance = Alliance.BLUE_ALLIANCE;
-    private AutoModes.DriveMode driveMode = DriveMode.DIFFERENTIAL;
-    private AutoModes.StartingPosition startingPos = StartingPosition.ONE;
-    private AutoModes.AimMode aimMode = AimMode.LIMELIGHT;
-
     private RobotContainer robot;
 
     public AutoModePlanner(
@@ -27,40 +20,44 @@ public class AutoModePlanner implements AutoModes {
         robot = robotContainer;
     }
 
-    public SequentialCommandGroup handleAutoMode() {
+    public SequentialCommandGroup handleAutoMode(AutoModes.StartingPosition startingPos, AutoModes.DriveStrategy driveStrategy) {
         switch (startingPos) {
             case ONE:
                 switch (driveStrategy) {
+                    case ONE_CARGO:
+                        break;
                     case TWO_CARGO:
-                        // return the two cargo from pos 1
                         return new TwoCargoFromOne(robot).getCommand();
                     case THREE_CARGO:
-                        // for the rest of the logic, follow the one above
-                        break;
+                        return new ThreeCargoFromOne(robot).getCommand();
                     case FOUR_CARGO:
-                        break;
+                        return new FourCargoFromOne(robot).getCommand();
                     case FIVE_CARGO:
                         break;
                 }
             case TWO:
                 switch (driveStrategy) {
+                    case ONE_CARGO:
+                        break;
                     case TWO_CARGO:
-                        break;
+                        return new TwoCargoFromTwo(robot).getCommand();
                     case THREE_CARGO:
-                        break;
+                        return new ThreeCargoFromTwo(robot).getCommand();
                     case FOUR_CARGO:
-                        break;
+                        // return new FourCargoFromTwo(robot).getCommand();
                     case FIVE_CARGO:
                         break;
                 }
             case THREE:
                 switch (driveStrategy) {
+                    case ONE_CARGO:
+                        break;
                     case TWO_CARGO:
-                        break;
+                        return new TwoCargoFromThree(robot).getCommand();
                     case THREE_CARGO:
-                        break;
+                        return new ThreeCargoFromThree(robot).getCommand();
                     case FOUR_CARGO:
-                        break;
+                        return new FourCargoFromThreeB(robot).getCommand();
                     case FIVE_CARGO:
                         break;
                 }
@@ -69,17 +66,5 @@ public class AutoModePlanner implements AutoModes {
                 // return a generic shoot command here
                 return new TwoCargoFromOne(robot).getCommand();
         }
-    }
-
-    public void setCargoCount(AutoModes.DriveStrategy cargo) {
-        driveStrategy = cargo;
-    }
-
-    public void setAlliance(AutoModes.Alliance _alliance) {
-        alliance = _alliance;
-    }
-
-    public void setAimMode(AutoModes.AimMode mode) {
-        aimMode = mode;
     }
 }
