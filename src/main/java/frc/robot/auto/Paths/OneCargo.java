@@ -29,12 +29,11 @@ public class OneCargo {
         trajectoryGenerator = new TrajectoryGenerator(m_robot.m_robotDrive);
 
         AutoAim = new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision);
-        route = trajectoryGenerator.generate("One", xController, yController, thetaController);
+        //route = trajectoryGenerator.generate("", xController, yController, thetaController);
     }
 
     public SequentialCommandGroup getCommand() {
         return new SequentialCommandGroup(
-                route,
                 AutoAim.getCommand(),
                 new ParallelDeadlineGroup(
                         new SequentialCommandGroup(new WaitCommand(0.5), new TimedTransport(1, m_robot.m_robotTransport)),
