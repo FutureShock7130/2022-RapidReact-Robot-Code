@@ -17,7 +17,7 @@ public class TwoCargoFromTwo {
     TrajectoryGenerator trajectoryGenerator;
     RobotContainer m_robot;
 
-    public TwoCargoFromOne(RobotContainer robot) {
+    public TwoCargoFromTwo(RobotContainer robot) {
         m_robot = robot;
         trajectoryGenerator = new TrajectoryGenerator(m_robot.m_robotDrive);
     }
