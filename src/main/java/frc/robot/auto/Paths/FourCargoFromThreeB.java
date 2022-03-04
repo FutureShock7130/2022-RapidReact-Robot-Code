@@ -2,7 +2,6 @@ package frc.robot.auto.Paths;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
@@ -14,14 +13,8 @@ import frc.robot.auto.Actions.AutoAim;
 import frc.robot.commands.Intake.TimedIntake;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Spinner;
-import frc.robot.subsystems.Transporter;
-import frc.robot.subsystems.Turret;
-import frc.robot.vision.Limelight;
 
-public class ThreeCargoFromThreeB {
+public class FourCargoFromThreeB {
 
     private MecanumControllerCommand route;
 
@@ -33,7 +26,7 @@ public class ThreeCargoFromThreeB {
 
     private TrajectoryGenerator trajectoryGenerator;
 
-    public ThreeCargoFromThreeB(RobotContainer robot) {
+    public FourCargoFromThreeB(RobotContainer robot) {
         m_robot = robot;
         trajectoryGenerator = new TrajectoryGenerator(m_robot.m_robotDrive);
         route = trajectoryGenerator.generate("2S to 4S from 3", xController, yController, thetaController);

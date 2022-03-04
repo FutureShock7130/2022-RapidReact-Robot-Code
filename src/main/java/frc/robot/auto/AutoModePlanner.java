@@ -1,23 +1,14 @@
 package frc.robot.auto;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.auto.Paths.FourCargoFromOne;
-import frc.robot.auto.Paths.FourCargoFromThree;
 import frc.robot.auto.Paths.ThreeCargoFromOne;
 import frc.robot.auto.Paths.ThreeCargoFromThree;
 import frc.robot.auto.Paths.ThreeCargoFromTwo;
 import frc.robot.auto.Paths.TwoCargoFromOne;
 import frc.robot.auto.Paths.TwoCargoFromThree;
 import frc.robot.auto.Paths.TwoCargoFromTwo;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Spinner;
-import frc.robot.subsystems.Transporter;
-import frc.robot.vision.Limelight;
 
 public class AutoModePlanner implements AutoModes {
     private AutoModes.DriveStrategy driveStrategy = DriveStrategy.ONE_CARGO;

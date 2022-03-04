@@ -10,12 +10,6 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.auto.Actions.AutoAim;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Spinner;
-import frc.robot.subsystems.Transporter;
-import frc.robot.subsystems.Turret;
-import frc.robot.vision.Limelight;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class OneCargo {

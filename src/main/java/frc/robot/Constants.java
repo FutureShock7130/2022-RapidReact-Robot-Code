@@ -76,7 +76,7 @@ public final class Constants {
     );
 
 
-    public static final double kSlewRate = 0.8;
+    public static final double kSlewRate = 0.9;
 
     // Ramsete Parameters
     public static final double kRamseteB = 2.0;

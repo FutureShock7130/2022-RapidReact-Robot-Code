@@ -2,12 +2,10 @@ package frc.robot.auto.Actions;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Drive.AbsoluteAim;
 import frc.robot.commands.Turret.LimelightAim;
 import frc.robot.commands.Turret.TurretSeek;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Spinner;
-import frc.robot.subsystems.Turret;
 import frc.robot.vision.Limelight;
 
 public class AutoAim {

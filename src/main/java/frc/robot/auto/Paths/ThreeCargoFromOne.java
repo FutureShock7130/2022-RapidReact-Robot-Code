@@ -13,12 +13,7 @@ import frc.robot.auto.Actions.AutoAim;
 import frc.robot.commands.Intake.TimedIntake;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Spinner;
-import frc.robot.subsystems.Transporter;
-import frc.robot.subsystems.Turret;
-import frc.robot.vision.Limelight;
+
 
 public class ThreeCargoFromOne {
 
