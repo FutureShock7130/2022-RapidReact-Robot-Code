@@ -24,6 +24,8 @@ public class AutoModePlanner implements AutoModes {
         switch (startingPos) {
             case ONE:
                 switch (driveStrategy) {
+                    case ONE_CARGO:
+                        break;
                     case TWO_CARGO:
                         return new TwoCargoFromOne(robot).getCommand();
                     case THREE_CARGO:
@@ -35,6 +37,8 @@ public class AutoModePlanner implements AutoModes {
                 }
             case TWO:
                 switch (driveStrategy) {
+                    case ONE_CARGO:
+                        break;
                     case TWO_CARGO:
                         return new TwoCargoFromTwo(robot).getCommand();
                     case THREE_CARGO:
@@ -46,6 +50,8 @@ public class AutoModePlanner implements AutoModes {
                 }
             case THREE:
                 switch (driveStrategy) {
+                    case ONE_CARGO:
+                        break;
                     case TWO_CARGO:
                         return new TwoCargoFromThree(robot).getCommand();
                     case THREE_CARGO:

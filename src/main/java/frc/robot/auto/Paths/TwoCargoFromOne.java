@@ -32,7 +32,7 @@ public class TwoCargoFromOne {
                         new TimedIntake(2.0, m_robot.m_robotIntake)),
                 new ParallelCommandGroup(
                         trajectoryGenerator.generate(
-                                "2 to 2s from 1",
+                                "2 to 2S from 1",
                                 new PIDController(0.13, 0.003, 0.003),
                                 new PIDController(0.13, 0.003, 0.003),
                                 new ProfiledPIDController(
