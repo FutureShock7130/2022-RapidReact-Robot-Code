@@ -10,10 +10,14 @@ import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.OIConstants;
 import frc.robot.auto.AutoModePlanner;
+import frc.robot.auto.AutoModes;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -32,6 +36,8 @@ public class Robot extends TimedRobot {
   Joystick m_driverController;
   Joystick m_operatorController;
 
+  SendableChooser<SequentialCommandGroup> m_autoChooser = new SendableChooser<>();
+  AutoModePlanner autoPlanner = new AutoModePlanner(m_robotContainer);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -49,6 +55,16 @@ public class Robot extends TimedRobot {
 
     Joystick m_driverController = new Joystick(OIConstants.kDriveTrainJoystickPort);
     Joystick m_operatorController = new Joystick(OIConstants.kOthersJoystickPort);
+
+    m_autoChooser.setDefaultOption("Default", autoPlanner.handleAutoMode(AutoModes.StartingPosition.ONE, AutoModes.DriveStrategy.TWO_CARGO));
+    m_autoChooser.addOption("Two Cargo from 2", autoPlanner.handleAutoMode(AutoModes.StartingPosition.TWO, AutoModes.DriveStrategy.TWO_CARGO));
+    m_autoChooser.addOption("Two Cargo from 3", autoPlanner.handleAutoMode(AutoModes.StartingPosition.THREE, AutoModes.DriveStrategy.TWO_CARGO));
+    m_autoChooser.addOption("Three Cargo from 1", autoPlanner.handleAutoMode(AutoModes.StartingPosition.ONE, AutoModes.DriveStrategy.THREE_CARGO));
+    m_autoChooser.addOption("Three Cargo from 2", autoPlanner.handleAutoMode(AutoModes.StartingPosition.TWO, AutoModes.DriveStrategy.THREE_CARGO));
+    m_autoChooser.addOption("Three Cargo from 3", autoPlanner.handleAutoMode(AutoModes.StartingPosition.THREE, AutoModes.DriveStrategy.THREE_CARGO));
+    m_autoChooser.addOption("Four Cargo from 1", autoPlanner.handleAutoMode(AutoModes.StartingPosition.ONE, AutoModes.DriveStrategy.FOUR_CARGO));
+
+    SmartDashboard.putData(m_autoChooser);
   }
 
   /**
@@ -77,9 +93,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    AutoModePlanner autoPlanner = new AutoModePlanner(m_robotContainer);
     // m_autonomousCommand = autoPlanner.handleAutoMode();
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_autoChooser.getSelected();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

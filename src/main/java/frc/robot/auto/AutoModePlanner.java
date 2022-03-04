@@ -11,12 +11,6 @@ import frc.robot.auto.Paths.TwoCargoFromThree;
 import frc.robot.auto.Paths.TwoCargoFromTwo;
 
 public class AutoModePlanner implements AutoModes {
-    private AutoModes.DriveStrategy driveStrategy = DriveStrategy.ONE_CARGO;
-    private AutoModes.Alliance alliance = Alliance.BLUE_ALLIANCE;
-    private AutoModes.DriveMode driveMode = DriveMode.DIFFERENTIAL;
-    private AutoModes.StartingPosition startingPos = StartingPosition.ONE;
-    private AutoModes.AimMode aimMode = AimMode.LIMELIGHT;
-
     private RobotContainer robot;
 
     public AutoModePlanner(
@@ -25,7 +19,7 @@ public class AutoModePlanner implements AutoModes {
         robot = robotContainer;
     }
 
-    public SequentialCommandGroup handleAutoMode() {
+    public SequentialCommandGroup handleAutoMode(AutoModes.StartingPosition startingPos, AutoModes.DriveStrategy driveStrategy) {
         switch (startingPos) {
             case ONE:
                 switch (driveStrategy) {
@@ -65,17 +59,5 @@ public class AutoModePlanner implements AutoModes {
                 // return a generic shoot command here
                 return new TwoCargoFromOne(robot).getCommand();
         }
-    }
-
-    public void setCargoCount(AutoModes.DriveStrategy cargo) {
-        driveStrategy = cargo;
-    }
-
-    public void setAlliance(AutoModes.Alliance _alliance) {
-        alliance = _alliance;
-    }
-
-    public void setAimMode(AutoModes.AimMode mode) {
-        aimMode = mode;
     }
 }
