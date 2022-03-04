@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.auto.Actions.AutoAim;
+import frc.robot.auto.Actions.TransportBoost;
 import frc.robot.commands.Intake.TimedIntake;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
@@ -25,25 +26,36 @@ public class TwoCargoFromTwo {
     public SequentialCommandGroup getCommand() {
         return new SequentialCommandGroup(
                 new ParallelCommandGroup(
-                        trajectoryGenerator.generateTranslationalPrimary(
+                        trajectoryGenerator.generate(
                                 "1 to 2 from 2",
-                                new PIDController(0.4, 0.003, 0.003),
-                                new PIDController(0.4, 0.003, 0.003)),
+                                new PIDController(1.4, 0.003, 0.003),
+                                new PIDController(1.4, 0.003, 0.003),
+                                new ProfiledPIDController(
+                                        1.3, 0.01, 0.013,
+                                        new TrapezoidProfile.Constraints(DriveConstants.kMaxVelocityMetersPerSecond,
+                                                DriveConstants.kMaxAccelerationMetersPerSecondSquared))
+                        ),
                         new TimedIntake(2.0, m_robot.m_robotIntake)),
                 new ParallelCommandGroup(
                         trajectoryGenerator.generate(
                                 "2 to 2s from 2",
-                                new PIDController(0.13, 0.003, 0.003),
-                                new PIDController(0.13, 0.003, 0.003),
+                                new PIDController(0.4, 0.003, 0.003),
+                                new PIDController(0.4, 0.003, 0.003),
                                 new ProfiledPIDController(
                                         1.3, 0.01, 0.013,
                                         new TrapezoidProfile.Constraints(DriveConstants.kMaxVelocityMetersPerSecond,
-                                                DriveConstants.kMaxAccelerationMetersPerSecondSquared))),
+                                                DriveConstants.kMaxAccelerationMetersPerSecondSquared))
+                        ),
                         new SequentialCommandGroup(
                                 new TimedIntake(0.5, m_robot.m_robotIntake),
                                 new WaitCommand(0.5),
-                                new TimedTransport(1, m_robot.m_robotTransport)),
-                        new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
-                        new TimedTurret(m_robot.m_robotTurret, 2, 1750)));
+                                new TimedTransport(1, m_robot.m_robotTransport)
+                        )
+                ),
+                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
+                new ParallelCommandGroup(
+                        new TimedTurret(m_robot.m_robotTurret, 4.0, 1750),
+                        new TransportBoost(m_robot.m_robotTransport)
+                ));
     }
 }

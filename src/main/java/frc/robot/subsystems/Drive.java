@@ -73,11 +73,6 @@ public class Drive extends SubsystemBase {
   @Override
   public void periodic() {
     // System.out.println(m_mecanumOdometry.getPoseMeters());
-    m_differentialOdometry.update(
-        m_gyro.getRotation2d(),
-        motorFL.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse / 10,
-        motorFR.getSelectedSensorPosition() * DriveConstants.kEncoderDistancePerPulse / 10
-    );
     // Update the odometry in the periodic block
     // if (driveStateMachine.getCurrentOdometry() == DriveOdometryState.DIFFERENTIAL_ODOMETRY) {
     //   m_differentialOdometry.update(
@@ -97,9 +92,6 @@ public class Drive extends SubsystemBase {
             motorRR.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse));
       SmartDashboard.putNumber("Pose X", m_mecanumOdometry.getPoseMeters().getX());
       SmartDashboard.putNumber("Pose Y", m_mecanumOdometry.getPoseMeters().getY());
-    }
-    if (getTargetWheelSpeed(motorFL) > 0.2) {
-      //System.out.println(getTargetWheelSpeed(motorFL));
     }
 
     // SmartDashboard.putNumber("velocity", motorFL.getSelectedSensorVelocity() * DriveConstants.kEncoderDistancePerPulse);
