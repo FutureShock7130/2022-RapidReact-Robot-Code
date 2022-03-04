@@ -27,6 +27,11 @@ public class Intake extends SubsystemBase {
 
   }
 
+  public void intakeSet(double speed) {
+    intaker.set(speed);
+    downTransporter.set(speed);
+  }
+
   public void intakeStop(){
     intaker.set(0);
     downTransporter.set(0);

@@ -78,7 +78,7 @@ public class TestFeedforward extends CommandBase {
     @Override
     public boolean isFinished() {
         double targetPulses = 1 / DriveConstants.kEncoderDistancePerPulse ;
-        if (timer.get() > 3) {
+        if (timer.get() > 4) {
             m_drive.feedForwardTestDrive(0);
             timer.reset();
             return true;

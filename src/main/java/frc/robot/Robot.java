@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
@@ -15,9 +18,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.auto.AutoModePlanner;
 import frc.robot.auto.AutoModes;
+import frc.robot.auto.Actions.TestPathing.TestFeedforward;
+import frc.robot.auto.Paths.TwoCargoFromOne;
+import frc.robot.commands.Reset.resetZero;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -95,11 +102,14 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // m_autonomousCommand = autoPlanner.handleAutoMode();
-    m_autonomousCommand = m_autoChooser.getSelected();
+    // m_autonomousCommand = m_autoChooser.getSelected();
 
+    SequentialCommandGroup m_auto = new TwoCargoFromOne(m_robotContainer).getCommand();
+    PathPlannerTrajectory trajectory = PathPlanner.loadPath("1 to 2 from 1", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+    m_robotContainer.m_robotDrive.resetOdometry(trajectory.getInitialPose());
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+      m_auto.schedule();
     }
   }
 
