@@ -110,27 +110,17 @@ public class RobotContainer {
         m_robotIntake.setDefaultCommand(
                 new RunCommand(() -> {
                     // Intake Logic
-                    if (m_driverController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
-                        new RunCommand(() -> m_robotIntake.intakeRun(), m_robotIntake);
-                    } else if (m_driverController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
-                        new RunCommand(() -> m_robotIntake.intakeReverse(), m_robotIntake);
-    
-                    } else {
-                        new RunCommand(() -> m_robotIntake.intakeStop(), m_robotIntake);
-                        
-                    }
+                    m_robotIntake.intakeSet(
+                        m_driverController.getRawAxis(OIConstants.trigger_R) - m_driverController.getRawAxis(OIConstants.trigger_L)
+                    );
                 }, m_robotIntake));
 
         m_robotTransport.setDefaultCommand(
                 new RunCommand(() -> {
                     // Transporter Logic
-                    if (m_operatorController.getRawAxis(OIConstants.trigger_L) >= 0.5) {
-                        transportCmd.schedule();
-                    } else if (m_operatorController.getRawAxis(OIConstants.trigger_R) >= 0.5) {
-                        transportEject.schedule();
-                    } else {
-                        transportStop.schedule();
-                    }
+                    m_robotTransport.transportRun(
+                        m_operatorController.getRawAxis(OIConstants.trigger_R) - m_operatorController.getRawAxis(OIConstants.trigger_L)
+                    );
                 }, m_robotTransport));
 
         m_SuperStructure.setDefaultCommand(
@@ -163,6 +153,7 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
+
         // drivetrain sub
         new JoystickButton(m_driverController, OIConstants.Btn_RB)
                 .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
@@ -170,6 +161,7 @@ public class RobotContainer {
 
         new JoystickButton(m_operatorController, OIConstants.trigger_L)
                 .whenPressed(new PrintCommand("Left Trigger Working!"));
+
 
         // spinner auto aim
         new JoystickButton(m_operatorController, OIConstants.Btn_Y)
@@ -201,7 +193,7 @@ public class RobotContainer {
         // Timed Transportation
         new JoystickButton(m_operatorController, OIConstants.Btn_A)
                 .whenPressed(
-                        new TimedTransport(0.7, TransporterConstants.idealTransportDt, m_robotTransport));
+                        new TimedTransport(0.4, TransporterConstants.idealTransportDt, m_robotTransport));
 
         // Shooting Bindings
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
