@@ -37,8 +37,11 @@ public class AbsoluteAim extends CommandBase {
         private double integralSumR;
         private double lastError;
 
-        public AbsoluteAim(Drive robotDrive) {
+        private  boolean relative;
+
+        public AbsoluteAim(Drive robotDrive, boolean relative) {
                 m_robotDrive = robotDrive;
+                this.relative = relative;
                 addRequirements(robotDrive);
         }
 
@@ -59,7 +62,7 @@ public class AbsoluteAim extends CommandBase {
                 double changeCalc = Math.atan(yDiff / xDiff);
                 // Calculate the angle difference between the two coordinate (if the current
                 // rotation(angle) is 0)
-                changeAngle = new Rotation2d(changeCalc).plus(initRotation.times(-1));
+                changeAngle = relative ? new Rotation2d(changeCalc) : new Rotation2d(changeCalc).plus(initRotation.times(-1));
                 // Add the current angle into the rotation. Think of it as first correcting the
                 // angle of the robot to 0,
                 // then turn the actual angle difference between the two coordinates.
