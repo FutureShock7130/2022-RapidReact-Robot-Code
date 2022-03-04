@@ -2,14 +2,14 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
-import frc.robot.auto.Paths.FourCargoFromOne;
-import frc.robot.auto.Paths.FourCargoFromThreeB;
-import frc.robot.auto.Paths.ThreeCargoFromOne;
-import frc.robot.auto.Paths.ThreeCargoFromThree;
-import frc.robot.auto.Paths.ThreeCargoFromTwo;
-import frc.robot.auto.Paths.TwoCargoFromOne;
-import frc.robot.auto.Paths.TwoCargoFromThree;
-import frc.robot.auto.Paths.TwoCargoFromTwo;
+import frc.robot.auto.paths.FourCargoFromOne;
+import frc.robot.auto.paths.FourCargoFromThreeB;
+import frc.robot.auto.paths.ThreeCargoFromOne;
+import frc.robot.auto.paths.ThreeCargoFromThree;
+import frc.robot.auto.paths.ThreeCargoFromTwo;
+import frc.robot.auto.paths.TwoCargoFromOne;
+import frc.robot.auto.paths.TwoCargoFromThree;
+import frc.robot.auto.paths.TwoCargoFromTwo;
 
 public class AutoModePlanner implements AutoModes {
     private RobotContainer robot;
