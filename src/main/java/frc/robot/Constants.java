@@ -54,11 +54,11 @@ public final class Constants {
     // your robot.
 
     public static final double kS = 0.76364; //0.76364
-    public static final double kV = 3.8435;
-    public static final double kA = 0.23; //0.22548
+    public static final double kV = 3.5;
+    public static final double kA = 0.22548; //0.22548
     public static final double kJ = 14;
 
-    public static final double kPDriveVel = 0.3; //0.3
+    public static final double kPDriveVel = 0.3; //0.3 //3.7308
     public static final double kDDriveVel = 0.012;
 
     public static final SimpleMotorFeedforward kDriveFeedforward = new SimpleMotorFeedforward(0, 0, 0);
@@ -82,8 +82,8 @@ public final class Constants {
     public static final double kRamseteB = 2.0;
     public static final double kRamseteTheta = 0.7;
 
-    public static final double kMaxVelocityMetersPerSecond = 2.0;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 1.0;
+    public static final double kMaxVelocityMetersPerSecond = 3.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 2.5;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 

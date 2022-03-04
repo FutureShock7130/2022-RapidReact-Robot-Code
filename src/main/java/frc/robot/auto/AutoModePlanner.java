@@ -3,6 +3,7 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.auto.Paths.FourCargoFromOne;
+import frc.robot.auto.Paths.FourCargoFromThreeB;
 import frc.robot.auto.Paths.ThreeCargoFromOne;
 import frc.robot.auto.Paths.ThreeCargoFromThree;
 import frc.robot.auto.Paths.ThreeCargoFromTwo;
@@ -50,7 +51,7 @@ public class AutoModePlanner implements AutoModes {
                     case THREE_CARGO:
                         return new ThreeCargoFromThree(robot).getCommand();
                     case FOUR_CARGO:
-                        // return new FourCargoFromThree(robot).getCommand();
+                        return new FourCargoFromThreeB(robot).getCommand();
                     case FIVE_CARGO:
                         break;
                 }
