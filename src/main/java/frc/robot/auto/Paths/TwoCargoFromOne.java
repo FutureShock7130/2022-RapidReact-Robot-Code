@@ -47,7 +47,7 @@ public class TwoCargoFromOne {
                         new PIDController(1.3, 0.0003, 0),
                         new PIDController(1.4, 0.0003, 0)
                 ),
-                new AbsoluteAim(m_robot.m_robotDrive, true, 180),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 155),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand().withTimeout(4.0),
                 new ParallelCommandGroup(
                         new TurretShoot(m_robot.m_robotTurret, 1500).withTimeout(6.0),
