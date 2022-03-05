@@ -28,7 +28,7 @@ public class AbsoluteAim extends CommandBase {
         double targetX = 0;
         double targetY = -1;
 
-        private static final double kP = 0.023;
+        private static final double kP = 0.027;
         private static final double kI = 0.00125;
         private static final double kD = 0.002;
         private static final double timeDiff = 0.02;
@@ -83,7 +83,7 @@ public class AbsoluteAim extends CommandBase {
                 currentRotation = m_robotDrive.getPose().getRotation();
                 rError = finalRotation.minus(currentRotation).getRadians();
 
-                if (Math.abs(integralSumR) < 100) {
+                if (Math.abs(integralSumR) < 50) {
                         integralSumR += rError;
                 }
 

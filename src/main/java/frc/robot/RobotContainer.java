@@ -103,7 +103,7 @@ public class RobotContainer {
                             m_robotDrive.drive(
                                     -m_driverController.getRawAxis(OIConstants.leftStick_Y),
                                     m_driverController.getRawAxis(OIConstants.leftStick_X),
-                                    m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.5,
+                                    m_driverController.getRawAxis(OIConstants.rightStick_X) * 0.7,
                                     false);
     
                             // Superstructure Swinging

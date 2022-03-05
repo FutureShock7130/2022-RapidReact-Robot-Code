@@ -137,7 +137,7 @@ public class Drive extends SubsystemBase {
   public double getAverageWheelPosition() {
     return (motorFL.getSelectedSensorPosition() + motorFR.getSelectedSensorPosition()
         + motorRL.getSelectedSensorPosition() + motorRR.getSelectedSensorPosition()) / 4
-        * DriveConstants.kEncoderDistancePerPulse;
+        * DriveConstants.kPulseToDistance;
   }
 
   // Resets the odometry to the specified pose.

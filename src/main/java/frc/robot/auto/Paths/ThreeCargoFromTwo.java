@@ -31,12 +31,13 @@ public class ThreeCargoFromTwo {
         return new SequentialCommandGroup(
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
                 new ParallelCommandGroup(
-                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),
+                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1350),
                         new SequentialCommandGroup(
                                 new WaitCommand(1.0),
+                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
                         )
-                ),
+                ).withTimeout(3.0),
                 new AbsoluteAim(m_robot.m_robotDrive, true, 110),
                 new ParallelRaceGroup(
                         trajectoryGenerator.generateTranslationalPrimary(
@@ -64,13 +65,15 @@ public class ThreeCargoFromTwo {
                                 0.5, 0, 0, 
                                 new TrapezoidProfile.Constraints(3.5, 2.5))
                 ),
-                new AbsoluteAim(m_robot.m_robotDrive, true, 45),
-                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 30),
+                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand().withTimeout(2.5),
                 new ParallelCommandGroup(
                         new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),
                         new SequentialCommandGroup(
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
-                                new WaitCommand(1.0),
+                                new WaitCommand(0.5),
+                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
+                                new WaitCommand(0.5),
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
                         )
                 )            

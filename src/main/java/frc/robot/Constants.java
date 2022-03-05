@@ -44,6 +44,8 @@ public final class Constants {
     public static final double kGearRatio = 12.5;
     public static final double kEncoderDistancePerPulse = kWheelCircumference / (double) kEncoderCPR / kGearRatio
         / Math.sqrt(2) * 10;
+    public static final double kPulseToDistance = kWheelCircumference / (double) kEncoderCPR / kGearRatio
+    / Math.sqrt(2);
       
     public static final int kPIDfCPR = 1023;
 

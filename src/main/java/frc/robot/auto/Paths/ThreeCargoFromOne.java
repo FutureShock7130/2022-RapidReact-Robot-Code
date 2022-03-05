@@ -37,7 +37,7 @@ public class ThreeCargoFromOne {
     public SequentialCommandGroup getCommand() {
         return new SequentialCommandGroup(
             lastCommand,
-            new AbsoluteAim(m_robot.m_robotDrive, true, -75),
+            new AbsoluteAim(m_robot.m_robotDrive, true, -90),
             new ParallelRaceGroup(
                 trajectoryGenerator.generateTranslationalPrimary(
                     "(1) 3rd Cargo Straight", 
@@ -53,15 +53,19 @@ public class ThreeCargoFromOne {
                 new PIDController(1.4, 0.0003, 0)
             ),
             new AbsoluteAim(m_robot.m_robotDrive, true, -45),
-            new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
+            new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand().withTimeout(3.0),
             new ParallelCommandGroup(
-                    new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),
+                    new TimedTurret(m_robot.m_robotTurret, 4.0, 1550),
                     new SequentialCommandGroup(
                             new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
-                            new WaitCommand(1.0),
+                            new WaitCommand(0.5),
+                            new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
+                            new WaitCommand(0.5),
+                            new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
+                            new WaitCommand(0.5),
                             new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
                     )
-            ) 
+            ) .withTimeout(6.0)
         );
     }
 }

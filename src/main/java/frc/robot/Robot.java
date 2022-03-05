@@ -27,6 +27,7 @@ import frc.robot.auto.Actions.TestPathing.TestFeedforward;
 import frc.robot.auto.Paths.OneCargo;
 import frc.robot.auto.Paths.ThreeCargoFromOne;
 import frc.robot.auto.Paths.ThreeCargoFromTwo;
+import frc.robot.auto.Paths.TurretTest;
 import frc.robot.auto.Paths.TwoCargoFromOne;
 import frc.robot.auto.Paths.TwoCargoFromThree;
 import frc.robot.commands.Reset.ResetZero;
@@ -51,7 +52,13 @@ public class Robot extends TimedRobot {
   SendableChooser<SequentialCommandGroup> m_autoChooser = new SendableChooser<>();
   AutoModePlanner autoPlanner = new AutoModePlanner(m_robotContainer);
 
-  SequentialCommandGroup m_auto;
+  SequentialCommandGroup m_auto1;
+  SequentialCommandGroup m_auto21;
+  SequentialCommandGroup m_auto31;
+  SequentialCommandGroup m_auto22;
+  SequentialCommandGroup m_auto32;
+  SequentialCommandGroup m_auto23;
+  SequentialCommandGroup m_autoTest;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -68,6 +75,13 @@ public class Robot extends TimedRobot {
 
     Joystick m_driverController = new Joystick(OIConstants.kDriveTrainJoystickPort);
     Joystick m_operatorController = new Joystick(OIConstants.kOthersJoystickPort);
+
+    m_auto1 = new OneCargo(m_robotContainer).getCommand();
+    m_auto21 = new TwoCargoFromOne(m_robotContainer).getCommand();
+    m_auto31 = new ThreeCargoFromOne(m_robotContainer).getCommand();
+    m_auto32 = new ThreeCargoFromTwo(m_robotContainer).getCommand();
+    m_auto23 = new TwoCargoFromThree(m_robotContainer).getCommand();
+    m_autoTest = new TurretTest(m_robotContainer).getCommand();
 
     // m_autoChooser.setDefaultOption("Default", autoPlanner.handleAutoMode(AutoModes.StartingPosition.TWO, AutoModes.DriveStrategy.TWO_CARGO));
     // m_autoChooser.addOption("Two Cargo from 2", autoPlanner.handleAutoMode(AutoModes.StartingPosition.TWO, AutoModes.DriveStrategy.TWO_CARGO));
@@ -118,11 +132,9 @@ public class Robot extends TimedRobot {
 
     PathPlannerTrajectory trajectory = PathPlanner.loadPath("(1) 2nd Cargo", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
     m_robotContainer.m_robotDrive.resetOdometry(trajectory.getInitialPose());
-
-    m_auto = new TwoCargoFromOne(m_robotContainer).getCommand();
     
     // schedule the autonomous command (example)
-    m_auto.schedule();
+    m_autoTest.schedule();
   }
 
   /** This function is called periodically during autonomous. */
@@ -135,8 +147,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_auto != null) {
-      m_auto.cancel();
+    if (m_auto1 != null) {
+      m_auto1.cancel();
     }
   }
 

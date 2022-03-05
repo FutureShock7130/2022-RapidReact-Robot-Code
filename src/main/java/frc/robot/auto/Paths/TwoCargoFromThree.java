@@ -44,18 +44,20 @@ public class TwoCargoFromThree {
                         ),
                         new IntakeCmd(m_robot.m_robotIntake)
                 ),
-                new AbsoluteAim(m_robot.m_robotDrive, true, 180),
+                new AbsoluteAim(m_robot.m_robotDrive, true, -180),
                 trajectoryGenerator.generateTranslationalPrimary(
                                 "Back Pickup", 
                                 new PIDController(1.3, 0.0003, 0),
                                 new PIDController(1.3, 0.0003, 0)
                 ),
-                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
+                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand().withTimeout(3.0),
                 new ParallelCommandGroup(
-                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),
+                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1550),
                         new SequentialCommandGroup(
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
-                                new WaitCommand(1.0),
+                                new WaitCommand(0.5),
+                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
+                                new WaitCommand(0.5),
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
                         )
                 )            
