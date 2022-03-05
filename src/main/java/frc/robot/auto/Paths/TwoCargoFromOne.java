@@ -49,7 +49,7 @@ public class TwoCargoFromOne {
                 new AbsoluteAim(m_robot.m_robotDrive, true, 180),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand().withTimeout(4.0),
                 new ParallelCommandGroup(
-                        new TurretShoot(m_robot.m_robotTurret, 1800),
+                        new TurretShoot(m_robot.m_robotTurret, 1600).withTimeout(4.0),
                         new SequentialCommandGroup(
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
                                 new WaitCommand(1.0),

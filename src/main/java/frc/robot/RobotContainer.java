@@ -245,7 +245,7 @@ public class RobotContainer {
 
         
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
-                .whenHeld(new TurretShoot(m_robotTurret, 1850));
+                .whenHeld(new TurretShoot(m_robotTurret, 1350));
 
         // new JoystickButton(m_operatorController, OIConstants.Btn_LB)
                 // .whenHeld(farShoot);
