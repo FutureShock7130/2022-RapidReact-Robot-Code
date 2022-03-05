@@ -165,9 +165,13 @@ public class RobotContainer {
         m_robotTransport.setDefaultCommand(
                 new RunCommand(() -> {
                     // Transporter Logic
-                    m_robotTransport.transportRun(
-                        m_operatorController.getRawAxis(OIConstants.trigger_R) - m_operatorController.getRawAxis(OIConstants.trigger_L)
-                    );
+                    if (m_operatorController.getRawAxis(OIConstants.trigger_R) > 0.4) {
+                        m_robotTransport.transportRun(0.25);
+                    } else if (m_operatorController.getRawAxis(OIConstants.trigger_L) > 0.4) {
+                        m_robotTransport.transportRun(-0.25);
+                    } else {
+                        m_robotTransport.transportRun(0);
+                    }
                 }, m_robotTransport));
 
         // m_SuperStructure.setDefaultCommand(
