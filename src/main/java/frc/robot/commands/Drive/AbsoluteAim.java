@@ -25,8 +25,8 @@ public class AbsoluteAim extends CommandBase {
         Rotation2d currentRotation;
         Rotation2d lastRotation;
 
-        double targetX = 2;
-        double targetY = 0;
+        double targetX = 0;
+        double targetY = -1;
 
         private static final double kP = 0.7;
         private static final double kI = 0.025;
@@ -39,8 +39,10 @@ public class AbsoluteAim extends CommandBase {
 
         private  boolean relative;
 
-        public AbsoluteAim(Drive robotDrive, boolean relative) {
+        public AbsoluteAim(Drive robotDrive, boolean relative, double X, double Y) {
                 m_robotDrive = robotDrive;
+                targetX = X;
+                targetY = Y;
                 this.relative = relative;
                 addRequirements(robotDrive);
         }

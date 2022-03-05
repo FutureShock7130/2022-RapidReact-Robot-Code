@@ -5,11 +5,15 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.auto.Actions.AutoAim;
 import frc.robot.auto.Actions.TransportBoost;
+import frc.robot.auto.Actions.TransportUp;
+import frc.robot.commands.Drive.AbsoluteAim;
+import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.TimedIntake;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
@@ -25,37 +29,51 @@ public class TwoCargoFromTwo {
 
     public SequentialCommandGroup getCommand() {
         return new SequentialCommandGroup(
-                new ParallelCommandGroup(
-                        trajectoryGenerator.generate(
-                                "1 to 2 from 2",
-                                new PIDController(1.4, 0.003, 0.003),
-                                new PIDController(1.4, 0.003, 0.003),
-                                new ProfiledPIDController(
-                                        1.3, 0.01, 0.013,
-                                        new TrapezoidProfile.Constraints(DriveConstants.kMaxVelocityMetersPerSecond,
-                                                DriveConstants.kMaxAccelerationMetersPerSecondSquared))
-                        ),
-                        new TimedIntake(2.0, m_robot.m_robotIntake)),
-                new ParallelCommandGroup(
-                        trajectoryGenerator.generate(
-                                "2 to 2s from 2",
-                                new PIDController(0.4, 0.003, 0.003),
-                                new PIDController(0.4, 0.003, 0.003),
-                                new ProfiledPIDController(
-                                        1.3, 0.01, 0.013,
-                                        new TrapezoidProfile.Constraints(DriveConstants.kMaxVelocityMetersPerSecond,
-                                                DriveConstants.kMaxAccelerationMetersPerSecondSquared))
-                        ),
-                        new SequentialCommandGroup(
-                                new TimedIntake(0.5, m_robot.m_robotIntake),
-                                new WaitCommand(0.5),
-                                new TimedTransport(1, m_robot.m_robotTransport)
-                        )
-                ),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
                 new ParallelCommandGroup(
-                        new TimedTurret(m_robot.m_robotTurret, 4.0, 1750),
-                        new TransportBoost(m_robot.m_robotTransport)
-                ));
+                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),
+                        new SequentialCommandGroup(
+                                new WaitCommand(1.0),
+                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
+                        )
+                ),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 0.9396, -0.342),
+                new ParallelRaceGroup(
+                        trajectoryGenerator.generateTranslationalPrimary(
+                                "(2) 2nd Cargo Straight", 
+                                new PIDController(1.5, 0.0003, 0),
+                                new PIDController(1.5, 0.0003, 0)
+                        ),
+                        new IntakeCmd(m_robot.m_robotIntake)
+                ),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 0.8660, 0.5),
+                new ParallelCommandGroup(
+                        trajectoryGenerator.generateTranslationalPrimary(
+                                "(2) 3rd Cargo", 
+                                new PIDController(1.5, 0.0003, 0),
+                                new PIDController(1.5, 0.0003, 0)
+                        ),
+                        new TimedIntake(3.0, m_robot.m_robotIntake)
+                ),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 0, -1),
+                trajectoryGenerator.generate(
+                        "(2) 3rd Cargo to Shooting Position", 
+                        new PIDController(1.5, 0.0003, 0),
+                        new PIDController(1.5, 0.0003, 0),
+                        new ProfiledPIDController(
+                                0.5, 0, 0, 
+                                new TrapezoidProfile.Constraints(3.5, 2.5))
+                ),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 0.707, 0.707),
+                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
+                new ParallelCommandGroup(
+                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),
+                        new SequentialCommandGroup(
+                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
+                                new WaitCommand(1.0),
+                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
+                        )
+                )            
+        );   
     }
 }

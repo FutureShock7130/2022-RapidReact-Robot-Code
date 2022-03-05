@@ -5,10 +5,14 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.auto.Actions.AutoAim;
+import frc.robot.auto.Actions.TransportUp;
+import frc.robot.commands.Drive.AbsoluteAim;
+import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.TimedIntake;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
@@ -24,32 +28,29 @@ public class TwoCargoFromOne {
 
     public SequentialCommandGroup getCommand() {
         return new SequentialCommandGroup(
-                new ParallelCommandGroup(
+                new ParallelRaceGroup(
                         trajectoryGenerator.generateTranslationalPrimary(
-                                "1 to 2 from 1",
-                                new PIDController(0.4, 0.003, 0.003),
-                                new PIDController(0.4, 0.003, 0.003)),
-                        new TimedIntake(2.0, m_robot.m_robotIntake)),
+                                "(1) 2nd Cargo", 
+                                new PIDController(1.3, 0.0003, 0),
+                                new PIDController(1.3, 0.0003, 0)
+                        ),
+                        new IntakeCmd(m_robot.m_robotIntake)
+                ),
+                trajectoryGenerator.generateTranslationalPrimary(
+                        "(1) 2nd Shoot Position", 
+                        new PIDController(1.3, 0.0003, 0),
+                        new PIDController(1.3, 0.0003, 0)
+                ),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 0, -1),
+                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
                 new ParallelCommandGroup(
-                        trajectoryGenerator.generate(
-                                "2 to 2S from 1",
-                                new PIDController(0.13, 0.003, 0.003),
-                                new PIDController(0.13, 0.003, 0.003),
-                                new ProfiledPIDController(
-                                        1.3, 0.01, 0.013,
-                                        new TrapezoidProfile.Constraints(DriveConstants.kMaxVelocityMetersPerSecond,
-                                                DriveConstants.kMaxAccelerationMetersPerSecondSquared))),
+                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),
                         new SequentialCommandGroup(
-                                new TimedIntake(0.5, m_robot.m_robotIntake),
-                                new WaitCommand(0.5),
-                                new TimedTransport(1, m_robot.m_robotTransport)),
-                        new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
-                        new ParallelCommandGroup(
-                                new TimedTurret(m_robot.m_robotTurret, 4, 1800),
-                                new TimedTransport(4.0, m_robot.m_robotTransport),
-                                new TimedIntake(4.0, m_robot.m_robotIntake)
+                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
+                                new WaitCommand(1.0),
+                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
                         )
-                        )
-                );
+                )            
+        );         
     }
 }

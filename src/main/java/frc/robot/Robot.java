@@ -25,7 +25,7 @@ import frc.robot.auto.AutoModes;
 import frc.robot.auto.Actions.TestPathing.TestFeedforward;
 import frc.robot.auto.Paths.TwoCargoFromOne;
 import frc.robot.auto.Paths.TwoCargoFromTwo;
-import frc.robot.commands.Reset.resetZero;
+import frc.robot.commands.Reset.ResetZero;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
   SendableChooser<SequentialCommandGroup> m_autoChooser = new SendableChooser<>();
   AutoModePlanner autoPlanner = new AutoModePlanner(m_robotContainer);
 
+  SequentialCommandGroup m_auto;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -99,15 +100,21 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {}
 
+
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    ResetZero reset = new ResetZero(m_robotContainer);
+    reset.schedule();
     // m_autonomousCommand = autoPlanner.handleAutoMode();
     // m_autonomousCommand = m_autoChooser.getSelected();
 
-    SequentialCommandGroup m_auto = new TwoCargoFromTwo(m_robotContainer).getCommand();
-    PathPlannerTrajectory trajectory = PathPlanner.loadPath("1 to 2 from 2", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
+    PathPlannerTrajectory trajectory = PathPlanner.loadPath("(1) 2nd Cargo", DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared);
     m_robotContainer.m_robotDrive.resetOdometry(trajectory.getInitialPose());
+
+    m_auto = new TwoCargoFromOne(m_robotContainer).getCommand();
+
+    
     // schedule the autonomous command (example)
     m_auto.schedule();
   }
@@ -122,8 +129,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (m_auto != null) {
+      m_auto.cancel();
     }
   }
 

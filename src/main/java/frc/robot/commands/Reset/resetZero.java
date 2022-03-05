@@ -6,6 +6,7 @@
 package frc.robot.commands.Reset;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Spinner;
@@ -14,9 +15,7 @@ import frc.robot.subsystems.Transporter;
 import frc.robot.subsystems.Turret;
 import frc.robot.vision.Limelight;
 
-public class resetZero extends CommandBase {
-  
-
+public class ResetZero extends CommandBase {
   Drive drive;
   Limelight limelight;
   Intake intake;
@@ -26,16 +25,15 @@ public class resetZero extends CommandBase {
   Superstructure superstructure;
 
   /** Creates a new resetZero. */
-  public resetZero(Drive m_robotDrive, Limelight m_robotLimelight, Intake m_robotIntake, Transporter m_robotTransporter,
-      Spinner m_robotSpinner, Turret m_robotTurret, Superstructure m_roboSuperstructure) {
+  public ResetZero(RobotContainer robot) {
 
-    drive = m_robotDrive;
-    limelight = m_robotLimelight;
-    intake = m_robotIntake;
-    transporter = m_robotTransporter;
-    spinner = m_robotSpinner;
-    turret = m_robotTurret;
-    superstructure = m_roboSuperstructure;
+    drive = robot.m_robotDrive;
+    limelight = robot.m_vision;
+    intake = robot.m_robotIntake;
+    transporter = robot.m_robotTransport;
+    spinner = robot.m_robotSpinner;
+    turret = robot.m_robotTurret;
+    superstructure = robot.m_SuperStructure;
 
     
     // Use addRequirements() here to declare subsystem dependencies.
@@ -51,6 +49,12 @@ public class resetZero extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+  
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
     drive.resetEncoders();
     drive.setGyroZeroYaw();
     intake.intakeStop();
@@ -61,11 +65,6 @@ public class resetZero extends CommandBase {
     turret.flywheelsStop();
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-  }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -74,6 +73,6 @@ public class resetZero extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

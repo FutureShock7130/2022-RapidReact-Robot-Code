@@ -16,6 +16,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.statemachines.DriveFSM;
@@ -35,6 +36,8 @@ public class Drive extends SubsystemBase {
   private final MecanumDrive m_drive = new MecanumDrive(motorFL, motorRL, motorFR, motorRR);
 
   PWM lightStrip = new PWM(0);
+
+  private final Field2d m_field = new Field2d();
 
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -68,6 +71,8 @@ public class Drive extends SubsystemBase {
     if (true) {
       m_differentialOdometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
     }
+
+    SmartDashboard.putData(m_field);
   }
 
   @Override
