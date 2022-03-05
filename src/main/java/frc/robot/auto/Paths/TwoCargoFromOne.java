@@ -32,14 +32,14 @@ public class TwoCargoFromOne {
                         trajectoryGenerator.generateTranslationalPrimary(
                                 "(1) 2nd Cargo", 
                                 new PIDController(1.3, 0.0003, 0),
-                                new PIDController(1.3, 0.0003, 0)
+                                new PIDController(1.4, 0.0003, 0)
                         ),
                         new IntakeCmd(m_robot.m_robotIntake)
                 ),
                 trajectoryGenerator.generateTranslationalPrimary(
                         "(1) 2nd Shoot Position", 
                         new PIDController(1.3, 0.0003, 0),
-                        new PIDController(1.3, 0.0003, 0)
+                        new PIDController(1.4, 0.0003, 0)
                 ),
                 new AbsoluteAim(m_robot.m_robotDrive, true, 0, -1),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),

@@ -2,10 +2,6 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
-import frc.robot.auto.Paths.FourCargoFromOne;
-import frc.robot.auto.Paths.FourCargoFromThreeB;
-import frc.robot.auto.Paths.ThreeCargoFromOne;
-import frc.robot.auto.Paths.ThreeCargoFromThree;
 import frc.robot.auto.Paths.ThreeCargoFromTwo;
 import frc.robot.auto.Paths.TwoCargoFromOne;
 import frc.robot.auto.Paths.TwoCargoFromThree;
@@ -29,9 +25,9 @@ public class AutoModePlanner implements AutoModes {
                     case TWO_CARGO:
                         return new TwoCargoFromOne(robot).getCommand();
                     case THREE_CARGO:
-                        return new ThreeCargoFromOne(robot).getCommand();
+                        break;
                     case FOUR_CARGO:
-                        return new FourCargoFromOne(robot).getCommand();
+                        break;
                     case FIVE_CARGO:
                         break;
                 }
@@ -55,9 +51,9 @@ public class AutoModePlanner implements AutoModes {
                     case TWO_CARGO:
                         return new TwoCargoFromThree(robot).getCommand();
                     case THREE_CARGO:
-                        return new ThreeCargoFromThree(robot).getCommand();
+                    break;
                     case FOUR_CARGO:
-                        return new FourCargoFromThreeB(robot).getCommand();
+                    break;
                     case FIVE_CARGO:
                         break;
                 }

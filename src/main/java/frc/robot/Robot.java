@@ -25,12 +25,7 @@ import frc.robot.auto.AutoModes;
 import frc.robot.auto.Actions.TestPathing.TestFeedforward;
 import frc.robot.auto.Paths.TwoCargoFromOne;
 import frc.robot.auto.Paths.TwoCargoFromTwo;
-<<<<<<< HEAD
 import frc.robot.commands.Reset.ResetZero;
-=======
-import frc.robot.commands.Reset.resetZero;
-import frc.robot.commands.Turret.TimedTurret;
->>>>>>> a18b9a17abb64e6c24fed7eea72f87732913e71d
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -121,7 +116,7 @@ public class Robot extends TimedRobot {
 
     
     // schedule the autonomous command (example)
-    // m_auto.schedule();
+    m_auto.schedule();
   }
 
   /** This function is called periodically during autonomous. */

@@ -12,14 +12,14 @@ import frc.robot.Constants.TurretConstants;
 import frc.robot.subsystems.Turret;
 
 public class TurretShoot extends CommandBase {
-  private static final double kP = 0.0000125;
-  private static final double kI = 0.0000; //0.00002
+  private static final double kP = 0.0013;
+  private static final double kI = 0.00002; //0.00002
 
   // a D Controller is not needed for the basic flywheel control because we only
   // need to rev the spin speed up instead of it being reving up and dow
   // gradually.
 
-  private static final double kD = 0.0015;
+  private static final double kD = 0.00015;
   private static final double timeDiff = 0.02;
 
   private double target;
