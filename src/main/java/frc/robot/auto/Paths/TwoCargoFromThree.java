@@ -44,7 +44,7 @@ public class TwoCargoFromThree {
                         ),
                         new IntakeCmd(m_robot.m_robotIntake)
                 ),
-                new AbsoluteAim(m_robot.m_robotDrive, true, 0, -1),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 180),
                 trajectoryGenerator.generateTranslationalPrimary(
                                 "Back Pickup", 
                                 new PIDController(1.3, 0.0003, 0),

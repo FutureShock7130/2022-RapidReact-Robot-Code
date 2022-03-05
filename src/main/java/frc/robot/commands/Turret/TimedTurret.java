@@ -16,7 +16,7 @@ public class TimedTurret extends CommandBase {
   private double t;
   private static final double kP = 0.0013;
   private static final double kI = 0.00002;
-  private static final double kD = 0.;
+  private static final double kD = 0.00015;
 
   // a D Controller is not needed for the basic flywheel control because we only
   // need to rev the spin speed up instead of it being reving up and down

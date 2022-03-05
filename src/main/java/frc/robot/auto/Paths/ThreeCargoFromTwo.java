@@ -37,7 +37,7 @@ public class ThreeCargoFromTwo {
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
                         )
                 ),
-                new AbsoluteAim(m_robot.m_robotDrive, true, 0.9396, -0.342),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 110),
                 new ParallelRaceGroup(
                         trajectoryGenerator.generateTranslationalPrimary(
                                 "(2) 2nd Cargo Straight", 
@@ -46,7 +46,7 @@ public class ThreeCargoFromTwo {
                         ),
                         new IntakeCmd(m_robot.m_robotIntake)
                 ),
-                new AbsoluteAim(m_robot.m_robotDrive, true, 0.8660, 0.5),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 60),
                 new ParallelCommandGroup(
                         trajectoryGenerator.generateTranslationalPrimary(
                                 "(2) 3rd Cargo", 
@@ -55,7 +55,7 @@ public class ThreeCargoFromTwo {
                         ),
                         new TimedIntake(3.0, m_robot.m_robotIntake)
                 ),
-                new AbsoluteAim(m_robot.m_robotDrive, true, 0, -1),
+                new AbsoluteAim(m_robot.m_robotDrive, true, -185),
                 trajectoryGenerator.generate(
                         "(2) 3rd Cargo to Shooting Position", 
                         new PIDController(1.5, 0.0003, 0),
@@ -64,7 +64,7 @@ public class ThreeCargoFromTwo {
                                 0.5, 0, 0, 
                                 new TrapezoidProfile.Constraints(3.5, 2.5))
                 ),
-                new AbsoluteAim(m_robot.m_robotDrive, true, 0.707, 0.707),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 45),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
                 new ParallelCommandGroup(
                         new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),

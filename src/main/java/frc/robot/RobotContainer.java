@@ -73,7 +73,7 @@ public class RobotContainer {
     TransportEject transportEject = new TransportEject(m_robotTransport);
     PassiveFlywheel shootPassiveState = new PassiveFlywheel(m_robotTurret);
     AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
-    TurretShoot nearShoot = new TurretShoot(m_robotTurret, 1850);
+    TurretShoot nearShoot = new TurretShoot(m_robotTurret, 1750);
  
 
     private final SimpleMotorFeedforward feedforward = DriveConstants.kFeedforward;
@@ -241,11 +241,11 @@ public class RobotContainer {
 
         // Shooting Bindings
         new JoystickButton(m_operatorController, OIConstants.Btn_A)
-                .whenHeld(new TurretShoot(m_robotTurret, 1750));
+                .whenHeld(new TurretShoot(m_robotTurret, 1550));
 
         
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
-                .whenHeld(new TurretShoot(m_robotTurret, 1950));
+                .whenHeld(new TurretShoot(m_robotTurret, 1850));
 
         // new JoystickButton(m_operatorController, OIConstants.Btn_LB)
                 // .whenHeld(farShoot);

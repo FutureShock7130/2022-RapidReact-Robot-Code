@@ -11,6 +11,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -23,8 +24,11 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.auto.AutoModePlanner;
 import frc.robot.auto.AutoModes;
 import frc.robot.auto.Actions.TestPathing.TestFeedforward;
+import frc.robot.auto.Paths.OneCargo;
+import frc.robot.auto.Paths.ThreeCargoFromOne;
+import frc.robot.auto.Paths.ThreeCargoFromTwo;
 import frc.robot.auto.Paths.TwoCargoFromOne;
-import frc.robot.auto.Paths.TwoCargoFromTwo;
+import frc.robot.auto.Paths.TwoCargoFromThree;
 import frc.robot.commands.Reset.ResetZero;
 
 /**
@@ -100,12 +104,15 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {}
 
+  // The Following are autonomous commands that can be accessed with the Shuffleboard or Glass GUI
+  
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
     ResetZero reset = new ResetZero(m_robotContainer);
     reset.schedule();
+
     // m_autonomousCommand = autoPlanner.handleAutoMode();
     // m_autonomousCommand = m_autoChooser.getSelected();
 
@@ -113,7 +120,6 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_robotDrive.resetOdometry(trajectory.getInitialPose());
 
     m_auto = new TwoCargoFromOne(m_robotContainer).getCommand();
-
     
     // schedule the autonomous command (example)
     m_auto.schedule();

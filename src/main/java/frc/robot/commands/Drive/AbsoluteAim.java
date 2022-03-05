@@ -28,21 +28,21 @@ public class AbsoluteAim extends CommandBase {
         double targetX = 0;
         double targetY = -1;
 
-        private static final double kP = 0.7;
+        private static final double kP = 0.75;
         private static final double kI = 0.025;
-        private static final double kD = 0.1;
+        private static final double kD = 0.01;
         private static final double timeDiff = 0.02;
 
         private double rError;
         private double integralSumR;
         private double lastError;
 
+        double angle;
         private  boolean relative;
 
-        public AbsoluteAim(Drive robotDrive, boolean relative, double X, double Y) {
+        public AbsoluteAim(Drive robotDrive, boolean relative, double changeAngle ) {
                 m_robotDrive = robotDrive;
-                targetX = X;
-                targetY = Y;
+                angle = changeAngle;
                 this.relative = relative;
                 addRequirements(robotDrive);
         }
@@ -55,16 +55,12 @@ public class AbsoluteAim extends CommandBase {
                 initRotation = m_robotDrive.getPose().getRotation();
                 // get translation2d object and rotation2d object from the Pose2d object from
                 // the DriveSubsysten.
-                double xDiff = targetX - initTranslation.getX();
-                // Calculate difference in x coordinate between the target coordinate and the
+               
                 // current coordinate
-                double yDiff = targetY - initTranslation.getY();
-                // Calculate difference in y coordinate between the target coordinate and the
-                // current coordinate
-                double changeCalc = Math.atan(yDiff / xDiff);
+                double changeCalc = angle / 180 * Math.PI;
                 // Calculate the angle difference between the two coordinate (if the current
                 // rotation(angle) is 0)
-                changeAngle = relative ? new Rotation2d(changeCalc) : new Rotation2d(changeCalc).plus(initRotation.times(-1));
+                changeAngle = new Rotation2d(changeCalc);
                 // Add the current angle into the rotation. Think of it as first correcting the
                 // angle of the robot to 0,
                 // then turn the actual angle difference between the two coordinates.

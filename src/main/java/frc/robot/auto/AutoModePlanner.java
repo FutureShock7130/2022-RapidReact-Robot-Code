@@ -5,7 +5,6 @@ import frc.robot.RobotContainer;
 import frc.robot.auto.Paths.ThreeCargoFromTwo;
 import frc.robot.auto.Paths.TwoCargoFromOne;
 import frc.robot.auto.Paths.TwoCargoFromThree;
-import frc.robot.auto.Paths.TwoCargoFromTwo;
 
 public class AutoModePlanner implements AutoModes {
     private RobotContainer robot;
@@ -36,7 +35,7 @@ public class AutoModePlanner implements AutoModes {
                     case ONE_CARGO:
                         break;
                     case TWO_CARGO:
-                        return new TwoCargoFromTwo(robot).getCommand();
+                        break;
                     case THREE_CARGO:
                         return new ThreeCargoFromTwo(robot).getCommand();
                     case FOUR_CARGO:

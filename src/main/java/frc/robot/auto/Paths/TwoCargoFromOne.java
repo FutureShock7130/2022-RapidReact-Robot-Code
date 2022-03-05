@@ -1,5 +1,7 @@
 package frc.robot.auto.Paths;
 
+import com.pathplanner.lib.PathPlanner;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -20,10 +22,12 @@ import frc.robot.commands.Turret.TimedTurret;
 public class TwoCargoFromOne {
     TrajectoryGenerator trajectoryGenerator;
     RobotContainer m_robot;
+    String initialPathName;
 
     public TwoCargoFromOne(RobotContainer robot) {
         m_robot = robot;
         trajectoryGenerator = new TrajectoryGenerator(m_robot.m_robotDrive);
+        initialPathName = "(1) 2nd Cargo";
     }
 
     public SequentialCommandGroup getCommand() {
@@ -41,10 +45,7 @@ public class TwoCargoFromOne {
                         new PIDController(1.3, 0.0003, 0),
                         new PIDController(1.4, 0.0003, 0)
                 ),
-                trajectoryGenerator.generateRotationalPrimary(
-                        "(1) 2nd Shoot Position Copy",
-                        new ProfiledPIDController(2.3, 0.003, 0.012, 
-                        new TrapezoidProfile.Constraints(Math.PI, Math.PI/2))),
+                new AbsoluteAim(m_robot.m_robotDrive, true, -180),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
                 new ParallelCommandGroup(
                         new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),
