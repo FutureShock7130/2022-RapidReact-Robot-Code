@@ -18,6 +18,7 @@ import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.TimedIntake;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
+import frc.robot.commands.Turret.TurretShoot;
 
 public class TwoCargoFromOne {
     TrajectoryGenerator trajectoryGenerator;
@@ -45,16 +46,16 @@ public class TwoCargoFromOne {
                         new PIDController(1.3, 0.0003, 0),
                         new PIDController(1.4, 0.0003, 0)
                 ),
-                new AbsoluteAim(m_robot.m_robotDrive, true, -180),
-                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
+                new AbsoluteAim(m_robot.m_robotDrive, true, 180),
+                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand().withTimeout(4.0),
                 new ParallelCommandGroup(
-                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),
+                        new TurretShoot(m_robot.m_robotTurret, 1600).withTimeout(4.0),
                         new SequentialCommandGroup(
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
                                 new WaitCommand(1.0),
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
                         )
-                )            
+                )      
         );         
     }
 }
