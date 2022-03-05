@@ -41,7 +41,7 @@ public final class Constants {
     public static final int kEncoderCPR = 2048;
     public static final double kWheelDiameterMeters = 0.1524;
     public static final double kWheelCircumference = kWheelDiameterMeters * Math.PI;
-    public static final double kGearRatio = 10.7142857;
+    public static final double kGearRatio = 12.5;
     public static final double kEncoderDistancePerPulse = kWheelCircumference / (double) kEncoderCPR / kGearRatio
         / Math.sqrt(2) * 10;
       
@@ -54,7 +54,7 @@ public final class Constants {
     // your robot.
 
     public static final double kS = 0.76364; //0.76364
-    public static final double kV = 3.8435;
+    public static final double kV = 3.3435;
     public static final double kA = 0.23; //0.22548
     public static final double kJ = 14;
 

@@ -17,6 +17,7 @@ import frc.robot.commands.Drive.AbsoluteAim;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.TimedIntake;
 import frc.robot.commands.Transporter.TimedTransport;
+import frc.robot.commands.Transporter.TransportCmd;
 import frc.robot.commands.Turret.TimedTurret;
 import frc.robot.commands.Turret.TurretShoot;
 
@@ -49,13 +50,18 @@ public class TwoCargoFromOne {
                 new AbsoluteAim(m_robot.m_robotDrive, true, 180),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand().withTimeout(4.0),
                 new ParallelCommandGroup(
-                        new TurretShoot(m_robot.m_robotTurret, 1600).withTimeout(4.0),
-                        new SequentialCommandGroup(
-                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
-                                new WaitCommand(1.0),
-                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
+                        new TurretShoot(m_robot.m_robotTurret, 1500).withTimeout(6.0),
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        new TransportCmd(m_robot.m_robotTransport).withTimeout(0.3),
+                                        new WaitCommand(0.7),
+                                        new TransportCmd(m_robot.m_robotTransport).withTimeout(0.3),
+                                        new WaitCommand(0.7),
+                                        new TransportCmd(m_robot.m_robotTransport).withTimeout(0.3)
+                                ),
+                                new IntakeCmd(m_robot.m_robotIntake).withTimeout(3.0)
                         )
-                )      
+                ).withTimeout(7.0)
         );         
     }
 }

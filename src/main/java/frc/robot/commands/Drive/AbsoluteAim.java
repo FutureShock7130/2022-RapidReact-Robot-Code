@@ -28,9 +28,9 @@ public class AbsoluteAim extends CommandBase {
         double targetX = 0;
         double targetY = -1;
 
-        private static final double kP = 0.4;
-        private static final double kI = 0.025;
-        private static final double kD = 0.04;
+        private static final double kP = 0.045;
+        private static final double kI = 0.0125;
+        private static final double kD = 0.02;
         private static final double timeDiff = 0.02;
 
         private double rError;
