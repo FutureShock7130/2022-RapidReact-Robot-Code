@@ -41,7 +41,10 @@ public class TwoCargoFromOne {
                         new PIDController(1.3, 0.0003, 0),
                         new PIDController(1.4, 0.0003, 0)
                 ),
-                new AbsoluteAim(m_robot.m_robotDrive, true, 0, -1),
+                trajectoryGenerator.generateRotationalPrimary(
+                        "(1) 2nd Shoot Position Copy",
+                        new ProfiledPIDController(2.3, 0.003, 0.012, 
+                        new TrapezoidProfile.Constraints(Math.PI, Math.PI/2))),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
                 new ParallelCommandGroup(
                         new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),

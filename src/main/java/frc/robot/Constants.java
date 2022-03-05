@@ -58,7 +58,7 @@ public final class Constants {
     public static final double kA = 0.23; //0.22548
     public static final double kJ = 14;
 
-    public static final double kPDriveVel = 0.3; //0.3 //3.7308
+    public static final double kPDriveVel = 3.73; //0.3 //3.7308
     public static final double kDDriveVel = 0.012;
 
     public static final SimpleMotorFeedforward kDriveFeedforward = new SimpleMotorFeedforward(0, 0, 0);

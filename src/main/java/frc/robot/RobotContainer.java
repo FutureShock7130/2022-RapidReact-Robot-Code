@@ -235,13 +235,17 @@ public class RobotContainer {
 
         // For testing
         // Timed Transportation
-        new JoystickButton(m_operatorController, OIConstants.Btn_A)
+        new JoystickButton(m_driverController, OIConstants.Btn_A)
                 .whenPressed(
                         new TimedTransport(0.4, TransporterConstants.idealTransportDt, m_robotTransport));
 
         // Shooting Bindings
+        new JoystickButton(m_operatorController, OIConstants.Btn_A)
+                .whenHeld(new TurretShoot(m_robotTurret, 1750));
+
+        
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
-                .whenHeld(new TurretShoot(m_robotTurret, 1850));
+                .whenHeld(new TurretShoot(m_robotTurret, 1950));
 
         // new JoystickButton(m_operatorController, OIConstants.Btn_LB)
                 // .whenHeld(farShoot);
