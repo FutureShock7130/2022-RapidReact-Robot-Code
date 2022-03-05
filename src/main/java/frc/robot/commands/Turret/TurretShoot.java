@@ -61,6 +61,7 @@ public class TurretShoot extends CommandBase {
 
     derivative = (error - lastError) / timeDiff;
     output = kP * error + kI * integralSum + kD * derivative;
+    SmartDashboard.putNumber("error", error);
 
     // The Conditional Loop below tries to implement PID with Bang-Bang control,
     // this ensures that when large errors occur, the
@@ -68,12 +69,9 @@ public class TurretShoot extends CommandBase {
 
     if (error > 500) {
       turret.flywheelsRun(1.0);
-    } else if (error < -500) {
-      turret.flywheelsRun(-1.0);
-    } else {
+    } else { 
       turret.flywheelsRun(output);
     }
-
 
     lastError = error;
 

@@ -74,7 +74,7 @@ public class RobotContainer {
     PassiveFlywheel shootPassiveState = new PassiveFlywheel(m_robotTurret);
     AutoClimb autoClimb = new AutoClimb(m_SuperStructure);
     TurretShoot nearShoot = new TurretShoot(m_robotTurret, 1850);
-    TurretShoot farShoot = new TurretShoot(m_robotTurret, 2000);
+ 
 
     private final SimpleMotorFeedforward feedforward = DriveConstants.kFeedforward;
 
@@ -206,9 +206,6 @@ public class RobotContainer {
                 .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
                 .whenReleased(() -> m_robotDrive.setMaxOutput(0.95));
 
-        new JoystickButton(m_operatorController, OIConstants.trigger_L)
-                .whenPressed(new PrintCommand("Left Trigger Working!"));
-
 
         // spinner auto aim
         new JoystickButton(m_operatorController, OIConstants.Btn_Y)
@@ -244,12 +241,10 @@ public class RobotContainer {
 
         // Shooting Bindings
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
-                .whenHeld(nearShoot)
-                .whenReleased(() -> nearShoot.cancel());
+                .whenHeld(new TurretShoot(m_robotTurret, 1850));
 
-        new JoystickButton(m_operatorController, OIConstants.Btn_LB)
-                .whenHeld(farShoot)
-                .whenReleased(() -> farShoot.cancel());
+        // new JoystickButton(m_operatorController, OIConstants.Btn_LB)
+                // .whenHeld(farShoot);
 
         // new JoystickButton(m_operatorController,
         // OIConstants.Btn_RB).whenPressed(autoClimb);

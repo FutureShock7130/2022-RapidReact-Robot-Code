@@ -39,4 +39,4 @@ public class Turret extends SubsystemBase {
     public double getFlyWheelsVelocity() {
         return (masterFlyWheel.getEncoder().getVelocity() + slaveFlyWheel.getEncoder().getVelocity()) / 2;
     }
-}
+};

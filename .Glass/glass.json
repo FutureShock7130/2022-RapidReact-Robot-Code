@@ -1,12 +1,15 @@
 {
   "NetworkTables": {
     "SmartDashboard": {
+<<<<<<< HEAD
       "Field": {
         "open": true
       },
       "open": true
     },
     "limelight": {
+=======
+>>>>>>> a18b9a17abb64e6c24fed7eea72f87732913e71d
       "open": true
     },
     "types": {
@@ -26,13 +29,17 @@
       "/LiveWindow/Ungrouped/PIDController[8]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
+<<<<<<< HEAD
       "/SmartDashboard/Field": "Field2d",
+=======
+>>>>>>> a18b9a17abb64e6c24fed7eea72f87732913e71d
       "/SmartDashboard/SendableChooser[0]": "String Chooser"
     }
   },
   "NetworkTables Settings": {
     "mode": "Client",
     "serverTeam": "7130"
+<<<<<<< HEAD
   },
   "Plots": {
     "Plot <0>": {
@@ -104,5 +111,7 @@
         }
       ]
     }
+=======
+>>>>>>> a18b9a17abb64e6c24fed7eea72f87732913e71d
   }
 }
