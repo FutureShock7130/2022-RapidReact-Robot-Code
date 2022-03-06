@@ -165,10 +165,8 @@ public class RobotContainer {
         m_robotTransport.setDefaultCommand(
                 new RunCommand(() -> {
                     // Transporter Logic
-                    if (m_operatorController.getRawAxis(OIConstants.trigger_R) > 0.4) {
-                        m_robotTransport.transportRun(0.25);
-                    } else if (m_operatorController.getRawAxis(OIConstants.trigger_L) > 0.4) {
-                        m_robotTransport.transportRun(-0.25);
+                    if (m_operatorController.getRawAxis(OIConstants.trigger_R) > 0.1) {
+                        m_robotTransport.transportRun(0.5);
                     } else {
                         m_robotTransport.transportRun(0);
                     }
@@ -249,7 +247,7 @@ public class RobotContainer {
 
         
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
-                .whenHeld(new TurretShoot(m_robotTurret, 1350));
+                .whenHeld(new TurretShoot(m_robotTurret, 1750));
 
         // new JoystickButton(m_operatorController, OIConstants.Btn_LB)
                 // .whenHeld(farShoot);

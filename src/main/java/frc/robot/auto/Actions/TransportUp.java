@@ -19,7 +19,7 @@ public class TransportUp extends CommandBase {
   public TransportUp(Intake intake, Transporter robotTransporter) {
     m_transporter = robotTransporter;
     m_intake = intake;
-    s = 0.25;
+    s = 0.5;
     t = 1.5;
     
     // Use addRequirements() here to declare subsystem dependencies.

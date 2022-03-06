@@ -48,7 +48,7 @@ public class ThreeCargoFromOne {
             ),
             new AbsoluteAim(m_robot.m_robotDrive, true, 165),
             trajectoryGenerator.generateTranslationalPrimary(
-                "(1) 3rd Shoot Position from Straight", 
+                "(1) 3rd Shoot Position", 
                 new PIDController(1.3, 0.0003, 0),
                 new PIDController(1.4, 0.0003, 0)
             ),

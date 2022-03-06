@@ -55,12 +55,12 @@ public final class Constants {
     // The SysId tool provides a convenient method for obtaining these values for
     // your robot.
 
-    public static final double kS = 0.76364; //0.76364
-    public static final double kV = 3.3435;
-    public static final double kA = 0.23; //0.22548
+    public static final double kS = 0.65204; //0.76364
+    public static final double kV = 3.99;
+    public static final double kA = 0.32395; //0.22548
     public static final double kJ = 14;
 
-    public static final double kPDriveVel = 3.73; //0.3 //3.7308
+    public static final double kPDriveVel = 4.7078; //0.3 //3.7308
     public static final double kDDriveVel = 0.012;
 
     public static final SimpleMotorFeedforward kDriveFeedforward = new SimpleMotorFeedforward(0, 0, 0);
@@ -137,6 +137,8 @@ public final class Constants {
     public static final double kS = 0.0118;
     public static final double kV = 0.00002;
     public static final double kA = 0.00012;
+
+    public static final double kRPMtoLinearVelocity = 1 / 60 * 0.4788;
 
     public static final double closeVoltage = 0.32;
     public static final double farVoltage = 0.45;

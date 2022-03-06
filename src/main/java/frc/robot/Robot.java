@@ -25,6 +25,7 @@ import frc.robot.auto.AutoModePlanner;
 import frc.robot.auto.AutoModes;
 import frc.robot.auto.Actions.TestPathing.TestFeedforward;
 import frc.robot.auto.Paths.OneCargo;
+import frc.robot.auto.Paths.StraightPath;
 import frc.robot.auto.Paths.ThreeCargoFromOne;
 import frc.robot.auto.Paths.ThreeCargoFromTwo;
 import frc.robot.auto.Paths.TurretTest;
@@ -59,6 +60,7 @@ public class Robot extends TimedRobot {
   SequentialCommandGroup m_auto32;
   SequentialCommandGroup m_auto23;
   SequentialCommandGroup m_autoTest;
+  SequentialCommandGroup m_autoStraight;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -79,9 +81,10 @@ public class Robot extends TimedRobot {
     m_auto1 = new OneCargo(m_robotContainer).getCommand();
     m_auto21 = new TwoCargoFromOne(m_robotContainer).getCommand();
     m_auto31 = new ThreeCargoFromOne(m_robotContainer).getCommand();
-    m_auto32 = new ThreeCargoFromTwo(m_robotContainer).getCommand();
+    // m_auto32 = new ThreeCargoFromTwo(m_robotContainer).getCommand();
     m_auto23 = new TwoCargoFromThree(m_robotContainer).getCommand();
     m_autoTest = new TurretTest(m_robotContainer).getCommand();
+    m_autoStraight = new StraightPath(m_robotContainer).getCommand();
 
     // m_autoChooser.setDefaultOption("Default", autoPlanner.handleAutoMode(AutoModes.StartingPosition.TWO, AutoModes.DriveStrategy.TWO_CARGO));
     // m_autoChooser.addOption("Two Cargo from 2", autoPlanner.handleAutoMode(AutoModes.StartingPosition.TWO, AutoModes.DriveStrategy.TWO_CARGO));
@@ -134,7 +137,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_robotDrive.resetOdometry(trajectory.getInitialPose());
     
     // schedule the autonomous command (example)
-    m_autoTest.schedule();
+    m_auto21.schedule();
   }
 
   /** This function is called periodically during autonomous. */
@@ -147,8 +150,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_auto1 != null) {
-      m_auto1.cancel();
+    if (m_auto21 != null) {
+      m_auto21.cancel();
     }
   }
 

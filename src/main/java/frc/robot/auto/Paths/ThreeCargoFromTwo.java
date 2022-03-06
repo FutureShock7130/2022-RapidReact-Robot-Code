@@ -68,7 +68,7 @@ public class ThreeCargoFromTwo {
                 new AbsoluteAim(m_robot.m_robotDrive, true, 30),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand().withTimeout(2.5),
                 new ParallelCommandGroup(
-                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1800),
+                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1600),
                         new SequentialCommandGroup(
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
                                 new WaitCommand(0.5),
