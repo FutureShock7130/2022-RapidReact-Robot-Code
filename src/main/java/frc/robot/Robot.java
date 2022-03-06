@@ -137,7 +137,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_robotDrive.resetOdometry(trajectory.getInitialPose());
     
     // schedule the autonomous command (example)
-    m_auto31.withTimeout(15.0).schedule();
+    m_auto31.schedule();
   }
 
   /** This function is called periodically during autonomous. */

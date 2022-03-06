@@ -11,7 +11,7 @@ import frc.robot.subsystems.Turret;
 
 public class LimelightAim extends CommandBase {
 
-    private static final double kP = 0.65;
+    private static final double kP = 0.625;
     private static final double kI = 0.0;
     private static final double kD = 0.0;
 
@@ -64,7 +64,7 @@ public class LimelightAim extends CommandBase {
     }
 
     public boolean isFinished() {
-        if (Math.abs(limelight.getX()) < 0.1){
+        if (Math.abs(limelight.getX()) < 1){
             spinner.spinnerRun(0);
             return true;
         }

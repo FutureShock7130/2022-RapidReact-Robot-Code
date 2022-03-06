@@ -19,7 +19,7 @@ public class TurretSeek extends CommandBase {
     NetworkTableEntry tvEntry = table.getEntry("tv");
 
     double tv;
-    double speed = TurretConstants.turretSpeedMultiplier / 2;
+    double speed = TurretConstants.turretSpeedMultiplier;
 
     public TurretSeek(Spinner m_robotSpinner, Limelight limelight) {
         spinner = m_robotSpinner;
@@ -35,10 +35,12 @@ public class TurretSeek extends CommandBase {
     public void execute() {
         tv = tvEntry.getDouble(0.0);
         if (tv == 0.0d || vision.getTargetStatus() == false) {
-            if (spinner.atLeftLimit())
-                speed = TurretConstants.turretSpeedMultiplier / 2;
-            if (spinner.atRightLimit())
-                speed = -TurretConstants.turretSpeedMultiplier / 2;
+            if (spinner.atLeftLimit()) {
+                speed *= -1;
+            }
+            if (spinner.atRightLimit()) {
+                speed *= -1;
+            }
             spinner.spinnerRun(speed);
         } else {
             spinner.spinnerRun(0);
@@ -47,9 +49,9 @@ public class TurretSeek extends CommandBase {
     }
 
     public boolean isFinished() {
-        if (vision.getTargetStatus() == true) {
+        if (vision.getTargetStatus() == true || tv == 1.0) {
             spinner.spinnerRun(0);
-            CommandScheduler.getInstance().schedule(new LimelightAim(vision,spinner));
+            //CommandScheduler.getInstance().schedule(new LimelightAim(vision,spinner));
             return true;
         }
         return false;

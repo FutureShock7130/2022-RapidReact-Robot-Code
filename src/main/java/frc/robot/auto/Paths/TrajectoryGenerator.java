@@ -44,6 +44,35 @@ public class TrajectoryGenerator {
             m_robotDrive::setDriveMotorControllersVolts,
             m_robotDrive);
         }
+
+        public MecanumControllerCommand generate(
+            String pathName,
+            PIDController xController,
+            PIDController yController,
+            ProfiledPIDController thetaController,
+            boolean reverse
+        ) {
+            
+            PathPlannerTrajectory trajectory = PathPlanner.loadPath(pathName, DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared, reverse);
+            PathPlannerState endState = (PathPlannerState) trajectory.getEndState();
+    
+            return new MecanumControllerCommand(
+                trajectory, 
+                m_robotDrive::getMecanumPose,
+                DriveConstants.kFeedforward, 
+                DriveConstants.kMecanumDriveKinematics,
+                xController, 
+                yController, 
+                thetaController, 
+                DriveConstants.kMaxVelocityMetersPerSecond, 
+                new PIDController(DriveConstants.kPDriveVel, 0, DriveConstants.kDDriveVel),
+                new PIDController(DriveConstants.kPDriveVel, 0, DriveConstants.kDDriveVel),
+                new PIDController(DriveConstants.kPDriveVel, 0, DriveConstants.kDDriveVel),
+                new PIDController(DriveConstants.kPDriveVel, 0, DriveConstants.kDDriveVel),
+                m_robotDrive::getCurrentMecanumWheelSpeeds,
+                m_robotDrive::setDriveMotorControllersVolts,
+                m_robotDrive);
+            }
     
     public MecanumControllerCommand generateRotationalPrimary(
         String pathName,
@@ -97,4 +126,32 @@ public class TrajectoryGenerator {
             m_robotDrive::setDriveMotorControllersVolts,
             m_robotDrive);
         }  
+
+        public MecanumControllerCommand generateTranslationalPrimary(
+            String pathName,
+            PIDController xController,
+            PIDController yController,
+            boolean reverse
+        ) {
+            
+            PathPlannerTrajectory trajectory = PathPlanner.loadPath(pathName, DriveConstants.kMaxVelocityMetersPerSecond, DriveConstants.kMaxAccelerationMetersPerSecondSquared, reverse);
+            PathPlannerState endState = (PathPlannerState) trajectory.getEndState();
+    
+            return new MecanumControllerCommand(
+                trajectory, 
+                m_robotDrive::getMecanumPose,
+                DriveConstants.kFeedforward, 
+                DriveConstants.kMecanumDriveKinematics,
+                xController,
+                yController, 
+                DriveConstants.idealThetaController, 
+                DriveConstants.kMaxVelocityMetersPerSecond, 
+                new PIDController(DriveConstants.kPDriveVel, 0, DriveConstants.kDDriveVel),
+                new PIDController(DriveConstants.kPDriveVel, 0, DriveConstants.kDDriveVel),
+                new PIDController(DriveConstants.kPDriveVel, 0, DriveConstants.kDDriveVel),
+                new PIDController(DriveConstants.kPDriveVel, 0, DriveConstants.kDDriveVel),
+                m_robotDrive::getCurrentMecanumWheelSpeeds,
+                m_robotDrive::setDriveMotorControllersVolts,
+                m_robotDrive);
+            }
 }

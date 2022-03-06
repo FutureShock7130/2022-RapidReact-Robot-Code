@@ -243,6 +243,14 @@ public class RobotContainer {
         new JoystickButton(m_operatorController, OIConstants.Btn_A)
                 .whenHeld(new TurretShoot(m_robotTurret, 1550));
 
+                new JoystickButton(m_driverController, OIConstants.Btn_A)
+                .whenHeld(new RunCommand(() -> { m_robotSpinner.spinnerRun(0.3); }, m_robotSpinner))
+                .whenReleased(new RunCommand(() -> { m_robotSpinner.spinnerRun(0.0); }, m_robotSpinner));
+
+                new JoystickButton(m_driverController, OIConstants.Btn_X)
+                .whenHeld(new RunCommand(() -> { m_robotSpinner.spinnerRun(-0.3); }, m_robotSpinner))
+                .whenReleased(new RunCommand(() -> { m_robotSpinner.spinnerRun(0.0); }, m_robotSpinner));
+
         
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
                 .whenHeld(new TurretShoot(m_robotTurret, 1750));

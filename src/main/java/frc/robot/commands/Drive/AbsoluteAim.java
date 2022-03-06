@@ -28,8 +28,8 @@ public class AbsoluteAim extends CommandBase {
         double targetX = 0;
         double targetY = -1;
 
-        private static final double kP = 0.276;
-        private static final double kI = 0.015;
+        private static final double kP = 0.216;
+        private static final double kI = 0.00175;
         private static final double kD = 0.004;
         private static final double timeDiff = 0.02;
 
@@ -103,7 +103,7 @@ public class AbsoluteAim extends CommandBase {
         }
 
         public boolean isFinished() {
-                if (Math.abs(rError) < 0.05) {
+                if (Math.abs(rError) < 0.025) {
                         return true;
                 }
                 return false;

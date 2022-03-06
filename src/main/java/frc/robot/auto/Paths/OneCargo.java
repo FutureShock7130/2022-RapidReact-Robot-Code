@@ -12,6 +12,7 @@ import frc.robot.auto.Actions.AutoAim;
 import frc.robot.auto.Actions.TransportUp;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
+import frc.robot.commands.Turret.TurretSeek;
 import frc.robot.commands.Turret.TurretShoot;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -33,7 +34,7 @@ public class OneCargo {
 
     public SequentialCommandGroup getCommand() {
         return new SequentialCommandGroup(
-                AutoAim.getCommand().withTimeout(7.0),
+                new TurretSeek(m_robot.m_robotSpinner, m_robot.m_vision),
                 new ParallelDeadlineGroup(
                         new SequentialCommandGroup(
                             new WaitCommand(0.5), 

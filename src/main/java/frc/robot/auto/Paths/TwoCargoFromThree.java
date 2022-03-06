@@ -55,7 +55,6 @@ public class TwoCargoFromThree {
                 new ParallelCommandGroup(
                         new TurretShoot(m_robot.m_robotTurret, 1550).withTimeout(3.0),
                         new SequentialCommandGroup(
-                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
                                 new WaitCommand(0.5),
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
                                 new WaitCommand(0.5),
