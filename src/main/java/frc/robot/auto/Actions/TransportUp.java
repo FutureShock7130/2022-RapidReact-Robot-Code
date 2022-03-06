@@ -6,6 +6,7 @@ package frc.robot.auto.Actions;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.TransporterConstants;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Transporter;
 
@@ -19,7 +20,7 @@ public class TransportUp extends CommandBase {
   public TransportUp(Intake intake, Transporter robotTransporter) {
     m_transporter = robotTransporter;
     m_intake = intake;
-    s = 0.5;
+    s = TransporterConstants.transportSpeed;
     t = 1.5;
     
     // Use addRequirements() here to declare subsystem dependencies.

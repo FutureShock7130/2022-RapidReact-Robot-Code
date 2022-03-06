@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
     m_auto1 = new OneCargo(m_robotContainer).getCommand();
     m_auto21 = new TwoCargoFromOne(m_robotContainer).getCommand();
     m_auto31 = new ThreeCargoFromOne(m_robotContainer).getCommand();
-    // m_auto32 = new ThreeCargoFromTwo(m_robotContainer).getCommand();
+    m_auto32 = new ThreeCargoFromTwo(m_robotContainer).getCommand();
     m_auto23 = new TwoCargoFromThree(m_robotContainer).getCommand();
     m_autoTest = new TurretTest(m_robotContainer).getCommand();
     m_autoStraight = new StraightPath(m_robotContainer).getCommand();
@@ -137,7 +137,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_robotDrive.resetOdometry(trajectory.getInitialPose());
     
     // schedule the autonomous command (example)
-    m_auto21.schedule();
+    m_auto31.withTimeout(15.0).schedule();
   }
 
   /** This function is called periodically during autonomous. */
@@ -150,8 +150,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_auto21 != null) {
-      m_auto21.cancel();
+    if (m_auto31 != null) {
+      m_auto31.cancel();
     }
   }
 

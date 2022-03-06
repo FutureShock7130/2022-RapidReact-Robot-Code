@@ -17,6 +17,7 @@ import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.TimedIntake;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
+import frc.robot.commands.Turret.TurretShoot;
 public class TwoCargoFromThree {
 
     private MecanumControllerCommand route;
@@ -52,7 +53,7 @@ public class TwoCargoFromThree {
                 ),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand().withTimeout(3.0),
                 new ParallelCommandGroup(
-                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1550),
+                        new TurretShoot(m_robot.m_robotTurret, 1550).withTimeout(3.0),
                         new SequentialCommandGroup(
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
                                 new WaitCommand(0.5),

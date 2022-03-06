@@ -47,20 +47,18 @@ public class TwoCargoFromOne {
                         new PIDController(1.3, 0.0003, 0),
                         new PIDController(1.4, 0.0003, 0)
                 ),
-                new AbsoluteAim(m_robot.m_robotDrive, true, 190),
-                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand().withTimeout(4.0),
                 new ParallelCommandGroup(
-                        new TurretShoot(m_robot.m_robotTurret, 1500).withTimeout(4.0),
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
-                                        new WaitCommand(0.5),
-                                        new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
-                                        new WaitCommand(0.5),
-                                        new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
-                                )
+                        new TurretShoot(m_robot.m_robotTurret, 1550),
+                        new SequentialCommandGroup(
+                                new AbsoluteAim(m_robot.m_robotDrive, true, 190).withTimeout(2.5),
+                                new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
+                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
+                                new WaitCommand(0.5),
+                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
+                                new WaitCommand(0.5),
+                                new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
                         )
-                ).withTimeout(4.0)
+                )
         );         
     }
 }

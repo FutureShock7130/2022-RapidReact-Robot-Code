@@ -17,6 +17,7 @@ import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.TimedIntake;
 import frc.robot.commands.Transporter.TimedTransport;
 import frc.robot.commands.Turret.TimedTurret;
+import frc.robot.commands.Turret.TurretShoot;
 
 public class ThreeCargoFromTwo {
     TrajectoryGenerator trajectoryGenerator;
@@ -31,9 +32,9 @@ public class ThreeCargoFromTwo {
         return new SequentialCommandGroup(
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand(),
                 new ParallelCommandGroup(
-                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1350),
+                        new TurretShoot(m_robot.m_robotTurret, 1350).withTimeout(3.0),
                         new SequentialCommandGroup(
-                                new WaitCommand(1.0),
+                                new WaitCommand(0.5),
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
                         )
@@ -58,7 +59,7 @@ public class ThreeCargoFromTwo {
                 ),
                 new AbsoluteAim(m_robot.m_robotDrive, true, -185),
                 trajectoryGenerator.generate(
-                        "(2) 3rd Cargo to Shooting Position", 
+                        "(2) 3rd Cargo to Shooting", 
                         new PIDController(1.5, 0.0003, 0),
                         new PIDController(1.5, 0.0003, 0),
                         new ProfiledPIDController(
@@ -68,12 +69,12 @@ public class ThreeCargoFromTwo {
                 new AbsoluteAim(m_robot.m_robotDrive, true, 30),
                 new AutoAim(m_robot.m_robotDrive, m_robot.m_robotSpinner, m_robot.m_vision).getCommand().withTimeout(2.5),
                 new ParallelCommandGroup(
-                        new TimedTurret(m_robot.m_robotTurret, 3.0, 1600),
+                        new TurretShoot(m_robot.m_robotTurret, 1600).withTimeout(5.0),
                         new SequentialCommandGroup(
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
-                                new WaitCommand(0.5),
+                                new WaitCommand(0.25),
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport),
-                                new WaitCommand(0.5),
+                                new WaitCommand(0.25),
                                 new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport)
                         )
                 )            

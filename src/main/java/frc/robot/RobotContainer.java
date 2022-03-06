@@ -162,15 +162,15 @@ public class RobotContainer {
                     );
                 }, m_robotIntake));
 
-        m_robotTransport.setDefaultCommand(
-                new RunCommand(() -> {
-                    // Transporter Logic
-                    if (m_operatorController.getRawAxis(OIConstants.trigger_R) > 0.1) {
-                        m_robotTransport.transportRun(0.5);
-                    } else {
-                        m_robotTransport.transportRun(0);
-                    }
-                }, m_robotTransport));
+        // m_robotTransport.setDefaultCommand(
+        //         new RunCommand(() -> {
+        //             // Transporter Logic
+        //             if (m_operatorController.getRawAxis(OIConstants.trigger_R) > 0.1) {
+        //                 m_robotTransport.transportRun(TransporterConstants.transportSpeed);
+        //             } else {
+        //                 m_robotTransport.transportRun(0);
+        //             }
+        //         }, m_robotTransport));
 
         // m_SuperStructure.setDefaultCommand(
         //         new RunCommand(() -> {
@@ -213,27 +213,25 @@ public class RobotContainer {
         new JoystickButton(m_operatorController, OIConstants.Btn_Y)
                 .whenHeld(new TurretSeek(m_robotSpinner, m_vision))
                 .whenReleased(
-                        new RunCommand(() -> {
-                            m_robotSpinner.spinnerRun(0.0);
-                        }, m_robotSpinner));
+                        new LimelightAim(m_vision, m_robotSpinner));
 
         // spinner spin right
         new JoystickButton(m_operatorController, OIConstants.Btn_B)
                 .whenHeld(new RunCommand(() -> {
-                    m_robotSpinner.spinnerRun(0.3);
-                }, m_robotSpinner))
+                    m_robotTransport.transportRun(0.75);
+                }, m_robotTransport))
                 .whenReleased(new RunCommand(() -> {
-                    m_robotSpinner.spinnerRun(0.0);
-                }, m_robotSpinner));
+                    m_robotTransport.transportRun(0.0);
+                }, m_robotTransport));
 
         // spinner spin left
         new JoystickButton(m_operatorController, OIConstants.Btn_X)
                 .whenHeld(new RunCommand(() -> {
-                    m_robotSpinner.spinnerRun(-0.3);
-                }, m_robotSpinner))
+                    m_robotTransport.transportRun(-0.75);
+                }, m_robotTransport))
                 .whenReleased(new RunCommand(() -> {
-                    m_robotSpinner.spinnerRun(0.0);
-                }, m_robotSpinner));
+                    m_robotTransport.transportRun(0.0);
+                }, m_robotTransport));
 
         // For testing
         // Timed Transportation
@@ -248,6 +246,8 @@ public class RobotContainer {
         
         new JoystickButton(m_operatorController, OIConstants.Btn_RB)
                 .whenHeld(new TurretShoot(m_robotTurret, 1750));
+
+    
 
         // new JoystickButton(m_operatorController, OIConstants.Btn_LB)
                 // .whenHeld(farShoot);

@@ -11,7 +11,7 @@ import frc.robot.subsystems.Turret;
 
 public class LimelightAim extends CommandBase {
 
-    private static final double kP = 0.6;
+    private static final double kP = 0.65;
     private static final double kI = 0.0;
     private static final double kD = 0.0;
 

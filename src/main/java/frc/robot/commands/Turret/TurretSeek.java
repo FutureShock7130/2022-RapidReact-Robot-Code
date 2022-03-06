@@ -3,6 +3,7 @@ package frc.robot.commands.Turret;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.TurretConstants;
@@ -42,6 +43,7 @@ public class TurretSeek extends CommandBase {
         } else {
             spinner.spinnerRun(0);
         }
+        SmartDashboard.putNumber("Limelight has valid target", tv);
     }
 
     public boolean isFinished() {
