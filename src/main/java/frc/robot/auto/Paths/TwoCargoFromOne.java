@@ -69,12 +69,13 @@ public class TwoCargoFromOne {
                 new LimelightAim(m_robot.m_vision, m_robot.m_robotSpinner),
                 new ParallelDeadlineGroup(
                         new SequentialCommandGroup(
+                            new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport).withTimeout(1.5),
                             new WaitCommand(0.5), 
                             new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport).withTimeout(1.5),
                             new WaitCommand(0.5),
                             new TransportUp(m_robot.m_robotIntake, m_robot.m_robotTransport).withTimeout(1.5)
                         ),
-                        new TurretShoot(m_robot.m_robotTurret, 1480).withTimeout(4.0)
+                        new TurretShoot(m_robot.m_robotTurret, 1485).withTimeout(4.0)
                 )
         );         
     }

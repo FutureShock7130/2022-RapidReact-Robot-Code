@@ -211,9 +211,7 @@ public class RobotContainer {
 
         // spinner auto aim
         new JoystickButton(m_operatorController, OIConstants.Btn_Y)
-                .whenHeld(new TurretSeek(m_robotSpinner, m_vision))
-                .whenReleased(
-                        new LimelightAim(m_vision, m_robotSpinner));
+        .whenHeld(new LimelightAim(m_vision, m_robotSpinner));
 
         // spinner spin right
         new JoystickButton(m_operatorController, OIConstants.Btn_B)
